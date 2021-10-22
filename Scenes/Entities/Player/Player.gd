@@ -3,9 +3,12 @@ extends Entity
 export(float) var speed = 1000
 export(float) var dash_force = 4
 
-onready var weapon : Weapon = $WeaponRanged
+onready var weapon : Weapon = $WeaponMelee
 onready var energy_display : EnergyDisplay = $EnergyDisplay
 
+func _ready():
+	if weapon is WeaponMelee:
+		weapon.init(self)
 
 func move():
 	var delta_vec = Vector2.ZERO
