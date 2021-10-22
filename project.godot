@@ -45,6 +45,11 @@ _global_script_classes=[ {
 "path": "res://Scenes/Items/Weapons/Weapon.gd"
 }, {
 "base": "Weapon",
+"class": "WeaponMelee",
+"language": "GDScript",
+"path": "res://Scenes/Items/Weapons/Melee/WeaponMelee.gd"
+}, {
+"base": "Weapon",
 "class": "WeaponRanged",
 "language": "GDScript",
 "path": "res://Scenes/Items/Weapons/Ranged/WeaponRanged.gd"
@@ -57,6 +62,7 @@ _global_script_class_icons={
 "Health": "",
 "Projectile": "",
 "Weapon": "",
+"WeaponMelee": "",
 "WeaponRanged": ""
 }
 
