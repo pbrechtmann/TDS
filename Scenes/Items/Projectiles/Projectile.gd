@@ -11,6 +11,7 @@ var pierce = 0
 
 
 func init(muzzle_transform : Transform2D, dir : Vector2, modifiers : Dictionary) -> void:
+	set_as_toplevel(true)
 	direction = dir
 	global_transform = muzzle_transform
 	
