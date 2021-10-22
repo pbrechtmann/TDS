@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/Entities/Entitiy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Entities/Spawners/Spawner.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Entities/NPCs/Common/Common.tscn" type="PackedScene" id=3]
+
+[node name="Spawner" groups=[
+"Spawners",
+] instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+npc = ExtResource( 3 )
+
+[node name="Sprite" parent="." index="0"]
+visible = false
+
+[node name="CollisionShape2D" parent="." index="1"]
+disabled = true
+
+[node name="Timer" type="Timer" parent="." index="4"]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -6,7 +6,7 @@ export(PackedScene) var projectile
 onready var muzzle : Position2D = $Muzzle
 
 export var modifiers : Dictionary = {
-	"crit_chance": 0.5,
+	"crit_chance": 0.1,
 	"pierce" : 1
 }
 

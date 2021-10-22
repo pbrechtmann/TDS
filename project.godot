@@ -9,10 +9,10 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Entity",
-"class": "Enemy",
+"base": "NPC",
+"class": "Common",
 "language": "GDScript",
-"path": "res://Scenes/Entities/Enemies/Enemy.gd"
+"path": "res://Scenes/Entities/NPCs/Common/Common.gd"
 }, {
 "base": "Sprite",
 "class": "EnergyDisplay",
@@ -34,10 +34,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Entities/Components/Health.gd"
 }, {
+"base": "Entity",
+"class": "NPC",
+"language": "GDScript",
+"path": "res://Scenes/Entities/NPCs/NPC.gd"
+}, {
 "base": "Node2D",
 "class": "Projectile",
 "language": "GDScript",
 "path": "res://Scenes/Items/Projectiles/Projectile.gd"
+}, {
+"base": "NPC",
+"class": "Spawner",
+"language": "GDScript",
+"path": "res://Scenes/Entities/Spawners/Spawner.gd"
 }, {
 "base": "Node2D",
 "class": "Weapon",
@@ -50,12 +60,14 @@ _global_script_classes=[ {
 "path": "res://Scenes/Items/Weapons/Ranged/WeaponRanged.gd"
 } ]
 _global_script_class_icons={
-"Enemy": "",
+"Common": "",
 "EnergyDisplay": "",
 "EnergySupply": "",
 "Entity": "",
 "Health": "",
+"NPC": "",
 "Projectile": "",
+"Spawner": "",
 "Weapon": "",
 "WeaponRanged": ""
 }
