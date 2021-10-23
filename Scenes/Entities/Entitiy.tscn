@@ -7,7 +7,9 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 
-[node name="Entitiy" type="KinematicBody2D"]
+[node name="Entitiy" type="KinematicBody2D" groups=[
+"Entity",
+]]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
