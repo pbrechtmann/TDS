@@ -1,16 +1,18 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Entities/Components/Health.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Entities/Entitiy.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Entities/Components/HealthDisplay.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Head.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Entities/Components/EnergySupply.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Entities/Components/HealthDisplay.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/Entities/Components/EnergyDisplay.tscn" type="PackedScene" id=6]
 
 [sub_resource type="CapsuleShape2D" id=1]
 
 [node name="Entitiy" type="KinematicBody2D" groups=[
 "Entity",
 ]]
-script = ExtResource( 2 )
+script = ExtResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
@@ -25,3 +27,9 @@ shape = SubResource( 1 )
 script = ExtResource( 1 )
 
 [node name="EnergySupply" parent="." instance=ExtResource( 4 )]
+
+[node name="HealthDisplay" parent="." instance=ExtResource( 2 )]
+position = Vector2( -50, 50 )
+
+[node name="EnergyDisplay" parent="." instance=ExtResource( 6 )]
+position = Vector2( -100, 0 )

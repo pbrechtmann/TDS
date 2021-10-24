@@ -7,6 +7,10 @@ var speed = 300
 var threshold = 75
 
 
+func _ready():
+	weapon.init(self)
+
+
 func move():
 	var path = nav.get_simple_path(global_position, target.global_position)
 	var vec = global_position.direction_to(path[1]).normalized()

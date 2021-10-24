@@ -20,4 +20,10 @@ disabled = true
 wait_time = 5.0
 autostart = true
 
+[node name="HealthDisplay" parent="." index="5"]
+visible = false
+
+[node name="EnergyDisplay" parent="." index="6"]
+visible = false
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
