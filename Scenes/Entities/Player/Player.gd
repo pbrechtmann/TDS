@@ -4,13 +4,13 @@ export(float) var speed = 1000
 export(float) var dash_force = 4
 
 onready var weapon : Weapon = $WeaponRanged
-onready var energy_display : EnergyDisplay = $EnergyDisplay
 
 signal game_over
 
 func _ready():
 	if connect("game_over", get_parent(), "_on_Player_game_over") != OK:
 		printerr("Connecting game_over to Level failed.")
+	
 	if weapon is WeaponMelee:
 		weapon.init(self)
 
@@ -29,8 +29,6 @@ func _physics_process(_delta):
 
 
 func _process(_delta):
-	energy_display.show_energy(energy_supply)
-	
 	if Input.is_action_pressed("attack_primary"):
 		weapon.try_primary_attack(energy_supply)
 
