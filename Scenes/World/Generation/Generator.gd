@@ -155,19 +155,19 @@ func find_tree(rooms_in):
 	
 	find_start_and_end()
 	
-#	var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
-#
-#	while not delauney.empty():
-#		var p1 = delauney.pop_front()
-#		var p2 = delauney.pop_front()
-#		var p3 = delauney.pop_front()
-#
-#		if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
-#			path.connect_points(p1, p2)
-#		if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
-#			 path.connect_points(p1, p3)
-#		if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
-#			 path.connect_points(p2, p3)
+	var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
+
+	while not delauney.empty():
+		var p1 = delauney.pop_front()
+		var p2 = delauney.pop_front()
+		var p3 = delauney.pop_front()
+
+		if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
+			path.connect_points(p1, p2)
+		if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
+			 path.connect_points(p1, p3)
+		if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
+			 path.connect_points(p2, p3)
 
 
 func has_start_room(index1, index2) -> bool:
