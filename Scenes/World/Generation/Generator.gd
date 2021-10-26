@@ -6,7 +6,7 @@ var room_scene = preload("res://Scenes/World/Generation/Room.tscn")
 var tile_size = 128
 var num_rooms = 20
 
-var spacer : Vector2 = Vector2(4, 4) #making sure rooms don't bleed into each other
+var spacer : Vector2 = Vector2(3, 3) #making sure rooms don't bleed into each other
 
 var num_rooms_small : int = 10
 var num_rooms_medium : int = 5
@@ -16,9 +16,9 @@ var num_rooms_small_target : int = 5
 var num_rooms_medium_target : int = 2
 var num_rooms_large_target : int = 1
 
-var room_sizes_small = [Vector2(5, 5), Vector2(5, 7), Vector2(7, 5)]
-var room_sizes_medium = [Vector2(9, 9), Vector2(11, 9)]
-var room_sizes_large = [Vector2(15, 15), Vector2(17, 15), Vector2(15, 17)]
+var room_sizes_small = [Vector2(5, 7), Vector2(7, 5)]
+var room_sizes_medium = [Vector2(7, 9), Vector2(9, 7)]
+var room_sizes_large = [Vector2(9, 11), Vector2(11, 9)]
 
 var rooms_small : Array = []
 var rooms_medium : Array = []
@@ -57,7 +57,6 @@ func make_rooms():
 
 	yield(get_tree().create_timer(1), "timeout")
 
-
 	rooms_small = cull_rooms(num_rooms_small_target, rooms_small)
 	rooms_medium = cull_rooms(num_rooms_medium_target, rooms_medium)
 	rooms_large = cull_rooms(num_rooms_large_target, rooms_large)
@@ -69,6 +68,7 @@ func make_rooms():
 		room.position = room.position.snapped(Vector2(128, 128))
 		room.mode = RigidBody2D.MODE_STATIC
 		final_rooms.append(room)
+		#room.collision.shape.set_extents(room.size * tile_size)
 
 	find_tree(final_rooms)
 
@@ -77,7 +77,7 @@ func generate_room_bodies(amount : int, sizes : Array):
 	var res : Array = []
 	for _i in range(amount):
 		var r = room_scene.instance()
-		r.make_room(sizes[randi() % sizes.size()] * tile_size, spacer * tile_size)
+		r.make_room(sizes[randi() % sizes.size()], spacer, tile_size)
 		res.append(r)
 		room_container.add_child(r)
 	return res
@@ -90,27 +90,31 @@ func cull_rooms(target_amount : int, rooms : Array) -> Array:
 	return rooms
 
 
-
 func _draw():
 	for room in rooms_small:
 		if not (room == start_room or room == end_room):
-			draw_rect(Rect2(room.position - room.size, room.size * 2), Color.darkorchid, false, 5, true)
+			draw_rect(room_to_rect(room), Color.darkorchid, false, 50, true)
+			draw_rect(room_to_rect(room, true), Color.darkorchid, false, 50, true)
 	for room in rooms_medium:
 		if not (room == start_room or room == end_room):
-			draw_rect(Rect2(room.position - room.size, room.size * 2), Color.darkturquoise, false, 5, true)
+			draw_rect(room_to_rect(room), Color.darkturquoise, false, 50, true)
+			draw_rect(room_to_rect(room, true), Color.darkturquoise, false, 50, true)
 	for room in rooms_large:
 		if not (room == start_room or room == end_room):
-			draw_rect(Rect2(room.position - room.size, room.size * 2), Color.darkred, false, 5, true)
+			draw_rect(room_to_rect(room), Color.darkred, false, 50, true)
+			draw_rect(room_to_rect(room, true), Color.darkred, false, 50, true)
 	if start_room:
-		draw_rect(Rect2(start_room.position - start_room.size, start_room.size * 2), Color.green, false, 5, true)
+		draw_rect(room_to_rect(start_room), Color.green, false, 50, true)
+		draw_rect(room_to_rect(start_room, true), Color.green, false, 50, true)
 	if end_room:
-		draw_rect(Rect2(end_room.position - end_room.size, end_room.size * 2), Color.yellow, false, 5, true)
+		draw_rect(room_to_rect(end_room), Color.yellow, false, 50, true)
+		draw_rect(room_to_rect(end_room, true), Color.yellow, false, 50, true)
 	if path:
 		for p in path.get_points():
 			for c in path.get_point_connections(p):
 				var pp = path.get_point_position(p)
 				var cp = path.get_point_position(c)
-				draw_line(Vector2(pp.x, pp.y), Vector2(cp.x, cp.y), Color.darkorange, 15, true)
+				draw_line(Vector2(pp.x, pp.y), Vector2(cp.x, cp.y), Color.darkorange, 50, true)
 
 
 func _process(_delta):
@@ -225,17 +229,22 @@ func _input(event):
 		final_rooms.clear()
 		start_room = null
 		end_room = null
+		map.clear()
+		for x in map.get_children():
+			x.queue_free()
 		make_rooms()
 	if event.is_action_pressed("ui_focus_next"):
 		make_map()
 
 
 func make_map():
+	for r in final_rooms:
+		r.position = r.position.snapped(Vector2(tile_size, tile_size))
 	map.clear()
 	
 	var full_map_rect = Rect2()
 	for room in final_rooms:
-		var r = Rect2(room.position - room.size, room.get_node("CollisionShape2D").shape.extents * 2)
+		var r = room_to_rect(room)
 		full_map_rect = full_map_rect.merge(r)
 	
 	var top_left = map.world_to_map(full_map_rect.position)
@@ -243,13 +252,37 @@ func make_map():
 	
 	for x in range(top_left.x, bottom_right.x):
 		for y in range(top_left.y, bottom_right.y):
-			map.set_cell(x, y, map.tile_set.find_tile_by_name("Door"))
+			map.set_cell(x, y, map.tile_set.find_tile_by_name("Wall"))
 	
 	for room in final_rooms:
-		var size = (room.size / tile_size).floor()
-		var ul = (room.position / tile_size).floor() - size
-		for x in range(size.x * 2):
-			for y in range(size.y * 2):
-				map.set_cell(ul.x + x, ul.y + y, map.tile_set.find_tile_by_name("FloorNoNav"))
+		var size = (room.size / tile_size)
+		var r = room_to_rect(room, true)
+		r.size += Vector2.ONE * tile_size
+	
+		var tl = map.world_to_map(r.position)
+		var br = map.world_to_map(r.end)
+	
+		for x in range(tl.x, br.x):
+			for y in range(tl.y, br.y):
+				map.set_cell(x, y, -1)
+		
+		var rotate = size.x <= size.y
+		var x_size = size.x if rotate else size.y
+		var y_size = size.y if rotate else size.x
+		
+		var new_room = load("res://Scenes/World/Generation/RoomPrefabs/RoomPrefab" + str(x_size) + "x" + str(y_size) + ".tscn").instance()
+		new_room.position = room.position
+		if rotate:
+			new_room.rotation_degrees = 90
+		map.add_child(new_room)
+
+	
 
 	map.update_bitmask_region()
+
+
+func room_to_rect(r, with_spacer : bool = false) -> Rect2:
+	var room_extents : Vector2  = r.collision.shape.get_extents()
+	if with_spacer:
+		room_extents -= (spacer * tile_size)
+	return Rect2(r.position - room_extents, room_extents * 2)
