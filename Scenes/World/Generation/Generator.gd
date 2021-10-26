@@ -1,20 +1,14 @@
 extends Node2D
+class_name Generator
 
 var room_scene = preload("res://Scenes/World/Generation/Room.tscn")
 
-
 var tile_size = 128
-var num_rooms = 20
+var spacer : Vector2 = Vector2(3, 3) # Making sure rooms don't overlap
 
-var spacer : Vector2 = Vector2(3, 3) #making sure rooms don't bleed into each other
-
-var num_rooms_small : int = 10
-var num_rooms_medium : int = 5
-var num_rooms_large : int = 4
-
-var num_rooms_small_target : int = 5
-var num_rooms_medium_target : int = 2
-var num_rooms_large_target : int = 1
+var num_rooms_small : int = 5
+var num_rooms_medium : int = 2
+var num_rooms_large : int = 1
 
 var room_sizes_small = [Vector2(5, 7), Vector2(7, 5)]
 var room_sizes_medium = [Vector2(7, 9), Vector2(9, 7)]
@@ -24,10 +18,7 @@ var rooms_small : Array = []
 var rooms_medium : Array = []
 var rooms_large : Array = []
 
-var cull_percent = 0.5
-
 var final_rooms : Array = []
-
 
 var start_room = null
 var end_room = null
@@ -35,8 +26,8 @@ var end_room = null
 var path : AStar2D
 
 onready var room_container = $Rooms
-
 onready var map = $TileMap
+
 
 func _ready():
 	randomize()
@@ -44,50 +35,36 @@ func _ready():
 
 
 func make_rooms():
-	rooms_small = generate_room_bodies(num_rooms_small, room_sizes_small)
-	rooms_medium = generate_room_bodies(num_rooms_medium, room_sizes_medium)
-	rooms_large = generate_room_bodies(num_rooms_large, room_sizes_large)
-
-	var r = room_container.get_children()
-	r.shuffle()
-
-	for room in r:
+	rooms_small = generate_room_bodies(num_rooms_small, room_sizes_small, room_container)
+	rooms_medium = generate_room_bodies(num_rooms_medium, room_sizes_medium, room_container)
+	rooms_large = generate_room_bodies(num_rooms_large, room_sizes_large, room_container)
+	
+	final_rooms = rooms_small + rooms_medium + rooms_large
+	
+	for room in final_rooms:
 		room.set_collision_mask(512)
 		room.set_collision_layer(512)
-
-	yield(get_tree().create_timer(1), "timeout")
-
-	rooms_small = cull_rooms(num_rooms_small_target, rooms_small)
-	rooms_medium = cull_rooms(num_rooms_medium_target, rooms_medium)
-	rooms_large = cull_rooms(num_rooms_large_target, rooms_large)
 	
-	for room in room_container.get_children():
-		if not rooms_small.has(room) and not rooms_medium.has(room) and not rooms_large.has(room):
-			room.queue_free()
-			continue
+	yield(get_tree().create_timer(0.5), "timeout")
+	
+	for room in final_rooms:
 		room.position = room.position.snapped(Vector2(128, 128))
 		room.mode = RigidBody2D.MODE_STATIC
-		final_rooms.append(room)
-		#room.collision.shape.set_extents(room.size * tile_size)
-
-	find_tree(final_rooms)
+	
+	find_graph(final_rooms)
 
 
-func generate_room_bodies(amount : int, sizes : Array):
+func generate_room_bodies(amount : int, sizes : Array, room_container : Node):
 	var res : Array = []
-	for _i in range(amount):
-		var r = room_scene.instance()
-		r.make_room(sizes[randi() % sizes.size()], spacer, tile_size)
-		res.append(r)
-		room_container.add_child(r)
+	
+	while amount > 0:
+		var room = room_scene.instance()
+		room.init(sizes[randi() % sizes.size()], spacer, tile_size)
+		res.append(room)
+		room_container.add_child(room)
+		amount -= 1
+	
 	return res
-
-
-func cull_rooms(target_amount : int, rooms : Array) -> Array:
-	while rooms.size() > target_amount:
-		rooms.shuffle()
-		rooms.remove(0)
-	return rooms
 
 
 func _draw():
@@ -121,7 +98,7 @@ func _process(_delta):
 	update()
 
 
-func find_tree(rooms_in):
+func find_graph(rooms_in):
 	path = AStar2D.new()
 	
 	var rooms = [] + rooms_in

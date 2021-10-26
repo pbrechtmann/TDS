@@ -1,12 +1,12 @@
 extends RigidBody2D
-
+class_name Room
 
 var size : Vector2
 var astar_index : int
 
 onready var collision = $CollisionShape2D
 
-func make_room(s : Vector2, spacer : Vector2, tile_size : int):
+func init(s : Vector2, spacer : Vector2, tile_size : int):
 	size = s * tile_size / 2
 	var shape = RectangleShape2D.new()
 	shape.custom_solver_bias = 1

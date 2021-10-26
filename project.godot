@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Entities/Entitiy.gd"
 }, {
+"base": "Node2D",
+"class": "Generator",
+"language": "GDScript",
+"path": "res://Scenes/World/Generation/Generator.gd"
+}, {
 "base": "Node",
 "class": "Health",
 "language": "GDScript",
@@ -43,6 +48,11 @@ _global_script_classes=[ {
 "class": "Projectile",
 "language": "GDScript",
 "path": "res://Scenes/Items/Projectiles/Projectile.gd"
+}, {
+"base": "RigidBody2D",
+"class": "Room",
+"language": "GDScript",
+"path": "res://Scenes/World/Generation/Room.gd"
 }, {
 "base": "NPC",
 "class": "Spawner",
@@ -69,9 +79,11 @@ _global_script_class_icons={
 "EnergyDisplay": "",
 "EnergySupply": "",
 "Entity": "",
+"Generator": "",
 "Health": "",
 "NPC": "",
 "Projectile": "",
+"Room": "",
 "Spawner": "",
 "Weapon": "",
 "WeaponMelee": "",
