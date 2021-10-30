@@ -7,7 +7,7 @@ var tile_size = 128
 var spacer : Vector2 = Vector2(3, 3) # Making sure rooms don't overlap
 
 var num_rooms_small : int = 5
-var num_rooms_medium : int = 2
+var num_rooms_medium : int = 3
 var num_rooms_large : int = 1
 
 var room_sizes_small = [Vector2(5, 7), Vector2(7, 5)]
@@ -136,19 +136,19 @@ func find_graph(rooms_in):
 	
 	find_start_and_end()
 	
-	var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
-
-	while not delauney.empty():
-		var p1 = delauney.pop_front()
-		var p2 = delauney.pop_front()
-		var p3 = delauney.pop_front()
-
-		if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
-			path.connect_points(p1, p2)
-		if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
-			 path.connect_points(p1, p3)
-		if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
-			 path.connect_points(p2, p3)
+#	var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
+#
+#	while not delauney.empty():
+#		var p1 = delauney.pop_front()
+#		var p2 = delauney.pop_front()
+#		var p3 = delauney.pop_front()
+#
+#		if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
+#			path.connect_points(p1, p2)
+#		if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
+#			 path.connect_points(p1, p3)
+#		if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
+#			 path.connect_points(p2, p3)
 
 
 func has_start_room(index1, index2) -> bool:
@@ -247,15 +247,186 @@ func make_map():
 		var x_size = size.x if rotate else size.y
 		var y_size = size.y if rotate else size.x
 		
-		var new_room = load("res://Scenes/World/Generation/RoomPrefabs/RoomPrefab" + str(x_size) + "x" + str(y_size) + ".tscn").instance()
+		var new_room : RoomPrefab = load("res://Scenes/World/Generation/RoomPrefabs/RoomPrefab" + str(x_size) + "x" + str(y_size) + ".tscn").instance()
 		new_room.position = room.position
+		new_room.index = room.astar_index
 		if rotate:
 			new_room.rotation_degrees = 90
 		map.add_child(new_room)
 
-	
+	for room in final_rooms:
+		var new_room : RoomPrefab
+		for x in map.get_children():
+			if x.has_index(room.astar_index):
+				new_room = x
+		carve_corridor(new_room, room)
+		merge_maps(map, new_room.tile_map)
 
 	map.update_bitmask_region()
+
+
+
+func carve_corridor(room_map : RoomPrefab, room):
+	var doors = [] + room_map.doors
+	var rotated = room_map.rotation_degrees == 90
+	if rotated:
+		doors = [doors[1], doors[3], doors[0], doors[2]]
+	var doors_to_delete = []
+	for r in final_rooms:
+		if path.are_points_connected(room.astar_index, r.astar_index):
+			
+			var extents : Vector2 = room.collision.shape.get_extents()
+			var center : Vector2 = room.position
+			var tl : Vector2 = center - extents
+			var tr : Vector2 = center + Vector2(extents.x, -extents.y)
+			var bl : Vector2 = center - Vector2(extents.x, -extents.y)
+			var br : Vector2 = center + extents
+			
+			var tl_angle : float = center.direction_to(tl).angle()
+			var tr_angle : float = center.direction_to(tr).angle()
+			var bl_angle : float = center.direction_to(bl).angle()
+			var br_angle : float = center.direction_to(br).angle()
+			
+			var path_angle : float = center.direction_to(r.position).angle()
+			
+			var door_location : Vector2
+			var door_direction : Vector2
+			
+			if path_angle >= tl_angle and path_angle < tr_angle:
+				doors_to_delete.append(doors[0])
+				door_location = doors[0]
+				door_direction = Vector2.UP
+				if rotated:
+					doors_to_delete.append(doors[0] + Vector2.DOWN)
+					doors_to_delete.append(doors[0] + Vector2.UP)
+				else:
+					doors_to_delete.append(doors[0] + Vector2.RIGHT)
+					doors_to_delete.append(doors[0] + Vector2.LEFT)
+			elif path_angle >= tr_angle and path_angle < br_angle:
+				doors_to_delete.append(doors[2])
+				door_location = doors[2]
+				door_direction = Vector2.RIGHT
+				if rotated:
+					doors_to_delete.append(doors[2] + Vector2.RIGHT)
+					doors_to_delete.append(doors[2] + Vector2.LEFT)
+				else:
+					doors_to_delete.append(doors[2] + Vector2.DOWN)
+					doors_to_delete.append(doors[2] + Vector2.UP)
+			elif path_angle >= tr_angle and path_angle < bl_angle:
+				doors_to_delete.append(doors[3])
+				door_location = doors[3]
+				door_direction = Vector2.DOWN
+				if rotated:
+					doors_to_delete.append(doors[3] + Vector2.DOWN)
+					doors_to_delete.append(doors[3] + Vector2.UP)
+				else:
+					doors_to_delete.append(doors[3] + Vector2.RIGHT)
+					doors_to_delete.append(doors[3] + Vector2.LEFT)
+			else:
+				doors_to_delete.append(doors[1])
+				door_location = doors[1]
+				door_direction = Vector2.LEFT
+				if rotated:
+					doors_to_delete.append(doors[1] + Vector2.RIGHT)
+					doors_to_delete.append(doors[1] + Vector2.LEFT)
+				else:
+					doors_to_delete.append(doors[1] + Vector2.DOWN)
+					doors_to_delete.append(doors[1] + Vector2.UP)
+			
+			
+			var t_room : RoomPrefab
+			for x in map.get_children():
+				if x.has_index(r.astar_index):
+					t_room = x
+			
+			var t_extents : Vector2 = r.collision.shape.get_extents()
+			var t_center : Vector2 = r.position
+			var t_tl : Vector2 = t_center - t_extents
+			var t_tr : Vector2 = t_center + Vector2(t_extents.x, -t_extents.y)
+			var t_bl : Vector2 = t_center - Vector2(t_extents.x, -t_extents.y)
+			var t_br : Vector2 = t_center + t_extents
+			
+			var t_tl_angle : float = t_center.direction_to(t_tl).angle()
+			var t_tr_angle : float = t_center.direction_to(t_tr).angle()
+			var t_bl_angle : float = t_center.direction_to(t_bl).angle()
+			var t_br_angle : float = t_center.direction_to(t_br).angle()
+			
+			var t_path_angle : float = t_center.direction_to(t_room.position).angle()
+			var t_room_doors = [] + t_room.doors
+			var t_rotated = t_room.rotation_degrees == 90
+			if t_rotated:
+				t_room_doors = [t_room_doors[1], t_room_doors[3], t_room_doors[0], t_room_doors[2]]
+			var t_door
+			
+			if t_path_angle >= t_tl_angle and t_path_angle < t_tr_angle:
+				t_door = t_room_doors[0]
+			elif t_path_angle >= t_tr_angle and t_path_angle < t_br_angle:
+				t_door = t_room_doors[2]
+			elif t_path_angle >= t_tr_angle and t_path_angle < t_bl_angle:
+				t_door = t_room_doors[3]
+			else:
+				t_door = t_room_doors[1]
+		
+			var t_door_transformed = room_map.tile_map.world_to_map(room_map.tile_map.to_local(t_room.tile_map.to_global(t_room.tile_map.map_to_world(t_door))))
+			
+			var carve_direction : Vector2 = Vector2.ZERO
+			
+			if t_door_transformed.x == door_location.x:
+				carve_direction = Vector2.DOWN if t_door_transformed.y > door_location.y else Vector2.UP
+				carve(room_map.tile_map, door_location, carve_direction, ceil((abs(t_door_transformed.y - door_location.y) / 2)))
+			else:
+				var steps : int
+				if door_direction == Vector2.UP or door_direction == Vector2.DOWN:
+					steps = int(abs(t_door_transformed.y - door_location.y))
+				elif door_direction == Vector2.LEFT or door_direction == Vector2.RIGHT:
+					steps = int(abs(t_door_transformed.x - door_location.x))
+				carve(room_map.tile_map, door_location, carve_direction, steps)
+
+
+			if t_door_transformed.y == door_location.y:
+				carve_direction = Vector2.RIGHT if t_door_transformed.x > door_location.x else Vector2.LEFT
+				carve(room_map.tile_map, door_location, carve_direction, ceil(abs(t_door_transformed.x - door_location.x) / 2))
+			else:
+				var steps : int
+				if door_direction == Vector2.UP or door_direction == Vector2.DOWN:
+					steps = int(abs(t_door_transformed.y - door_location.y))
+				elif door_direction == Vector2.LEFT or door_direction == Vector2.RIGHT:
+					steps = int(abs(t_door_transformed.x - door_location.x))
+				carve(room_map.tile_map, door_location, carve_direction, steps)
+
+
+		
+	for d in doors_to_delete:
+		room_map.tile_map.set_cellv(d, room_map.tile_map.tile_set.find_tile_by_name("Floor"))
+		if doors.has(d):
+			doors.erase(d)
+	
+	for d in doors:
+		room_map.tile_map.set_cellv(d, room_map.tile_map.tile_set.find_tile_by_name("Wall"))
+
+
+func carve(tilemap : TileMap, start : Vector2, direction : Vector2, steps : int):
+	if direction == Vector2.UP or direction == Vector2.DOWN:
+		for i in range(steps):
+			start += direction
+			tilemap.set_cellv(start, tilemap.tile_set.find_tile_by_name("Floor"))
+			tilemap.set_cellv(start + Vector2.RIGHT, tilemap.tile_set.find_tile_by_name("Floor"))
+			tilemap.set_cellv(start + Vector2.LEFT, tilemap.tile_set.find_tile_by_name("Floor"))
+	elif direction == Vector2.LEFT or direction == Vector2.RIGHT:
+		for i in range(steps):
+			start += direction
+			tilemap.set_cellv(start, tilemap.tile_set.find_tile_by_name("Floor"))
+			tilemap.set_cellv(start + Vector2.UP, tilemap.tile_set.find_tile_by_name("Floor"))
+			tilemap.set_cellv(start + Vector2.DOWN, tilemap.tile_set.find_tile_by_name("Floor"))
+
+
+func merge_maps(target : TileMap, input : TileMap):
+	var cells = input.get_used_cells()
+	for cell in cells:
+		var tile : int = input.get_cellv(cell)
+		var target_location : Vector2 = target.world_to_map(target.to_local(input.to_global(input.map_to_world(cell))))
+		target.set_cellv(target_location, tile)
+	input.clear()
 
 
 func room_to_rect(r, with_spacer : bool = false) -> Rect2:
