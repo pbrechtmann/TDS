@@ -31,8 +31,9 @@ var door_points : Array = []
 var start_position : Vector2
 
 onready var room_container = $Rooms
-onready var map_container = $Maps
-onready var map = $Maps/TerrainMap
+onready var map_container : Node2D = $Maps
+onready var map : TileMap = $Maps/TerrainMap
+onready var spawn_map : TileMap = $Maps/SpawnMap
 
 signal done
 
@@ -225,6 +226,7 @@ func make_map():
 				new_room = x
 		connect_doors(new_room, room)
 		merge_maps(map, new_room.tile_map)
+		merge_maps(spawn_map, new_room.spawn_map)
 	link_door_graph()
 	carve_corridors()
 	map.update_bitmask_region()
@@ -385,6 +387,7 @@ func carve(start : Vector2, direction : Vector2, steps : int, corner : bool = fa
 	if corner:
 		set_floor_cell(pos + direction, direction)
 	return pos
+
 
 func set_floor_cell(pos : Vector2, dir : Vector2):
 	map.set_cellv(pos, map.tile_set.find_tile_by_name("Floor"))
