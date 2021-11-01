@@ -27,13 +27,22 @@ var path : AStar2D
 var door_connections : AStar2D
 var door_points : Array = []
 
-onready var room_container = $Rooms
-onready var map = $TileMap
 
+var start_position : Vector2
+
+onready var room_container = $Rooms
+onready var map_container = $Maps
+onready var map = $Maps/TerrainMap
+
+signal done
 
 func _ready():
+	if connect("done", get_parent(), "_on_Generator_done") != OK:
+		printerr("Connecting signal done to ", get_parent(), " failed.")
 	randomize()
 	make_rooms()
+	yield(get_tree(), "idle_frame")
+	make_map()
 
 
 func make_rooms():
@@ -47,7 +56,7 @@ func make_rooms():
 		room.set_collision_mask(512)
 		room.set_collision_layer(512)
 	
-	yield(get_tree().create_timer(0.5), "timeout")
+	yield(get_tree(), "idle_frame")
 	
 	for room in final_rooms:
 		room.position = room.position.snapped(Vector2(128, 128))
@@ -67,46 +76,6 @@ func generate_room_bodies(amount : int, sizes : Array, room_container : Node):
 		amount -= 1
 	
 	return res
-
-
-func _draw():
-	for room in rooms_small:
-		if not (room == start_room or room == end_room):
-			draw_rect(room_to_rect(room), Color.darkorchid, false, 50, true)
-			draw_rect(room_to_rect(room, true), Color.darkorchid, false, 50, true)
-	for room in rooms_medium:
-		if not (room == start_room or room == end_room):
-			draw_rect(room_to_rect(room), Color.darkturquoise, false, 50, true)
-			draw_rect(room_to_rect(room, true), Color.darkturquoise, false, 50, true)
-	for room in rooms_large:
-		if not (room == start_room or room == end_room):
-			draw_rect(room_to_rect(room), Color.darkred, false, 50, true)
-			draw_rect(room_to_rect(room, true), Color.darkred, false, 50, true)
-	if start_room:
-		draw_rect(room_to_rect(start_room), Color.green, false, 50, true)
-		draw_rect(room_to_rect(start_room, true), Color.green, false, 50, true)
-	if end_room:
-		draw_rect(room_to_rect(end_room), Color.yellow, false, 50, true)
-		draw_rect(room_to_rect(end_room, true), Color.yellow, false, 50, true)
-	if path:
-		for p in path.get_points():
-			for c in path.get_point_connections(p):
-				var pp = path.get_point_position(p)
-				var cp = path.get_point_position(c)
-				draw_line(pp, cp, Color.darkorange, 50, true)
-	if door_connections:
-		for d in door_connections.get_points():
-			for c in door_connections.get_point_connections(d):
-				var dp = door_connections.get_point_position(d)
-				var cp = door_connections.get_point_position(c)
-				draw_line(dp, cp, Color.mediumvioletred, 50, true)
-	if not door_points.empty():
-		for d in door_points:
-			draw_circle(d[0]["pos"], 50, Color.chartreuse)
-
-
-func _process(_delta):
-	update()
 
 
 func find_graph(rooms_in):
@@ -205,29 +174,8 @@ func find_start_and_end():
 		start = temp
 	
 	start_room = start
+	start_position = start_room.global_position + Vector2.ONE * tile_size / 2
 	end_room = end
-
-
-func _input(event):
-	if event.is_action_pressed("ui_select"):
-		for room in final_rooms:
-			room.queue_free()
-		if path:
-			path.clear()
-		if door_connections:
-			door_connections.clear()
-		final_rooms.clear()
-		start_room = null
-		end_room = null
-		map.clear()
-		door_points.clear()
-		for x in map.get_children():
-			x.queue_free()
-		make_rooms()
-	if event.is_action_pressed("ui_focus_next"):
-		make_map()
-		if path:
-			path.clear()
 
 
 func make_map():
@@ -279,8 +227,14 @@ func make_map():
 		merge_maps(map, new_room.tile_map)
 	link_door_graph()
 	carve_corridors()
-
 	map.update_bitmask_region()
+	
+	for r in final_rooms:
+		r.queue_free()
+	final_rooms.clear()
+	
+	
+	emit_signal("done")
 
 
 func connect_doors(room_prefab : RoomPrefab, room):
@@ -291,42 +245,8 @@ func connect_doors(room_prefab : RoomPrefab, room):
 	for r in final_rooms:
 		if path.are_points_connected(room.astar_index, r.astar_index):
 			
-			var extents : Vector2 = room.collision.shape.get_extents()
-			var center : Vector2 = room.position
-			var tl : Vector2 = center - extents
-			var tr : Vector2 = center + Vector2(extents.x, -extents.y)
-			var bl : Vector2 = center - Vector2(extents.x, -extents.y)
-			var br : Vector2 = center + extents
-			
-			var tl_angle : float = center.direction_to(tl).angle()
-			var tr_angle : float = center.direction_to(tr).angle()
-			var bl_angle : float = center.direction_to(bl).angle()
-			var br_angle : float = center.direction_to(br).angle()
-			
-			var path_angle : float = center.direction_to(r.position).angle()
-			
-			var door_location : Vector2
-			var door_direction : Vector2
-			
-			if path_angle >= tl_angle and path_angle < tr_angle:
-				door_location = doors[0]
-				door_direction = Vector2.UP
-			elif path_angle >= tr_angle and path_angle < br_angle:
-				door_location = doors[2]
-				door_direction = Vector2.RIGHT
-			elif path_angle >= tr_angle and path_angle < bl_angle:
-				door_location = doors[3]
-				door_direction = Vector2.DOWN
-			else:
-				door_location = doors[1]
-				door_direction = Vector2.LEFT
-			
-			var start_dict : Dictionary = {
-				"pos": room_prefab.tile_map.to_global(room_prefab.tile_map.map_to_world(door_location)),
-				"dir": door_direction
-			}
-			
-			
+			var start_dict : Dictionary = get_door_dict(room, room_prefab, doors, r)
+
 			var t_room : RoomPrefab
 			for x in map.get_children():
 				if x.has_index(r.astar_index):
@@ -336,43 +256,46 @@ func connect_doors(room_prefab : RoomPrefab, room):
 			if t_room.rotation_degrees == 90:
 				t_doors = [t_doors[1], t_doors[3], t_doors[0], t_doors[2]]
 			
-			var t_extents : Vector2 = r.collision.shape.get_extents()
-			var t_center : Vector2 = r.position
-			var t_tl : Vector2 = t_center - t_extents
-			var t_tr : Vector2 = t_center + Vector2(t_extents.x, -t_extents.y)
-			var t_bl : Vector2 = t_center - Vector2(t_extents.x, -t_extents.y)
-			var t_br : Vector2 = t_center + t_extents
-			
-			var t_tl_angle : float = t_center.direction_to(t_tl).angle()
-			var t_tr_angle : float = t_center.direction_to(t_tr).angle()
-			var t_bl_angle : float = t_center.direction_to(t_bl).angle()
-			var t_br_angle : float = t_center.direction_to(t_br).angle()
-			
-			var t_path_angle : float = t_center.direction_to(room.position).angle()
-			
-			var t_door_location : Vector2
-			var t_door_direction : Vector2
-			
-			if t_path_angle >= t_tl_angle and t_path_angle < t_tr_angle:
-				t_door_location = t_doors[0]
-				t_door_direction = Vector2.UP
-			elif t_path_angle >= tr_angle and t_path_angle < t_br_angle:
-				t_door_location = t_doors[2]
-				t_door_direction = Vector2.RIGHT
-			elif t_path_angle >= t_tr_angle and t_path_angle < t_bl_angle:
-				t_door_location = t_doors[3]
-				t_door_direction = Vector2.DOWN
-			else:
-				t_door_location = t_doors[1]
-				t_door_direction = Vector2.LEFT
-			
-			
-			var end_dict : Dictionary = {
-				"pos": t_room.tile_map.to_global(t_room.tile_map.map_to_world(t_door_location)),
-				"dir": t_door_direction
-			}
+			var end_dict : Dictionary = get_door_dict(r, t_room, t_doors, room)
 			
 			door_points.append([start_dict, end_dict])
+
+
+func get_door_dict(start_room, start_room_prefab : RoomPrefab, doors : Array, target_room) -> Dictionary:
+	var extents : Vector2 = start_room.collision.shape.get_extents()
+	var center : Vector2 = start_room.position
+	var tl : Vector2 = center - extents
+	var tr : Vector2 = center + Vector2(extents.x, -extents.y)
+	var bl : Vector2 = center - Vector2(extents.x, -extents.y)
+	var br : Vector2 = center + extents
+	
+	var tl_angle : float = center.direction_to(tl).angle()
+	var tr_angle : float = center.direction_to(tr).angle()
+	var bl_angle : float = center.direction_to(bl).angle()
+	var br_angle : float = center.direction_to(br).angle()
+	
+	var path_angle : float = center.direction_to(target_room.position).angle()
+	
+	var door_location : Vector2
+	var door_direction : Vector2
+	
+	if path_angle >= tl_angle and path_angle < tr_angle:
+		door_location = doors[0]
+		door_direction = Vector2.UP
+	elif path_angle >= tr_angle and path_angle < br_angle:
+		door_location = doors[2]
+		door_direction = Vector2.RIGHT
+	elif path_angle >= tr_angle and path_angle < bl_angle:
+		door_location = doors[3]
+		door_direction = Vector2.DOWN
+	else:
+		door_location = doors[1]
+		door_direction = Vector2.LEFT
+	
+	return {
+		"pos": start_room_prefab.tile_map.to_global(start_room_prefab.tile_map.map_to_world(door_location)),
+		"dir": door_direction
+	}
 
 
 func link_door_graph():
