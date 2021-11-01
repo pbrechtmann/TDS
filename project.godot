@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Entities/Entitiy.gd"
 }, {
+"base": "Node2D",
+"class": "Generator",
+"language": "GDScript",
+"path": "res://Scenes/World/Generation/Generator.gd"
+}, {
 "base": "Node",
 "class": "Health",
 "language": "GDScript",
@@ -48,6 +53,16 @@ _global_script_classes=[ {
 "class": "Projectile",
 "language": "GDScript",
 "path": "res://Scenes/Items/Projectiles/Projectile.gd"
+}, {
+"base": "RigidBody2D",
+"class": "Room",
+"language": "GDScript",
+"path": "res://Scenes/World/Generation/Room.gd"
+}, {
+"base": "Node2D",
+"class": "RoomPrefab",
+"language": "GDScript",
+"path": "res://Scenes/World/Generation/RoomPrefab.gd"
 }, {
 "base": "NPC",
 "class": "Spawner",
@@ -74,10 +89,13 @@ _global_script_class_icons={
 "EnergyDisplay": "",
 "EnergySupply": "",
 "Entity": "",
+"Generator": "",
 "Health": "",
 "HealthDisplay": "",
 "NPC": "",
 "Projectile": "",
+"Room": "",
+"RoomPrefab": "",
 "Spawner": "",
 "Weapon": "",
 "WeaponMelee": "",
@@ -131,8 +149,12 @@ attack_primary={
 
 [physics]
 
+common/physics_fps=120
 common/enable_pause_aware_picking=true
+2d/default_gravity=0
 
 [rendering]
 
+2d/options/use_nvidia_rect_flicker_workaround=true
+2d/snapping/use_gpu_pixel_snap=true
 environment/default_environment="res://default_env.tres"
