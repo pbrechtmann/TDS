@@ -4,7 +4,7 @@ class_name Generator
 var room_scene = preload("res://Scenes/World/Generation/Room.tscn")
 
 var tile_size = 128
-var spacer : Vector2 = Vector2(3, 3) # Making sure rooms don't overlap
+var spacer : Vector2 = Vector2(6, 6) # Making sure rooms don't overlap
 
 var num_rooms_small : int = 5
 var num_rooms_medium : int = 3
@@ -24,6 +24,8 @@ var start_room = null
 var end_room = null
 
 var path : AStar2D
+var door_connections : AStar2D
+var door_points : Array = []
 
 onready var room_container = $Rooms
 onready var map = $TileMap
@@ -91,7 +93,16 @@ func _draw():
 			for c in path.get_point_connections(p):
 				var pp = path.get_point_position(p)
 				var cp = path.get_point_position(c)
-				draw_line(Vector2(pp.x, pp.y), Vector2(cp.x, cp.y), Color.darkorange, 50, true)
+				draw_line(pp, cp, Color.darkorange, 50, true)
+	if door_connections:
+		for d in door_connections.get_points():
+			for c in door_connections.get_point_connections(d):
+				var dp = door_connections.get_point_position(d)
+				var cp = door_connections.get_point_position(c)
+				draw_line(dp, cp, Color.mediumvioletred, 50, true)
+	if not door_points.empty():
+		for d in door_points:
+			draw_circle(d[0]["pos"], 50, Color.chartreuse)
 
 
 func _process(_delta):
@@ -136,19 +147,19 @@ func find_graph(rooms_in):
 	
 	find_start_and_end()
 	
-#	var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
-#
-#	while not delauney.empty():
-#		var p1 = delauney.pop_front()
-#		var p2 = delauney.pop_front()
-#		var p3 = delauney.pop_front()
-#
-#		if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
-#			path.connect_points(p1, p2)
-#		if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
-#			 path.connect_points(p1, p3)
-#		if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
-#			 path.connect_points(p2, p3)
+	var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
+
+	while not delauney.empty():
+		var p1 = delauney.pop_front()
+		var p2 = delauney.pop_front()
+		var p3 = delauney.pop_front()
+
+		if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
+			path.connect_points(p1, p2)
+		if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
+			 path.connect_points(p1, p3)
+		if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
+			 path.connect_points(p2, p3)
 
 
 func has_start_room(index1, index2) -> bool:
@@ -203,15 +214,20 @@ func _input(event):
 			room.queue_free()
 		if path:
 			path.clear()
+		if door_connections:
+			door_connections.clear()
 		final_rooms.clear()
 		start_room = null
 		end_room = null
 		map.clear()
+		door_points.clear()
 		for x in map.get_children():
 			x.queue_free()
 		make_rooms()
 	if event.is_action_pressed("ui_focus_next"):
 		make_map()
+		if path:
+			path.clear()
 
 
 func make_map():
@@ -259,19 +275,19 @@ func make_map():
 		for x in map.get_children():
 			if x.has_index(room.astar_index):
 				new_room = x
-		carve_corridor(new_room, room)
+		connect_doors(new_room, room)
 		merge_maps(map, new_room.tile_map)
+	link_door_graph()
+	carve_corridors()
 
 	map.update_bitmask_region()
 
 
-
-func carve_corridor(room_map : RoomPrefab, room):
-	var doors = [] + room_map.doors
-	var rotated = room_map.rotation_degrees == 90
+func connect_doors(room_prefab : RoomPrefab, room):
+	var doors = [] + room_prefab.doors
+	var rotated = room_prefab.rotation_degrees == 90
 	if rotated:
 		doors = [doors[1], doors[3], doors[0], doors[2]]
-	var doors_to_delete = []
 	for r in final_rooms:
 		if path.are_points_connected(room.astar_index, r.astar_index):
 			
@@ -293,51 +309,32 @@ func carve_corridor(room_map : RoomPrefab, room):
 			var door_direction : Vector2
 			
 			if path_angle >= tl_angle and path_angle < tr_angle:
-				doors_to_delete.append(doors[0])
 				door_location = doors[0]
 				door_direction = Vector2.UP
-				if rotated:
-					doors_to_delete.append(doors[0] + Vector2.DOWN)
-					doors_to_delete.append(doors[0] + Vector2.UP)
-				else:
-					doors_to_delete.append(doors[0] + Vector2.RIGHT)
-					doors_to_delete.append(doors[0] + Vector2.LEFT)
 			elif path_angle >= tr_angle and path_angle < br_angle:
-				doors_to_delete.append(doors[2])
 				door_location = doors[2]
 				door_direction = Vector2.RIGHT
-				if rotated:
-					doors_to_delete.append(doors[2] + Vector2.RIGHT)
-					doors_to_delete.append(doors[2] + Vector2.LEFT)
-				else:
-					doors_to_delete.append(doors[2] + Vector2.DOWN)
-					doors_to_delete.append(doors[2] + Vector2.UP)
 			elif path_angle >= tr_angle and path_angle < bl_angle:
-				doors_to_delete.append(doors[3])
 				door_location = doors[3]
 				door_direction = Vector2.DOWN
-				if rotated:
-					doors_to_delete.append(doors[3] + Vector2.DOWN)
-					doors_to_delete.append(doors[3] + Vector2.UP)
-				else:
-					doors_to_delete.append(doors[3] + Vector2.RIGHT)
-					doors_to_delete.append(doors[3] + Vector2.LEFT)
 			else:
-				doors_to_delete.append(doors[1])
 				door_location = doors[1]
 				door_direction = Vector2.LEFT
-				if rotated:
-					doors_to_delete.append(doors[1] + Vector2.RIGHT)
-					doors_to_delete.append(doors[1] + Vector2.LEFT)
-				else:
-					doors_to_delete.append(doors[1] + Vector2.DOWN)
-					doors_to_delete.append(doors[1] + Vector2.UP)
+			
+			var start_dict : Dictionary = {
+				"pos": room_prefab.tile_map.to_global(room_prefab.tile_map.map_to_world(door_location)),
+				"dir": door_direction
+			}
 			
 			
 			var t_room : RoomPrefab
 			for x in map.get_children():
 				if x.has_index(r.astar_index):
 					t_room = x
+			
+			var t_doors = t_room.doors
+			if t_room.rotation_degrees == 90:
+				t_doors = [t_doors[1], t_doors[3], t_doors[0], t_doors[2]]
 			
 			var t_extents : Vector2 = r.collision.shape.get_extents()
 			var t_center : Vector2 = r.position
@@ -351,79 +348,144 @@ func carve_corridor(room_map : RoomPrefab, room):
 			var t_bl_angle : float = t_center.direction_to(t_bl).angle()
 			var t_br_angle : float = t_center.direction_to(t_br).angle()
 			
-			var t_path_angle : float = t_center.direction_to(t_room.position).angle()
-			var t_room_doors = [] + t_room.doors
-			var t_rotated = t_room.rotation_degrees == 90
-			if t_rotated:
-				t_room_doors = [t_room_doors[1], t_room_doors[3], t_room_doors[0], t_room_doors[2]]
-			var t_door
+			var t_path_angle : float = t_center.direction_to(room.position).angle()
+			
+			var t_door_location : Vector2
+			var t_door_direction : Vector2
 			
 			if t_path_angle >= t_tl_angle and t_path_angle < t_tr_angle:
-				t_door = t_room_doors[0]
-			elif t_path_angle >= t_tr_angle and t_path_angle < t_br_angle:
-				t_door = t_room_doors[2]
+				t_door_location = t_doors[0]
+				t_door_direction = Vector2.UP
+			elif t_path_angle >= tr_angle and t_path_angle < t_br_angle:
+				t_door_location = t_doors[2]
+				t_door_direction = Vector2.RIGHT
 			elif t_path_angle >= t_tr_angle and t_path_angle < t_bl_angle:
-				t_door = t_room_doors[3]
+				t_door_location = t_doors[3]
+				t_door_direction = Vector2.DOWN
 			else:
-				t_door = t_room_doors[1]
-		
-			var t_door_transformed = room_map.tile_map.world_to_map(room_map.tile_map.to_local(t_room.tile_map.to_global(t_room.tile_map.map_to_world(t_door))))
+				t_door_location = t_doors[1]
+				t_door_direction = Vector2.LEFT
 			
+			
+			var end_dict : Dictionary = {
+				"pos": t_room.tile_map.to_global(t_room.tile_map.map_to_world(t_door_location)),
+				"dir": t_door_direction
+			}
+			
+			door_points.append([start_dict, end_dict])
+
+
+func link_door_graph():
+	var linked : Dictionary = {}
+	door_connections = AStar2D.new()
+	for x in door_points:
+		var val1 : int
+		var val2 : int
+		var pos1 : Vector2 = x[0]["pos"]
+		var pos2 : Vector2 = x[1]["pos"]
+		if linked.has(pos1):
+			val1 = linked[pos1]
+			x[0]["index"] = val1
+		else:
+			val1 = door_connections.get_available_point_id()
+			x[0]["index"] = val1
+			linked[pos1] = val1
+			door_connections.add_point(val1, pos1)
+		if linked.has(pos2):
+			val2 = linked[pos2]
+			x[1]["index"] = val2
+		else:
+			val2 = door_connections.get_available_point_id()
+			x[1]["index"] = val2
+			linked[pos2] = val2
+			door_connections.add_point(val2, pos2)
+		door_connections.connect_points(val1, val2)
+
+
+func carve_corridors():
+	for i in range(door_connections.get_point_count()):
+		var door = map.world_to_map(door_connections.get_point_position(i))
+		for j in door_connections.get_point_connections(i):
+			var target = map.world_to_map(door_connections.get_point_position(j))
+
 			var carve_direction : Vector2 = Vector2.ZERO
-			
-			if t_door_transformed.x == door_location.x:
-				carve_direction = Vector2.DOWN if t_door_transformed.y > door_location.y else Vector2.UP
-				carve(room_map.tile_map, door_location, carve_direction, ceil((abs(t_door_transformed.y - door_location.y) / 2)))
+			var steps : int = 0
+
+			if door.x == target.x:
+				carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
+				steps = abs(target.y - door.y)
+				carve(door, carve_direction, steps)
+			elif door.y == target.y:
+				carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
+				steps = abs(target.x - door.x)
+				carve(door, carve_direction, steps)
 			else:
-				var steps : int
-				if door_direction == Vector2.UP or door_direction == Vector2.DOWN:
-					steps = int(abs(t_door_transformed.y - door_location.y))
-				elif door_direction == Vector2.LEFT or door_direction == Vector2.RIGHT:
-					steps = int(abs(t_door_transformed.x - door_location.x))
-				carve(room_map.tile_map, door_location, carve_direction, steps)
+				if (get_door_dir(i) == Vector2.UP and get_door_dir(j) == Vector2.DOWN) or (get_door_dir(i) == Vector2.DOWN and get_door_dir(j) == Vector2.UP):
+					steps = ceil(abs(target.y - door.y) / 2)
+					var c_pos = carve(door, get_door_dir(i), steps)
+					var c_steps = abs(target.x - door.x)
+					carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
+					c_pos = carve(c_pos, carve_direction, c_steps, true)
+					carve(c_pos, get_door_dir(i), steps)
+					
+				elif (get_door_dir(i) == Vector2.LEFT and get_door_dir(j) == Vector2.RIGHT) or (get_door_dir(i) == Vector2.RIGHT and get_door_dir(j) == Vector2.LEFT):
+					steps = ceil(abs(target.x - door.x) / 2)
+					var c_pos = carve(door, get_door_dir(i), steps)
+					var c_steps = abs(target.y - door.y)
+					carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
+					c_pos = carve(c_pos, carve_direction, c_steps, true)
+					carve(c_pos, get_door_dir(i), steps)
+				else:
+					if get_door_dir(i) == Vector2.LEFT or get_door_dir(i) == Vector2.RIGHT:
+						steps = abs(target.x - door.x)
+						var c_pos = carve(door, get_door_dir(i), steps, true)
+						steps = abs(target.y - door.y)
+						carve(c_pos, get_door_dir(j) * -1, steps)
+					else:
+						steps = abs(target.y - door.y)
+						var c_pos = carve(door, get_door_dir(i), steps, true)
+						steps = abs(target.x - door.x)
+						carve(c_pos, get_door_dir(j) * -1, steps)
+			door_connections.disconnect_points(i, j)
 
 
-			if t_door_transformed.y == door_location.y:
-				carve_direction = Vector2.RIGHT if t_door_transformed.x > door_location.x else Vector2.LEFT
-				carve(room_map.tile_map, door_location, carve_direction, ceil(abs(t_door_transformed.x - door_location.x) / 2))
-			else:
-				var steps : int
-				if door_direction == Vector2.UP or door_direction == Vector2.DOWN:
-					steps = int(abs(t_door_transformed.y - door_location.y))
-				elif door_direction == Vector2.LEFT or door_direction == Vector2.RIGHT:
-					steps = int(abs(t_door_transformed.x - door_location.x))
-				carve(room_map.tile_map, door_location, carve_direction, steps)
-
-
-		
-	for d in doors_to_delete:
-		room_map.tile_map.set_cellv(d, room_map.tile_map.tile_set.find_tile_by_name("Floor"))
-		if doors.has(d):
-			doors.erase(d)
+func carve(start : Vector2, direction : Vector2, steps : int, corner : bool = false) -> Vector2:
+	var pos = Vector2.ZERO + start
 	
-	for d in doors:
-		room_map.tile_map.set_cellv(d, room_map.tile_map.tile_set.find_tile_by_name("Wall"))
+	set_floor_cell(pos, direction)
+	if corner:
+		set_floor_cell(pos + direction * -1, direction)
+	
+	for _i in range(steps):
+		pos += direction
+		set_floor_cell(pos, direction)
+	if corner:
+		set_floor_cell(pos + direction, direction)
+	return pos
+
+func set_floor_cell(pos : Vector2, dir : Vector2):
+	map.set_cellv(pos, map.tile_set.find_tile_by_name("Floor"))
+	if dir == Vector2.UP or dir == Vector2.DOWN:
+		map.set_cellv(pos + Vector2.RIGHT, map.tile_set.find_tile_by_name("Floor"))
+		map.set_cellv(pos + Vector2.LEFT, map.tile_set.find_tile_by_name("Floor"))
+	elif dir == Vector2.LEFT or dir == Vector2.RIGHT:
+		map.set_cellv(pos + Vector2.UP, map.tile_set.find_tile_by_name("Floor"))
+		map.set_cellv(pos + Vector2.DOWN, map.tile_set.find_tile_by_name("Floor"))
 
 
-func carve(tilemap : TileMap, start : Vector2, direction : Vector2, steps : int):
-	if direction == Vector2.UP or direction == Vector2.DOWN:
-		for i in range(steps):
-			start += direction
-			tilemap.set_cellv(start, tilemap.tile_set.find_tile_by_name("Floor"))
-			tilemap.set_cellv(start + Vector2.RIGHT, tilemap.tile_set.find_tile_by_name("Floor"))
-			tilemap.set_cellv(start + Vector2.LEFT, tilemap.tile_set.find_tile_by_name("Floor"))
-	elif direction == Vector2.LEFT or direction == Vector2.RIGHT:
-		for i in range(steps):
-			start += direction
-			tilemap.set_cellv(start, tilemap.tile_set.find_tile_by_name("Floor"))
-			tilemap.set_cellv(start + Vector2.UP, tilemap.tile_set.find_tile_by_name("Floor"))
-			tilemap.set_cellv(start + Vector2.DOWN, tilemap.tile_set.find_tile_by_name("Floor"))
+func get_door_dir(index : int) -> Vector2:
+	for d in door_points:
+		if d[0]["index"] == index:
+			return d[0]["dir"]
+	return Vector2.ZERO
 
 
 func merge_maps(target : TileMap, input : TileMap):
 	var cells = input.get_used_cells()
 	for cell in cells:
 		var tile : int = input.get_cellv(cell)
+		if tile  == target.tile_set.find_tile_by_name("Door"):
+			tile = target.tile_set.find_tile_by_name("Wall")
 		var target_location : Vector2 = target.world_to_map(target.to_local(input.to_global(input.map_to_world(cell))))
 		target.set_cellv(target_location, tile)
 	input.clear()
