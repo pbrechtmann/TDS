@@ -3,7 +3,7 @@ class_name Projectile
 
 var direction : Vector2 = Vector2.ZERO
 
-var speed = 1000
+var speed = 2000
 var damage = 50
 var crit_chance = 0
 var crit_multiplier = 2
