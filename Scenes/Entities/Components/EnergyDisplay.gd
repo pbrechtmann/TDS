@@ -1,7 +1,7 @@
 extends Sprite
 class_name EnergyDisplay
 
-var display_material = preload("res://Assets/Shaders/EnergyDisplay.material").duplicate()
+const display_material = preload("res://Assets/Shaders/EnergyDisplay.material")
 
 
 func _ready():

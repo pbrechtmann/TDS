@@ -6,15 +6,13 @@ var room_scene = preload("res://Scenes/World/Generation/Room.tscn")
 var tile_size = 128
 var spacer : Vector2 = Vector2(6, 6) # Making sure rooms don't overlap
 
-export var num_rooms_small : int = 5
-export var num_rooms_medium : int = 3
-export var num_rooms_large : int = 1
+var num_rooms_small : int = 5
+var num_rooms_medium : int = 3
+var num_rooms_large : int = 1
 
-export var cyclic_corriors : bool = true
-
-export var room_sizes_small = [Vector2(5, 7), Vector2(7, 5)]
-export var room_sizes_medium = [Vector2(7, 9), Vector2(9, 7)]
-export var room_sizes_large = [Vector2(9, 11), Vector2(11, 9)]
+var room_sizes_small = [Vector2(5, 7), Vector2(7, 5)]
+var room_sizes_medium = [Vector2(7, 9), Vector2(9, 7)]
+var room_sizes_large = [Vector2(9, 11), Vector2(11, 9)]
 
 var rooms_small : Array = []
 var rooms_medium : Array = []
@@ -35,6 +33,7 @@ var start_position : Vector2
 onready var room_container = $Rooms
 onready var map_container : Node2D = $Maps
 onready var map : TileMap = $Maps/TerrainMap
+onready var spawn_map : TileMap = $Maps/SpawnMap
 
 signal done
 
@@ -54,6 +53,9 @@ func make_rooms():
 	
 	final_rooms = rooms_small + rooms_medium + rooms_large
 	
+	for room in final_rooms:
+		room.set_collision_mask(512)
+		room.set_collision_layer(512)
 	
 	yield(get_tree(), "idle_frame")
 	
@@ -64,15 +66,14 @@ func make_rooms():
 	find_graph(final_rooms)
 
 
-func generate_room_bodies(amount : int, sizes : Array, container : Node):
+func generate_room_bodies(amount : int, sizes : Array, room_container : Node):
 	var res : Array = []
 	
 	while amount > 0:
 		var room = room_scene.instance()
-		var pos = Vector2(rand_range(-1, 1), rand_range(-1, 1)).clamped(1.0)
-		room.init(pos, sizes[randi() % sizes.size()], spacer, tile_size)
+		room.init(sizes[randi() % sizes.size()], spacer, tile_size)
 		res.append(room)
-		container.add_child(room)
+		room_container.add_child(room)
 		amount -= 1
 	
 	return res
@@ -116,21 +117,19 @@ func find_graph(rooms_in):
 	
 	find_start_and_end()
 	
-	if cyclic_corriors:
-	
-		var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
+	var delauney = Array(Geometry.triangulate_delaunay_2d(positions))
 
-		while not delauney.empty():
-			var p1 = delauney.pop_front()
-			var p2 = delauney.pop_front()
-			var p3 = delauney.pop_front()
+	while not delauney.empty():
+		var p1 = delauney.pop_front()
+		var p2 = delauney.pop_front()
+		var p3 = delauney.pop_front()
 
-			if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
-				path.connect_points(p1, p2)
-			if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
-				 path.connect_points(p1, p3)
-			if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
-				 path.connect_points(p2, p3)
+		if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
+			path.connect_points(p1, p2)
+		if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
+			 path.connect_points(p1, p3)
+		if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
+			 path.connect_points(p2, p3)
 
 
 func has_start_room(index1, index2) -> bool:
@@ -227,12 +226,9 @@ func make_map():
 				new_room = x
 		connect_doors(new_room, room)
 		merge_maps(map, new_room.tile_map)
+		merge_maps(spawn_map, new_room.spawn_map)
 	link_door_graph()
 	carve_corridors()
-	
-	for room in map.get_children():
-		room.update_barrier_positions(map)
-	
 	map.update_bitmask_region()
 	
 	for r in final_rooms:
@@ -267,9 +263,9 @@ func connect_doors(room_prefab : RoomPrefab, room):
 			door_points.append([start_dict, end_dict])
 
 
-func get_door_dict(s_room, s_room_prefab : RoomPrefab, doors : Array, t_room) -> Dictionary:
-	var extents : Vector2 = s_room.collision.shape.get_extents()
-	var center : Vector2 = s_room.position
+func get_door_dict(start_room, start_room_prefab : RoomPrefab, doors : Array, target_room) -> Dictionary:
+	var extents : Vector2 = start_room.collision.shape.get_extents()
+	var center : Vector2 = start_room.position
 	var tl : Vector2 = center - extents
 	var tr : Vector2 = center + Vector2(extents.x, -extents.y)
 	var bl : Vector2 = center - Vector2(extents.x, -extents.y)
@@ -280,7 +276,7 @@ func get_door_dict(s_room, s_room_prefab : RoomPrefab, doors : Array, t_room) ->
 	var bl_angle : float = center.direction_to(bl).angle()
 	var br_angle : float = center.direction_to(br).angle()
 	
-	var path_angle : float = center.direction_to(t_room.position).angle()
+	var path_angle : float = center.direction_to(target_room.position).angle()
 	
 	var door_location : Vector2
 	var door_direction : Vector2
@@ -299,7 +295,7 @@ func get_door_dict(s_room, s_room_prefab : RoomPrefab, doors : Array, t_room) ->
 		door_direction = Vector2.LEFT
 	
 	return {
-		"pos": s_room_prefab.tile_map.to_global(s_room_prefab.tile_map.map_to_world(door_location)),
+		"pos": start_room_prefab.tile_map.to_global(start_room_prefab.tile_map.map_to_world(door_location)),
 		"dir": door_direction
 	}
 
@@ -340,52 +336,40 @@ func carve_corridors():
 			var carve_direction : Vector2 = Vector2.ZERO
 			var steps : int = 0
 
-			# vertical aligned doors
-			if door.x == target.x: 
+			if door.x == target.x:
 				carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
-				steps = int(abs(target.y - door.y))
-# warning-ignore:return_value_discarded
+				steps = abs(target.y - door.y)
 				carve(door, carve_direction, steps)
-			# horizontal aligned doors
-			elif door.y == target.y: 
+			elif door.y == target.y:
 				carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
-				steps = int(abs(target.x - door.x))
-# warning-ignore:return_value_discarded
+				steps = abs(target.x - door.x)
 				carve(door, carve_direction, steps)
 			else:
-				# vertical opposed doors
 				if (get_door_dir(i) == Vector2.UP and get_door_dir(j) == Vector2.DOWN) or (get_door_dir(i) == Vector2.DOWN and get_door_dir(j) == Vector2.UP):
-					steps = int(ceil(abs(target.y - door.y) / 2))
+					steps = ceil(abs(target.y - door.y) / 2)
 					var c_pos = carve(door, get_door_dir(i), steps)
 					var c_steps = abs(target.x - door.x)
 					carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
 					c_pos = carve(c_pos, carve_direction, c_steps, true)
-# warning-ignore:return_value_discarded
 					carve(c_pos, get_door_dir(i), steps)
-				# horizontal opposed doors
+					
 				elif (get_door_dir(i) == Vector2.LEFT and get_door_dir(j) == Vector2.RIGHT) or (get_door_dir(i) == Vector2.RIGHT and get_door_dir(j) == Vector2.LEFT):
-					steps = int(ceil(abs(target.x - door.x) / 2))
+					steps = ceil(abs(target.x - door.x) / 2)
 					var c_pos = carve(door, get_door_dir(i), steps)
 					var c_steps = abs(target.y - door.y)
 					carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
 					c_pos = carve(c_pos, carve_direction, c_steps, true)
-# warning-ignore:return_value_discarded
 					carve(c_pos, get_door_dir(i), steps)
-				# unaligned doors
 				else:
-					# horizontal starting door, vertical target
 					if get_door_dir(i) == Vector2.LEFT or get_door_dir(i) == Vector2.RIGHT:
-						steps = int(abs(target.x - door.x))
+						steps = abs(target.x - door.x)
 						var c_pos = carve(door, get_door_dir(i), steps, true)
-						steps = int(abs(target.y - door.y))
-# warning-ignore:return_value_discarded
+						steps = abs(target.y - door.y)
 						carve(c_pos, get_door_dir(j) * -1, steps)
-					# vertical starting door, horizontal target
 					else:
-						steps = int(abs(target.y - door.y))
+						steps = abs(target.y - door.y)
 						var c_pos = carve(door, get_door_dir(i), steps, true)
-						steps = int(abs(target.x - door.x))
-# warning-ignore:return_value_discarded
+						steps = abs(target.x - door.x)
 						carve(c_pos, get_door_dir(j) * -1, steps)
 			door_connections.disconnect_points(i, j)
 

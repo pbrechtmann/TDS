@@ -6,8 +6,7 @@ var astar_index : int
 
 onready var collision = $CollisionShape2D
 
-func init(pos : Vector2, s : Vector2, spacer : Vector2, tile_size : int):
-	position = pos
+func init(s : Vector2, spacer : Vector2, tile_size : int):
 	size = s * tile_size / 2
 	var shape = RectangleShape2D.new()
 	shape.custom_solver_bias = 1
