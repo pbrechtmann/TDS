@@ -1,11 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scenes/World/Generation/Generator.gd" type="Script" id=1]
 [ext_resource path="res://Assets/TilesetTest.tres" type="TileSet" id=2]
-[ext_resource path="res://Assets/TilesetSpawns.tres" type="TileSet" id=3]
 
 [node name="Generator" type="Node2D"]
 script = ExtResource( 1 )
+cyclic_corriors = false
 
 [node name="Rooms" type="Node" parent="."]
 
@@ -19,11 +19,5 @@ zoom = Vector2( 15, 15 )
 show_behind_parent = true
 z_index = -1
 tile_set = ExtResource( 2 )
-cell_size = Vector2( 128, 128 )
-format = 1
-
-[node name="SpawnMap" type="TileMap" parent="Maps"]
-z_index = -1
-tile_set = ExtResource( 3 )
 cell_size = Vector2( 128, 128 )
 format = 1
