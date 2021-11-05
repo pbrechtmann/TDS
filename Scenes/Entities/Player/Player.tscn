@@ -11,7 +11,6 @@ script = ExtResource( 2 )
 
 [node name="WeaponRanged" parent="." index="3" instance=ExtResource( 3 )]
 position = Vector2( 100, 0 )
-attack_delay = 1.0
 
 [node name="WeaponMelee" parent="." index="4" instance=ExtResource( 5 )]
 position = Vector2( 55, 0 )

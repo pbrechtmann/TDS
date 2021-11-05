@@ -1,5 +1,4 @@
 extends Entity
-class_name Player
 
 export(float) var speed = 1000
 export(float) var dash_force = 4
@@ -29,16 +28,11 @@ func _physics_process(_delta):
 	look_at(get_global_mouse_position())
 
 
-<<<<<<< Updated upstream
 func _process(_delta):
 	energy_display.show_energy(energy_supply)
 	
-=======
-func _process(delta):
->>>>>>> Stashed changes
 	if Input.is_action_pressed("attack_primary"):
 		weapon.try_primary_attack(energy_supply)
-	._process(delta)
 
 
 func _on_Health_death() -> void:

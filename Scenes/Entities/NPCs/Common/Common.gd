@@ -19,7 +19,6 @@ func _physics_process(_delta):
 	look_at(target.global_position)
 
 
-func _process(delta):
+func _process(_delta):
 	if weapon.global_position.distance_to(target.global_position) <= threshold:
 		weapon.try_primary_attack(energy_supply)
-	._process(delta)
