@@ -1,4 +1,5 @@
 extends Entity
+class_name Player
 
 export(float) var speed = 1000
 export(float) var dash_force = 4

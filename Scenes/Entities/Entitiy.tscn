@@ -7,9 +7,7 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 
-[node name="Entitiy" type="KinematicBody2D" groups=[
-"Entity",
-]]
+[node name="Entitiy" type="KinematicBody2D" groups=["Entity"]]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -25,3 +23,5 @@ shape = SubResource( 1 )
 script = ExtResource( 1 )
 
 [node name="EnergySupply" parent="." instance=ExtResource( 4 )]
+
+[connection signal="death" from="Health" to="." method="_on_Health_death"]
