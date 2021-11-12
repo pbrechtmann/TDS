@@ -4,7 +4,7 @@ class_name Generator
 var room_scene = preload("res://Scenes/World/Generation/Room.tscn")
 
 var tile_size = 128
-var spacer : Vector2 = Vector2(6, 6) # Making sure rooms don't overlap
+export var spacer : Vector2 = Vector2(6, 6) # Making sure rooms don't overlap
 
 export var num_rooms_small : int = 5
 export var num_rooms_medium : int = 3
@@ -33,13 +33,16 @@ var door_points : Array = []
 var start_position : Vector2
 var player : Player
 
+var nav : Navigation2D
+
 onready var room_container = $Rooms
 onready var map_container : Node2D = $Maps
 onready var map : TileMap = $Maps/TerrainMap
 
 
-func generate_level(player : Player):
+func generate_level(player : Player, nav = Navigation2D):
 	self.player = player
+	self.nav = nav
 	randomize()
 	make_rooms()
 	yield(get_tree(), "idle_frame")
@@ -218,7 +221,7 @@ func make_map():
 		new_room.index = room.astar_index
 		if rotate:
 			new_room.rotation_degrees = 90
-		new_room.init(player)
+		new_room.init(player, nav)
 		map.add_child(new_room)
 
 	for room in final_rooms:
@@ -232,9 +235,9 @@ func make_map():
 	carve_corridors()
 	map.update_bitmask_region()
 	
-	for r in final_rooms:
-		r.queue_free()
+	room_container.queue_free()
 	final_rooms.clear()
+	
 	
 	for r in map.get_children():
 		r.spawn_barriers(map)

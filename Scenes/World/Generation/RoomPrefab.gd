@@ -13,12 +13,13 @@ var spawners : Array
 var spawner_tiles : Array
 
 var player : Player
+var nav : Navigation2D
 
 onready var tile_map : TileMap = $Terrain
 onready var spawn_map : TileMap = $Spawns
 
 onready var area : Area2D = $Area2D
-onready var nav : Navigation2D = $Navigation2D
+onready var nav_poly : NavigationPolygonInstance = $NavigationPolygonInstance
 
 
 func _ready():
@@ -28,13 +29,15 @@ func _ready():
 	spawner_tiles = spawn_map.get_used_cells_by_id(spawn_map.tile_set.find_tile_by_name("Spawner"))
 	if rotation_degrees == 90:
 		spawn_map.position -= Vector2(0, spawn_map.cell_size.x)
-		nav.position -= Vector2(0, spawn_map.cell_size.x)
+		nav_poly.position -= Vector2(0, spawn_map.cell_size.x)
 		area.position -= Vector2(0, spawn_map.cell_size.x)
+	nav.navpoly_add(nav_poly.navpoly, nav_poly.global_transform)
 	spawn_spawners()
 
 
-func init(player : Player):
+func init(player : Player, nav : Navigation2D):
 	self.player = player
+	self.nav = nav
 
 
 func spawn_barriers(map : TileMap):

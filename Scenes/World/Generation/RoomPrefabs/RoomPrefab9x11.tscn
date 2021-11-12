@@ -3,9 +3,9 @@
 [ext_resource path="res://Scenes/World/Generation/RoomPrefab.tscn" type="PackedScene" id=1]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 304.741, 412.307, 707.882, 578.796, -588.354, 585.932, -155.482, 436.092, 704.314, -442.732, 302.362, -116.89, 263.118, -277.433, 275.01, 226.791, -583.597, -453.435, -137.644, -261.973, -137.644, -110.944, -151.915, 238.683 )
-polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 1, 5, 6 ), PoolIntArray( 5, 1, 0, 7 ), PoolIntArray( 8, 4, 6, 9 ), PoolIntArray( 2, 8, 9, 10, 11 ), PoolIntArray( 10, 5, 7, 11 ), PoolIntArray( 2, 11, 3 ) ]
-outlines = [ PoolVector2Array( -583.597, -453.435, -588.354, 585.932, 707.882, 578.796, 704.314, -442.732 ), PoolVector2Array( -137.644, -261.973, -137.644, -110.944, 302.362, -116.89, 263.118, -277.433 ), PoolVector2Array( -151.915, 238.683, -155.482, 436.092, 304.741, 412.307, 275.01, 226.791 ) ]
+vertices = PoolVector2Array( 320, 448, 704, 576, -576, 576, -192, 448, 320, -64, 320, -320, 704, -448, -576, -448, -192, -320, -192, 192, -192, -64, 320, 192 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 6, 1 ), PoolIntArray( 7, 6, 5, 8 ), PoolIntArray( 3, 2, 7, 9 ), PoolIntArray( 7, 8, 10 ), PoolIntArray( 9, 7, 10 ), PoolIntArray( 9, 10, 4, 11 ), PoolIntArray( 11, 4, 1 ), PoolIntArray( 11, 1, 0 ) ]
+outlines = [ PoolVector2Array( -576, -448, -576, 576, 704, 576, 704, -448 ), PoolVector2Array( -192, -320, -192, -64, 320, -64, 320, -320 ), PoolVector2Array( -192, 192, -192, 448, 320, 448, 320, 192 ) ]
 
 [node name="RoomPrefab9x11" instance=ExtResource( 1 )]
 
@@ -15,8 +15,11 @@ tile_data = PoolIntArray( -262150, 0, 0, -262149, 0, 0, -262148, 0, 0, -262147, 
 [node name="Spawns" parent="." index="1"]
 tile_data = PoolIntArray( -327680, 1, 0, 65530, 1, 0, 0, 0, 0, 6, 1, 0, 327680, 1, 0 )
 
+[node name="Area2D" parent="." index="2"]
+visible = false
+
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 scale = Vector2( 5, 4 )
 
-[node name="NavigationPolygonInstance" parent="Navigation2D" index="0"]
+[node name="NavigationPolygonInstance" parent="." index="3"]
 navpoly = SubResource( 1 )

@@ -3,9 +3,9 @@
 [ext_resource path="res://Scenes/World/Generation/RoomPrefab.tscn" type="PackedScene" id=1]
 
 [sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( 587, -325, 590, 438, -460, 446, -447, -322 )
+vertices = PoolVector2Array( 576, -320, 576, 448, -448, 448, -448, -320 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
-outlines = [ PoolVector2Array( -447, -322, -460, 446, 590, 438, 587, -325 ) ]
+outlines = [ PoolVector2Array( -448, -320, -448, 448, 576, 448, 576, -320 ) ]
 
 [node name="RoomPrefab7x9" instance=ExtResource( 1 )]
 
@@ -15,8 +15,11 @@ tile_data = PoolIntArray( -196613, 0, 0, -196612, 0, 0, -196611, 0, 0, -196610, 
 [node name="Spawns" parent="." index="1"]
 tile_data = PoolIntArray( -262144, 1, 0, -65539, 0, 0, -131069, 0, 0, 65531, 1, 0, 5, 1, 0, 196605, 0, 0, 131075, 0, 0, 262144, 1, 0 )
 
+[node name="Area2D" parent="." index="2"]
+visible = false
+
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 scale = Vector2( 4, 3 )
 
-[node name="NavigationPolygonInstance" parent="Navigation2D" index="0"]
+[node name="NavigationPolygonInstance" parent="." index="3"]
 navpoly = SubResource( 1 )
