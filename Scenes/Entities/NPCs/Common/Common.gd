@@ -13,14 +13,14 @@ func _ready():
 
 func move():
 	var path = nav.get_simple_path(global_position, target.global_position)
-	var vec = global_position.direction_to(path[1]).normalized()
-	
-	move_and_slide(vec * speed)
+	if not path.empty():
+		var vec = global_position.direction_to(path[1]).normalized()
+		move_and_slide(vec * speed)
+		look_at(global_position + vec)
 
 
 func _physics_process(_delta):
 	move()
-	look_at(target.global_position)
 
 
 func _process(_delta):

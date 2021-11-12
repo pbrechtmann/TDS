@@ -9,10 +9,8 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 
-[node name="Entitiy" type="KinematicBody2D" groups=[
-"Entity",
-]]
-script = ExtResource( 5 )
+[node name="Entitiy" type="KinematicBody2D" groups=["Entity"]]
+script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
@@ -33,3 +31,4 @@ position = Vector2( -50, 50 )
 
 [node name="EnergyDisplay" parent="." instance=ExtResource( 6 )]
 position = Vector2( -100, 0 )
+[connection signal="death" from="Health" to="." method="_on_Health_death"]

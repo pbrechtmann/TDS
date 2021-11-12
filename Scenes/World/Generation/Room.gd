@@ -1,5 +1,5 @@
 extends RigidBody2D
-class_name Room
+class_name RoomBody
 
 var size : Vector2
 var astar_index : int

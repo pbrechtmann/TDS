@@ -9,8 +9,6 @@ signal death
 
 func _ready():
 	current_health = max_health
-	if connect("death", get_parent(), "_on_Health_death") != OK:
-		printerr("Connecting death signal to character ", get_parent().name, " failed.")
 
 
 func damage(a : float):
