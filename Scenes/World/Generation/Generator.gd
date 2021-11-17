@@ -239,10 +239,11 @@ func make_map():
 	final_rooms.clear()
 	
 	
+	player.global_position = start_position
+	
 	for r in map.get_children():
 		r.spawn_barriers(map)
-	
-	player.global_position = start_position
+		r.activate_area()
 
 
 func connect_doors(room_prefab, room):

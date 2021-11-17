@@ -73,6 +73,10 @@ func spawn_spawners():
 		spawner.init(nav, player)
 
 
+func activate_area():
+	area.monitoring = true
+
+
 func has_index(i : int):
 	return i == index
 
