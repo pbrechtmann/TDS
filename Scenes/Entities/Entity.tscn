@@ -1,15 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Entities/Components/Health.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/Components/HealthDisplay.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Head.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Entities/Components/EnergySupply.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Entities/Components/HealthDisplay.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/Entities/Components/EnergyDisplay.tscn" type="PackedScene" id=6]
 
 [sub_resource type="CapsuleShape2D" id=1]
 
-[node name="Entitiy" type="KinematicBody2D" groups=["Entity"]]
+[node name="Entity" type="KinematicBody2D" groups=["Entity"]]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -31,4 +30,5 @@ position = Vector2( -50, 50 )
 
 [node name="EnergyDisplay" parent="." instance=ExtResource( 6 )]
 position = Vector2( -100, 0 )
+
 [connection signal="death" from="Health" to="." method="_on_Health_death"]
