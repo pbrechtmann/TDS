@@ -45,7 +45,7 @@ func generate_level(player : Player, nav = Navigation2D):
 	self.nav = nav
 	randomize()
 	make_rooms()
-	yield(get_tree(), "idle_frame")
+	yield(get_tree().create_timer(0.1), "timeout")
 	make_map()
 
 
@@ -60,7 +60,7 @@ func make_rooms():
 		room.set_collision_mask(512)
 		room.set_collision_layer(512)
 	
-	yield(get_tree(), "idle_frame")
+	yield(get_tree().create_timer(0.1), "timeout")
 	
 	for room in final_rooms:
 		room.position = room.position.snapped(Vector2(128, 128))

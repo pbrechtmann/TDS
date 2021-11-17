@@ -1,10 +1,11 @@
-extends Node2D
+extends StaticBody2D
 
 onready var sprite = $Sprite
 
-var active = false
-
 
 func set_active(a : bool):
-	active = a
-	sprite.visible = active
+	if a:
+		collision_layer = 1 #TODO: adjust to correct layers
+	else:
+		collision_layer = 0
+	sprite.visible = a
