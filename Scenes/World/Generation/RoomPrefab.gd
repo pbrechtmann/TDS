@@ -2,7 +2,7 @@ extends Node2D
 class_name RoomPrefab
 
 var barrier_scene : PackedScene = preload("res://Scenes/World/Generation/RoomParts/Barrier.tscn")
-var spawner_scene : PackedScene = preload("res://Scenes/Entities/Spawners/Spawner.tscn")
+var spawner_scene : PackedScene = preload("res://Scenes/Entities/NPCs/Spawners/Spawner.tscn")
 
 var index : int
 var doors : Array 

@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Scenes/Entities/Spawners/Spawner.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Entities/NPCs/Spawners/Spawner.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/NPCs/Common/Common.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Entities/Entitiy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Entities/Entity.tscn" type="PackedScene" id=3]
+
 
 [node name="Spawner" groups=["Spawners"] instance=ExtResource( 3 )]
 script = ExtResource( 1 )

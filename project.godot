@@ -32,7 +32,7 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "Entity",
 "language": "GDScript",
-"path": "res://Scenes/Entities/Entitiy.gd"
+"path": "res://Scenes/Entities/Entity.gd"
 }, {
 "base": "Node2D",
 "class": "Generator",
@@ -77,7 +77,7 @@ _global_script_classes=[ {
 "base": "NPC",
 "class": "Spawner",
 "language": "GDScript",
-"path": "res://Scenes/Entities/Spawners/Spawner.gd"
+"path": "res://Scenes/Entities/NPCs/Spawners/Spawner.gd"
 }, {
 "base": "Node2D",
 "class": "Weapon",
