@@ -5,6 +5,7 @@ export(float) var speed = 1000
 export(float) var dash_force = 4
 
 onready var weapon : Weapon = $WeaponRanged
+onready var ability = $AbilityHeal
 
 signal game_over
 
@@ -32,6 +33,8 @@ func _physics_process(_delta):
 func _process(_delta):
 	if Input.is_action_pressed("attack_primary"):
 		weapon.try_primary_attack(energy_supply)
+	if Input.is_action_pressed("ability"):
+		ability.try_activate_ability(self)
 
 
 func _on_Health_death() -> void:
