@@ -11,12 +11,22 @@ script = ExtResource( 2 )
 
 [node name="WeaponRanged" parent="." index="3" instance=ExtResource( 3 )]
 position = Vector2( 100, 0 )
+modifiers = {
+"crit_chance": 0.1,
+"crit_multiplier": 2.0,
+"damage": 50.0,
+"pierce": 1
+}
 
 [node name="WeaponMelee" parent="." index="4" instance=ExtResource( 5 )]
 position = Vector2( 55, 0 )
+modifiers = {
+"crit_chance": 0.1,
+"crit_multiplier": 2.0,
+"damage": 50.0
+}
 
 [node name="Camera2D" type="Camera2D" parent="." index="5"]
-current = true
 smoothing_enabled = true
 smoothing_speed = 10.0
 

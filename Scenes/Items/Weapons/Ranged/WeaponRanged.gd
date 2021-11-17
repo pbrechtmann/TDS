@@ -5,11 +5,6 @@ export(PackedScene) var projectile
 
 onready var muzzle : Position2D = $Muzzle
 
-export var modifiers : Dictionary = {
-	"crit_chance": 0.1,
-	"pierce" : 1
-}
-
 
 func primary_attack() -> void:
 	var new_projectile = projectile.instance()

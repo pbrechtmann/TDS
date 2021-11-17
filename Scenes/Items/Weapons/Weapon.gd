@@ -8,6 +8,8 @@ export(float, 0, 100) var attack_cost = 25
 
 var ready : bool = true
 
+export var modifiers : Dictionary = {}
+
 
 func try_primary_attack(energy_supply) -> void:
 	if ready and energy_supply.drain(attack_cost):

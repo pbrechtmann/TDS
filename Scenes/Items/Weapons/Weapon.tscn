@@ -4,6 +4,11 @@
 
 [node name="Weapon" type="Node2D"]
 script = ExtResource( 1 )
+modifiers = {
+"crit_chance": 0.1,
+"crit_multiplier": 2.0,
+"damage": 50.0
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 
