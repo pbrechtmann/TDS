@@ -7,9 +7,9 @@ signal level_done
 
 func set_active(a : bool):
 	if a:
-		collision_layer = 1 #TODO: adjust to correct layers
+		collision_mask = 1 #TODO: adjust to correct layers
 	else:
-		collision_layer = 0
+		collision_mask = 0
 	sprite.visible = a
 
 

@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/World/Generation/RoomParts/LevelExit.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 192, 64 )
+extents = Vector2( 182, 54 )
 
 [node name="LevelExit" type="Area2D"]
 script = ExtResource( 2 )
