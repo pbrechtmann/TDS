@@ -32,15 +32,23 @@ var door_points : Array = []
 
 var start_position : Vector2
 var player : Player
-
 var nav : Navigation2D
+
+var exit : LevelExit
 
 onready var room_container = $Rooms
 onready var map_container : Node2D = $Maps
 onready var map : TileMap = $Maps/TerrainMap
 
+signal done
 
 func generate_level(player : Player, nav = Navigation2D):
+	for child in room_container.get_children():
+		child.queue_free()
+	for i in range(map.get_children().size()):
+		map.get_child(i).queue_free()
+	map.clear()
+	
 	self.player = player
 	self.nav = nav
 	randomize()
@@ -76,7 +84,7 @@ func generate_room_bodies(amount : int, sizes : Array, room_container : Node):
 		var room = room_scene.instance()
 		room.init(sizes[randi() % sizes.size()], spacer, tile_size)
 		res.append(room)
-		room_container.add_child(room)
+		room_container.call_deferred("add_child", room)
 		amount -= 1
 	
 	return res
@@ -221,7 +229,7 @@ func make_map():
 		new_room.index = room.astar_index
 		if rotate:
 			new_room.rotation_degrees = 90
-		new_room.init(player, nav)
+		new_room.init(player, nav, map)
 		map.add_child(new_room)
 
 	for room in final_rooms:
@@ -235,15 +243,24 @@ func make_map():
 	carve_corridors()
 	map.update_bitmask_region()
 	
-	room_container.queue_free()
+	path.clear()
+	door_connections.clear()
+	door_points.clear()
+	
+	for child in room_container.get_children():
+		child.queue_free()
 	final_rooms.clear()
 	
 	
 	player.global_position = start_position
 	
 	for r in map.get_children():
-		r.spawn_barriers(map)
+		r.spawn_barriers()
 		r.activate_area()
+		if r.index == end_room.astar_index:
+			exit = r.add_level_exit()
+	
+	emit_signal("done")
 
 
 func connect_doors(room_prefab, room):

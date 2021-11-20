@@ -1,8 +1,9 @@
-extends StaticBody2D
-class_name Barrier
+extends Area2D
+class_name LevelExit
 
 onready var sprite = $Sprite
 
+signal level_done
 
 func set_active(a : bool):
 	if a:
@@ -10,3 +11,8 @@ func set_active(a : bool):
 	else:
 		collision_layer = 0
 	sprite.visible = a
+
+
+func _on_LevelExit_body_entered(body):
+	if body is Player:
+		emit_signal("level_done")
