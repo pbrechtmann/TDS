@@ -9,16 +9,19 @@ export var spacer : Vector2 = Vector2(6, 6) # Making sure rooms don't overlap
 export var num_rooms_small : int = 5
 export var num_rooms_medium : int = 3
 export var num_rooms_large : int = 1
+export var num_rooms_cave : int = 1
 
 export var room_sizes_small = [Vector2(5, 7), Vector2(7, 5)]
 export var room_sizes_medium = [Vector2(7, 9), Vector2(9, 7)]
 export var room_sizes_large = [Vector2(9, 11), Vector2(11, 9)]
+export var room_sizes_cave = [Vector2(25, 25)]
 
 export var cyclic_paths : bool = true
 
 var rooms_small : Array = []
 var rooms_medium : Array = []
 var rooms_large : Array = []
+var rooms_cave : Array = []
 
 var final_rooms : Array = []
 
@@ -61,8 +64,11 @@ func make_rooms():
 	rooms_small = generate_room_bodies(num_rooms_small, room_sizes_small, room_container)
 	rooms_medium = generate_room_bodies(num_rooms_medium, room_sizes_medium, room_container)
 	rooms_large = generate_room_bodies(num_rooms_large, room_sizes_large, room_container)
+	rooms_cave = generate_room_bodies(num_rooms_cave, room_sizes_cave, room_container, true)
 	
-	final_rooms = rooms_small + rooms_medium + rooms_large
+	final_rooms = rooms_small + rooms_medium + rooms_large + rooms_cave
+	
+	final_rooms.shuffle()
 	
 	for room in final_rooms:
 		room.set_collision_mask(512)
@@ -77,12 +83,12 @@ func make_rooms():
 	find_graph(final_rooms)
 
 
-func generate_room_bodies(amount : int, sizes : Array, room_container : Node):
+func generate_room_bodies(amount : int, sizes : Array, room_container : Node, cave : bool = false):
 	var res : Array = []
 	
 	while amount > 0:
 		var room = room_scene.instance()
-		room.init(sizes[randi() % sizes.size()], spacer, tile_size)
+		room.init(sizes[randi() % sizes.size()], spacer, tile_size, cave)
 		res.append(room)
 		room_container.call_deferred("add_child", room)
 		amount -= 1
@@ -224,7 +230,11 @@ func make_map():
 		var x_size = size.x if rotate else size.y
 		var y_size = size.y if rotate else size.x
 		
-		var new_room = load("res://Scenes/World/Generation/RoomPrefabs/RoomPrefab" + str(x_size) + "x" + str(y_size) + ".tscn").instance()
+		var new_room
+		if room.cave:
+			new_room = load("res://Scenes/World/Generation/CavePrefabs/CavePrefab" + str(x_size) + "x" + str(y_size) + ".tscn").instance()
+		else:
+			new_room = load("res://Scenes/World/Generation/RoomPrefabs/RoomPrefab" + str(x_size) + "x" + str(y_size) + ".tscn").instance()
 		new_room.position = room.position
 		new_room.index = room.astar_index
 		if rotate:
@@ -237,7 +247,9 @@ func make_map():
 		for x in map.get_children():
 			if x.has_index(room.astar_index):
 				new_room = x
-		connect_doors(new_room, room)
+		var door_dirs = connect_doors(new_room, room)
+		if new_room.has_method("generate_room"):
+			new_room.generate_room(door_dirs, new_room.index == end_room.astar_index)
 		merge_maps(map, new_room.tile_map)
 	link_door_graph()
 	carve_corridors()
@@ -257,6 +269,7 @@ func make_map():
 	for r in map.get_children():
 		r.spawn_barriers()
 		r.activate_area()
+		r.attach_nav_poly()
 		if r.index == end_room.astar_index:
 			exit = r.add_level_exit()
 	
@@ -265,6 +278,7 @@ func make_map():
 
 func connect_doors(room_prefab, room):
 	var doors = [] + room_prefab.doors
+	var doors_used : Array = []
 	var rotated = room_prefab.rotation_degrees == 90
 	if rotated:
 		doors = [doors[1], doors[3], doors[0], doors[2]]
@@ -285,6 +299,8 @@ func connect_doors(room_prefab, room):
 			var end_dict : Dictionary = get_door_dict(r, t_room, t_doors, room)
 			
 			door_points.append([start_dict, end_dict])
+			doors_used.append(start_dict["dir"])
+	return doors_used
 
 
 func get_door_dict(start_room, start_room_prefab, doors : Array, target_room) -> Dictionary:

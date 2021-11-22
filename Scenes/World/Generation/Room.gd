@@ -4,10 +4,13 @@ class_name RoomBody
 var size : Vector2
 var astar_index : int
 
+var cave : bool = false
+
 onready var collision = $CollisionShape2D
 
-func init(s : Vector2, spacer : Vector2, tile_size : int):
+func init(s : Vector2, spacer : Vector2, tile_size : int, c : bool = false):
 	size = s * tile_size / 2
+	cave = c
 	var shape = RectangleShape2D.new()
 	shape.custom_solver_bias = 1
 	shape.set_extents(size + spacer * tile_size)
