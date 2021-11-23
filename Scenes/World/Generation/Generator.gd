@@ -142,13 +142,16 @@ func find_graph(rooms_in):
 			var p2 = delauney.pop_front()
 			var p3 = delauney.pop_front()
 
-			if not path.are_points_connected(p1, p2) and randf() < 0.1 and not(has_start_room(p1, p2) or has_end_room(p1, p2)): 
+			if is_loop_valid(p1, p2) and randf() < 1: 
 				path.connect_points(p1, p2)
-			if not path.are_points_connected(p1, p3) and randf() < 0.1 and not(has_start_room(p1, p3) or has_end_room(p1, p3)):
+			if is_loop_valid(p1, p3) and randf() < 1:
 				 path.connect_points(p1, p3)
-			if not path.are_points_connected(p2, p3) and randf() < 0.1 and not(has_start_room(p2, p3) or has_end_room(p2, p3)):
+			if is_loop_valid(p2, p3) and randf() < 1:
 				 path.connect_points(p2, p3)
 
+
+func is_loop_valid(p1 : int, p2 : int) -> bool:
+	return not path.are_points_connected(p1, p2) and path.get_point_path(p1, p2).size() == 3 and not(has_start_room(p1, p2) or has_end_room(p1, p2))
 
 func has_start_room(index1, index2) -> bool:
 	if start_room:
