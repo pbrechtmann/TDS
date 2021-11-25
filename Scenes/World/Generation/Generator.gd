@@ -215,7 +215,7 @@ func make_map():
 	
 	for x in range(top_left.x, bottom_right.x):
 		for y in range(top_left.y, bottom_right.y):
-			map.set_cell(x, y, map.tile_set.find_tile_by_name("Wall"))
+			map.set_cell(x, y, map.tile_set.find_tile_by_name("ToFill"))
 	
 	for room in final_rooms:
 		var size = (room.size / tile_size)
@@ -371,52 +371,94 @@ func link_door_graph():
 
 
 func carve_corridors():
+	var path_search : AStar2D = AStar2D.new()
 	for i in range(door_connections.get_point_count()):
 		var door = map.world_to_map(door_connections.get_point_position(i))
 		for j in door_connections.get_point_connections(i):
 			var target = map.world_to_map(door_connections.get_point_position(j))
+			
+			var door_id = path_search.get_available_point_id()
+			path_search.add_point(door_id, door)
+			var target_id = path_search.get_available_point_id()
+			path_search.add_point(target_id, target)
+			
+			var tl : Vector2 = Vector2(min(door.x, target.x), max(door.y, target.y))
+			var br : Vector2 = Vector2(max(door.x, target.x), min(door.y, target.y))
+			
+			var x_diff = max(1, abs(tl.x - br.x))
+			var y_diff = max(1, abs(tl.y - br.y))
+			
+			path_search.reserve_space(x_diff * y_diff + 2)
+			
+			for x in range(x_diff):
+				for y in range(y_diff):
+					if [map.tile_set.find_tile_by_name("ToFill")].has(map.get_cellv(tl + Vector2(x, -y))):
+						path_search.add_point(path_search.get_available_point_id(), tl + Vector2(x, -y))
+			
+			for p in path_search.get_points():
+				connect_to_dir(path_search, p, Vector2.UP)
+				connect_to_dir(path_search, p, Vector2.DOWN)
+				connect_to_dir(path_search, p, Vector2.LEFT)
+				connect_to_dir(path_search, p, Vector2.RIGHT)
+			
+			
+			var corridor : Array = path_search.get_point_path(door_id, target_id)
+			var t = path_search.get_id_path(door_id, target_id)
+			print_debug(corridor)
+			for p in corridor:
+				map.set_cellv(p, -1)
+			
+			path_search.clear()
 
-			var carve_direction : Vector2 = Vector2.ZERO
-			var steps : int = 0
 
-			var _discard : Vector2
+func connect_to_dir(astar : AStar2D, p : int, dir : Vector2):
+	var q = astar.get_closest_point(astar.get_point_position(p) + dir)
+	if q != p and not astar.are_points_connected(p, q):
+		astar.connect_points(p, q)
 
-			if door.x == target.x:
-				carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
-				steps = int(abs(target.y - door.y))
-				_discard = carve(door, carve_direction, steps)
-			elif door.y == target.y:
-				carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
-				steps = int(abs(target.x - door.x))
-				_discard = carve(door, carve_direction, steps)
-			else:
-				if (get_door_dir(i) == Vector2.UP and get_door_dir(j) == Vector2.DOWN) or (get_door_dir(i) == Vector2.DOWN and get_door_dir(j) == Vector2.UP):
-					steps = int(ceil(abs(target.y - door.y) / 2))
-					var c_pos = carve(door, get_door_dir(i), steps)
-					var c_steps = int(abs(target.x - door.x))
-					carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
-					c_pos = carve(c_pos, carve_direction, c_steps, true)
-					_discard = carve(c_pos, get_door_dir(i), steps)
-					
-				elif (get_door_dir(i) == Vector2.LEFT and get_door_dir(j) == Vector2.RIGHT) or (get_door_dir(i) == Vector2.RIGHT and get_door_dir(j) == Vector2.LEFT):
-					steps = int(ceil(abs(target.x - door.x) / 2))
-					var c_pos = carve(door, get_door_dir(i), steps)
-					var c_steps = int(abs(target.y - door.y))
-					carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
-					c_pos = carve(c_pos, carve_direction, c_steps, true)
-					_discard = carve(c_pos, get_door_dir(i), steps)
-				else:
-					if get_door_dir(i) == Vector2.LEFT or get_door_dir(i) == Vector2.RIGHT:
-						steps = int(abs(target.x - door.x))
-						var c_pos = carve(door, get_door_dir(i), steps, true)
-						steps = int(abs(target.y - door.y))
-						_discard = carve(c_pos, get_door_dir(j) * -1, steps)
-					else:
-						steps = int(abs(target.y - door.y))
-						var c_pos = carve(door, get_door_dir(i), steps, true)
-						steps = int(abs(target.x - door.x))
-						_discard = carve(c_pos, get_door_dir(j) * -1, steps)
-			door_connections.disconnect_points(i, j)
+
+#
+#			var carve_direction : Vector2 = Vector2.ZERO
+#			var steps : int = 0
+#
+#			var _discard : Vector2
+#
+#			if door.x == target.x:
+#				carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
+#				steps = int(abs(target.y - door.y))
+#				_discard = carve(door, carve_direction, steps)
+#			elif door.y == target.y:
+#				carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
+#				steps = int(abs(target.x - door.x))
+#				_discard = carve(door, carve_direction, steps)
+#			else:
+#				if (get_door_dir(i) == Vector2.UP and get_door_dir(j) == Vector2.DOWN) or (get_door_dir(i) == Vector2.DOWN and get_door_dir(j) == Vector2.UP):
+#					steps = int(ceil(abs(target.y - door.y) / 2))
+#					var c_pos = carve(door, get_door_dir(i), steps)
+#					var c_steps = int(abs(target.x - door.x))
+#					carve_direction = Vector2.RIGHT if target.x > door.x else Vector2.LEFT
+#					c_pos = carve(c_pos, carve_direction, c_steps, true)
+#					_discard = carve(c_pos, get_door_dir(i), steps)
+#
+#				elif (get_door_dir(i) == Vector2.LEFT and get_door_dir(j) == Vector2.RIGHT) or (get_door_dir(i) == Vector2.RIGHT and get_door_dir(j) == Vector2.LEFT):
+#					steps = int(ceil(abs(target.x - door.x) / 2))
+#					var c_pos = carve(door, get_door_dir(i), steps)
+#					var c_steps = int(abs(target.y - door.y))
+#					carve_direction = Vector2.DOWN if target.y > door.y else Vector2.UP
+#					c_pos = carve(c_pos, carve_direction, c_steps, true)
+#					_discard = carve(c_pos, get_door_dir(i), steps)
+#				else:
+#					if get_door_dir(i) == Vector2.LEFT or get_door_dir(i) == Vector2.RIGHT:
+#						steps = int(abs(target.x - door.x))
+#						var c_pos = carve(door, get_door_dir(i), steps, true)
+#						steps = int(abs(target.y - door.y))
+#						_discard = carve(c_pos, get_door_dir(j) * -1, steps)
+#					else:
+#						steps = int(abs(target.y - door.y))
+#						var c_pos = carve(door, get_door_dir(i), steps, true)
+#						steps = int(abs(target.x - door.x))
+#						_discard = carve(c_pos, get_door_dir(j) * -1, steps)
+#			door_connections.disconnect_points(i, j)
 
 
 func carve(start : Vector2, direction : Vector2, steps : int, corner : bool = false) -> Vector2:

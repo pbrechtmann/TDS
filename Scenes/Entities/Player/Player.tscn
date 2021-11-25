@@ -27,8 +27,7 @@ modifiers = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="." index="5"]
-current = true
-zoom = Vector2( 30, 30 )
+zoom = Vector2( 15, 15 )
 smoothing_enabled = true
 smoothing_speed = 10.0
 

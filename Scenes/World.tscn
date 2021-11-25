@@ -9,9 +9,7 @@ script = ExtResource( 2 )
 
 [node name="Generator" parent="." instance=ExtResource( 4 )]
 num_rooms_small = 5
-num_rooms_medium = 0
-num_rooms_large = 0
-num_rooms_cave = 2
+num_rooms_cave = 0
 cyclic_paths = true
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
