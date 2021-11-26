@@ -8,11 +8,6 @@
 script = ExtResource( 2 )
 
 [node name="Generator" parent="." instance=ExtResource( 4 )]
-num_rooms_small = 20
-num_rooms_medium = 15
-num_rooms_large = 10
-num_rooms_cave = 5
-cyclic_paths = true
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 142.553, 92.0419 )

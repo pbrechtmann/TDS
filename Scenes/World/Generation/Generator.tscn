@@ -5,14 +5,11 @@
 
 [node name="Generator" type="Node2D"]
 script = ExtResource( 1 )
-num_rooms_small = 1
-num_rooms_medium = 1
-cyclic_paths = false
 
 [node name="Rooms" type="Node" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2( 15, 15 )
+zoom = Vector2( 30, 30 )
 
 [node name="Maps" type="Node2D" parent="."]
 

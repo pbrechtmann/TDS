@@ -89,6 +89,7 @@ func generate_room_bodies(amount : int, sizes : Array, room_container : Node, ca
 	while amount > 0:
 		var room = room_scene.instance()
 		room.init(sizes[randi() % sizes.size()], spacer, tile_size, cave)
+		room.position = Vector2(rand_range(-1, 1), rand_range(-1, 1)).clamped(1)
 		res.append(room)
 		room_container.call_deferred("add_child", room)
 		amount -= 1
@@ -390,7 +391,6 @@ func carve_corridors():
 			var x_diff = max(1, abs(tl.x - br.x))
 			var y_diff = max(1, abs(tl.y - br.y))
 			
-#			path_search.reserve_space(x_diff * y_diff + 2)
 			
 			for x in range(x_diff):
 				for y in range(y_diff):
@@ -435,7 +435,6 @@ func connect_to_dir(astar : AStar2D, p : int, dir : Vector2):
 func tile_is_valid(pos : Vector2) -> bool:
 	var invalid_tiles : Array = [map.tile_set.find_tile_by_name("Wall")]
 	var positions : Array = [pos, pos + Vector2.UP, pos + Vector2.DOWN, pos + Vector2.RIGHT, pos + Vector2.LEFT, pos + Vector2.ONE, pos + Vector2.ONE * -1, pos + Vector2(-1, 1), pos + Vector2(-1, 1) * -1]
-#	return not invalid_tiles.has(map.get_cellv(pos))
 	for x in positions:
 		if invalid_tiles.has(map.get_cellv(x)):
 			return false
