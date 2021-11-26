@@ -142,16 +142,17 @@ func find_graph(rooms_in):
 			var p2 = delauney.pop_front()
 			var p3 = delauney.pop_front()
 
-			if is_loop_valid(p1, p2) and randf() < 1: 
+			if is_loop_valid(p1, p2) and randf() < 0.2: 
 				path.connect_points(p1, p2)
-			if is_loop_valid(p1, p3) and randf() < 1:
+			if is_loop_valid(p1, p3) and randf() < 0.2:
 				 path.connect_points(p1, p3)
-			if is_loop_valid(p2, p3) and randf() < 1:
+			if is_loop_valid(p2, p3) and randf() < 0.2:
 				 path.connect_points(p2, p3)
 
 
 func is_loop_valid(p1 : int, p2 : int) -> bool:
 	return not path.are_points_connected(p1, p2) and path.get_point_path(p1, p2).size() == 3 and not(has_start_room(p1, p2) or has_end_room(p1, p2))
+
 
 func has_start_room(index1, index2) -> bool:
 	if start_room:
@@ -256,6 +257,7 @@ func make_map():
 		merge_maps(map, new_room.tile_map)
 	link_door_graph()
 	carve_corridors()
+	place_walls()
 	map.update_bitmask_region()
 	
 	path.clear()
@@ -388,26 +390,39 @@ func carve_corridors():
 			var x_diff = max(1, abs(tl.x - br.x))
 			var y_diff = max(1, abs(tl.y - br.y))
 			
-			path_search.reserve_space(x_diff * y_diff + 2)
+#			path_search.reserve_space(x_diff * y_diff + 2)
 			
 			for x in range(x_diff):
 				for y in range(y_diff):
-					if [map.tile_set.find_tile_by_name("ToFill")].has(map.get_cellv(tl + Vector2(x, -y))):
-						path_search.add_point(path_search.get_available_point_id(), tl + Vector2(x, -y))
+					var point_pos = tl + Vector2(x, -y)
+					if tile_is_valid(point_pos):
+						path_search.add_point(path_search.get_available_point_id(), point_pos, point_pos.distance_squared_to(door) + point_pos.distance_squared_to(target))
 			
 			for p in path_search.get_points():
 				connect_to_dir(path_search, p, Vector2.UP)
 				connect_to_dir(path_search, p, Vector2.DOWN)
 				connect_to_dir(path_search, p, Vector2.LEFT)
 				connect_to_dir(path_search, p, Vector2.RIGHT)
+				if path_search.get_point_connections(p).size() == 0:
+					connect_to_dir(path_search, p, Vector2.UP * 2)
+					connect_to_dir(path_search, p, Vector2.DOWN * 2)
+					connect_to_dir(path_search, p, Vector2.LEFT * 2)
+					connect_to_dir(path_search, p, Vector2.RIGHT * 2)
 			
 			
 			var corridor : Array = path_search.get_point_path(door_id, target_id)
-			var t = path_search.get_id_path(door_id, target_id)
-			print_debug(corridor)
 			for p in corridor:
-				map.set_cellv(p, -1)
-			
+				var floor_tile = map.tile_set.find_tile_by_name("Floor")
+				map.set_cellv(p, floor_tile)
+				map.set_cellv(p + Vector2.UP, floor_tile)
+				map.set_cellv(p + Vector2.DOWN, floor_tile)
+				map.set_cellv(p + Vector2.LEFT, floor_tile)
+				map.set_cellv(p + Vector2.RIGHT, floor_tile)
+				map.set_cellv(p + Vector2.ONE, floor_tile)
+				map.set_cellv(p + Vector2.ONE * -1, floor_tile)
+				map.set_cellv(p + Vector2(-1, 1), floor_tile)
+				map.set_cellv(p + Vector2(1, -1), floor_tile)
+			door_connections.disconnect_points(i, j)
 			path_search.clear()
 
 
@@ -417,6 +432,21 @@ func connect_to_dir(astar : AStar2D, p : int, dir : Vector2):
 		astar.connect_points(p, q)
 
 
+func tile_is_valid(pos : Vector2) -> bool:
+	var invalid_tiles : Array = [map.tile_set.find_tile_by_name("Wall")]
+	var positions : Array = [pos, pos + Vector2.UP, pos + Vector2.DOWN, pos + Vector2.RIGHT, pos + Vector2.LEFT, pos + Vector2.ONE, pos + Vector2.ONE * -1, pos + Vector2(-1, 1), pos + Vector2(-1, 1) * -1]
+#	return not invalid_tiles.has(map.get_cellv(pos))
+	for x in positions:
+		if invalid_tiles.has(map.get_cellv(x)):
+			return false
+	return true
+
+
+func place_walls():
+	for x in map.get_used_cells_by_id(map.tile_set.find_tile_by_name("ToFill")):
+		map.set_cellv(x, map.tile_set.find_tile_by_name("Wall"))
+	for x in map.get_used_cells_by_id(map.tile_set.find_tile_by_name("Door")):
+		map.set_cellv(x, map.tile_set.find_tile_by_name("Wall"))
 #
 #			var carve_direction : Vector2 = Vector2.ZERO
 #			var steps : int = 0
@@ -497,8 +527,8 @@ func merge_maps(target : TileMap, input : TileMap):
 	var cells = input.get_used_cells()
 	for cell in cells:
 		var tile : int = input.get_cellv(cell)
-		if tile  == target.tile_set.find_tile_by_name("Door"):
-			tile = target.tile_set.find_tile_by_name("Wall")
+#		if tile  == target.tile_set.find_tile_by_name("Door"):
+#			tile = target.tile_set.find_tile_by_name("Wall")
 		var target_location : Vector2 = target.world_to_map(target.to_local(input.to_global(input.map_to_world(cell))))
 		target.set_cellv(target_location, tile)
 	input.clear()

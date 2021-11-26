@@ -12,7 +12,6 @@ cyclic_paths = false
 [node name="Rooms" type="Node" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-current = true
 zoom = Vector2( 15, 15 )
 
 [node name="Maps" type="Node2D" parent="."]
