@@ -9,6 +9,7 @@ script = ExtResource( 1 )
 [node name="Rooms" type="Node" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+current = true
 zoom = Vector2( 30, 30 )
 
 [node name="Maps" type="Node2D" parent="."]

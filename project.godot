@@ -22,7 +22,7 @@ _global_script_classes=[ {
 "base": "RoomPrefab",
 "class": "CavePrefab",
 "language": "GDScript",
-"path": "res://CavePrefab.gd"
+"path": "res://Scenes/World/Generation/CavePrefab.gd"
 }, {
 "base": "NPC",
 "class": "Common",

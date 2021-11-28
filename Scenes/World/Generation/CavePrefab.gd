@@ -1,6 +1,8 @@
 extends RoomPrefab
 class_name CavePrefab
 
+var floor_tiles : Array = []
+
 
 func generate_room(door_directions : Array, end_room : bool):
 	if end_room:
@@ -33,13 +35,32 @@ func generate_room(door_directions : Array, end_room : bool):
 		var walker = Walker.new(walker_pos, rect)
 		var map = walker.walk(500)
 		walker.queue_free()
+		
+		
 		for tile in map:
-			tile_map.set_cellv(tile, tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile + Vector2.UP, tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile + Vector2.DOWN, tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile + Vector2.LEFT, tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile + Vector2.RIGHT, tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile + Vector2.ONE, tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile - Vector2.ONE, tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile + Vector2(-1, 1), tile_map.tile_set.find_tile_by_name("Floor"))
-			tile_map.set_cellv(tile - Vector2(-1, 1), tile_map.tile_set.find_tile_by_name("Floor"))
+			var brush = [tile, tile + Vector2.UP, tile + Vector2.DOWN, tile + Vector2.LEFT, tile + Vector2.RIGHT, tile + Vector2.ONE, tile - Vector2.ONE, tile + Vector2(-1, 1), tile - Vector2(-1, 1)]
+			for pos in brush:
+				tile_map.set_cellv(pos, tile_map.tile_set.find_tile_by_name("Floor"))
+				if not floor_tiles.has(pos):
+					floor_tiles.append(pos)
+			
+		
+	generate_navpoly()
+
+
+func generate_navpoly():
+	floor_tiles.sort()
+	var outline : PoolVector2Array = []
+	
+	var column_start : int = floor_tiles[0].x
+	var column_end : int = floor_tiles[floor_tiles.size() - 1].x
+	
+	for t in floor_tiles:
+		if [column_start, column_end].has(t.x):
+			outline.append(t)
+	
+	var poly : NavigationPolygon = NavigationPolygon.new()
+	poly.add_outline(outline)
+	poly.make_polygons_from_outlines()
+	
+	nav_poly.navpoly = poly
