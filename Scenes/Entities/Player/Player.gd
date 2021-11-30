@@ -5,7 +5,13 @@ export(float) var speed = 1000
 export(float) var dash_force = 4
 
 onready var weapon : Weapon = $WeaponRanged
-onready var ability = $AbilityHeal
+onready var ability : Ability = $AbilityHeal
+onready var interaction_area : Area2D = $InteractionArea
+
+
+var current_interactable : InteractableObject = null
+var overlapping_interactables : Array = []
+
 
 signal game_over
 
@@ -33,10 +39,30 @@ func _physics_process(_delta):
 func _process(_delta):
 	if Input.is_action_pressed("attack_primary"):
 		weapon.try_primary_attack(energy_supply)
-	if Input.is_action_pressed("ability"):
+
+
+func _unhandled_input(event):
+	if event.is_action_pressed("ability"):
 		ability.try_activate_ability(self)
+	if not event.is_echo() and event.is_action_pressed("interact") and current_interactable:
+		if is_instance_valid(current_interactable):
+			current_interactable.activate(self)
 
 
 func _on_Health_death() -> void:
 	emit_signal("game_over")
 	._on_Health_death()
+
+
+func _on_InteractionArea_area_entered(area):
+	if area is InteractableObject:
+		overlapping_interactables.append(area)
+		current_interactable = area
+
+
+func _on_InteractionArea_area_exited(area):
+	if area == current_interactable:
+		current_interactable = null
+		overlapping_interactables.erase(area)
+		yield(get_tree(), "idle_frame")
+		current_interactable = null if overlapping_interactables.empty() else overlapping_interactables[0]
