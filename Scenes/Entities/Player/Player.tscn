@@ -4,7 +4,6 @@
 [ext_resource path="res://Scenes/Entities/Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Items/Weapons/Ranged/WeaponRanged.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Items/Abilities/AbilityHeal/AbilityHeal.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 128.0
@@ -21,15 +20,7 @@ modifiers = {
 "pierce": 1
 }
 
-[node name="WeaponMelee" parent="." index="4" instance=ExtResource( 5 )]
-position = Vector2( 55, 0 )
-modifiers = {
-"crit_chance": 0.1,
-"crit_multiplier": 2.0,
-"damage": 50.0
-}
-
-[node name="Camera2D" type="Camera2D" parent="." index="5"]
+[node name="Camera2D" type="Camera2D" parent="." index="4"]
 current = true
 smoothing_enabled = true
 smoothing_speed = 10.0

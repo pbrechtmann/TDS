@@ -5,7 +5,7 @@ onready var health : Health = $Health
 onready var health_display : HealthDisplay = $HealthDisplay
 onready var energy_supply : EnergySupply = $EnergySupply
 onready var energy_display : EnergyDisplay = $EnergyDisplay
-onready var armor : Armor = $BasicArmor
+onready var armor : Armor = $Armor
 
 
 func _process(_delta):
@@ -14,6 +14,8 @@ func _process(_delta):
 
 
 func get_damage(modifiers : Dictionary):
+	modifiers = armor.modify(modifiers)
+	
 	var damage : float = 0
 	var crit_chance : float = 0
 	var crit_multiplier : float = 1
@@ -30,8 +32,6 @@ func get_damage(modifiers : Dictionary):
 	
 	if rand_range(0, 1) < crit_chance:
 		damage = damage * crit_multiplier
-	
-	damage = armor.modify_damage(damage)
 	
 	health.damage(damage)
 
