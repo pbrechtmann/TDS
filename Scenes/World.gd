@@ -4,6 +4,7 @@ onready var generator : Generator = $Generator
 
 onready var player : Player = $Player
 onready var nav : Navigation2D = $Navigation2D
+onready var drop_spawner : DropSpawner = $DropSpawner
 
 
 func _ready():
