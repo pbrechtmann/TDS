@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/World/Generation/RoomParts/Barrier.gd"
 }, {
+"base": "RoomPrefab",
+"class": "CavePrefab",
+"language": "GDScript",
+"path": "res://Scenes/World/Generation/CavePrefab.gd"
+}, {
 "base": "NPC",
 "class": "Common",
 "language": "GDScript",
@@ -109,6 +114,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Entities/NPCs/Spawners/Spawner.gd"
 }, {
+"base": "Node",
+"class": "Walker",
+"language": "GDScript",
+"path": "res://Scenes/World/Generation/Walker.gd"
+}, {
 "base": "Node2D",
 "class": "Weapon",
 "language": "GDScript",
@@ -128,6 +138,7 @@ _global_script_class_icons={
 "Ability": "",
 "Armor": "",
 "Barrier": "",
+"CavePrefab": "",
 "Common": "",
 "Drop": "",
 "DropSpawner": "",
@@ -145,6 +156,7 @@ _global_script_class_icons={
 "RoomBody": "",
 "RoomPrefab": "",
 "Spawner": "",
+"Walker": "",
 "Weapon": "",
 "WeaponMelee": "",
 "WeaponRanged": ""

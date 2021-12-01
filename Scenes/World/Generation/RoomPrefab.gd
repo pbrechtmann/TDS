@@ -37,7 +37,6 @@ func _ready() -> void:
 		spawn_map.position -= Vector2(0, spawn_map.cell_size.x)
 		nav_poly.position -= Vector2(0, spawn_map.cell_size.x)
 		area.position -= Vector2(0, spawn_map.cell_size.x)
-	nav.navpoly_add(nav_poly.navpoly, nav_poly.global_transform)
 	spawn_spawners()
 
 
@@ -45,6 +44,10 @@ func init(player : Player, nav : Navigation2D, map : TileMap) -> void:
 	self.player = player
 	self.nav = nav
 	self.global_map = map
+
+
+func attach_nav_poly() -> void:
+	nav.navpoly_add(nav_poly.navpoly, nav_poly.global_transform)
 
 
 func spawn_barriers() -> void:
