@@ -1,5 +1,7 @@
 extends Node2D
 
+var pause_menu = preload("res://Scenes/Menus/Pause/PauseMenu.tscn")
+
 onready var generator : Generator = $Generator
 
 onready var player : Player = $Player
@@ -9,6 +11,11 @@ onready var drop_spawner : DropSpawner = $DropSpawner
 
 func _ready():
 	player.collision_layer = 0
+	if player.connect("game_over", self, "_on_Player_game_over") != OK:
+		printerr("Connecting game_over from Player to Level failed.")
+	if player.connect("pause", self, "_on_Player_pause") != OK:
+		printerr("Connecting pause from Player to Level failed.")
+	
 	yield(get_tree(), "idle_frame")
 	if generator.connect("done", self, "_on_Generator_done") != OK:
 		printerr("Failed connecting signal \"done\" from Generator to World")
@@ -18,6 +25,11 @@ func _ready():
 func _on_Player_game_over():
 	get_tree().call_group("Entity", "queue_free")
 	get_tree().reload_current_scene()
+
+
+func _on_Player_pause():
+	var p_menu = pause_menu.instance()
+	add_child(p_menu)
 
 
 func _on_Generator_done() -> void:

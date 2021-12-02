@@ -8,17 +8,14 @@ onready var weapon : Weapon = $WeaponRanged
 onready var ability : Ability = $AbilityHeal
 onready var interaction_area : Area2D = $InteractionArea
 
-
 var current_interactable : InteractableObject = null
 var overlapping_interactables : Array = []
 
-
 signal game_over
+signal pause
+
 
 func _ready():
-	if connect("game_over", get_parent(), "_on_Player_game_over") != OK:
-		printerr("Connecting game_over to Level failed.")
-	
 	if weapon is WeaponMelee:
 		weapon.init(self)
 
@@ -47,6 +44,9 @@ func _unhandled_input(event):
 	if not event.is_echo() and event.is_action_pressed("interact") and current_interactable:
 		if is_instance_valid(current_interactable):
 			current_interactable.activate(self)
+	
+	if event.is_action_pressed("pause"):
+		emit_signal("pause")
 
 
 func _on_Health_death() -> void:
