@@ -125,6 +125,7 @@ shader_param/outline_color = Color( 1, 0.501961, 0.501961, 1 )
 extents = Vector2( 192, 15 )
 
 [node name="Barrier" type="StaticBody2D"]
+collision_layer = 0
 collision_mask = 0
 script = ExtResource( 2 )
 

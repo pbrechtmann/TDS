@@ -11,6 +11,8 @@
 [sub_resource type="CapsuleShape2D" id=1]
 
 [node name="Entity" type="KinematicBody2D" groups=["Entity"]]
+collision_layer = 6
+collision_mask = 3
 script = ExtResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]

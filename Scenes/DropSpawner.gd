@@ -15,4 +15,4 @@ func spawn_drop(tier : int, pos : Vector2, min_amount : int, max_amount : int, r
 			pos += Vector2(randf(), randf()).normalized() * rand_range(64, 128)
 		
 		drop.global_position = pos
-		add_child(drop)
+		call_deferred("add_child", drop)

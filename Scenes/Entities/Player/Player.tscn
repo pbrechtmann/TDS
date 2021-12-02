@@ -28,6 +28,8 @@ smoothing_speed = 10.0
 [node name="AbilityHeal" parent="." index="6" instance=ExtResource( 4 )]
 
 [node name="InteractionArea" type="Area2D" parent="." index="10"]
+collision_layer = 0
+collision_mask = 8
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" index="0"]

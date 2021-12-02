@@ -124,7 +124,7 @@ func activate_level_exit() -> void:
 
 
 func activate_area() -> void:
-	area.collision_mask = 1 # TODO: adjust to correct layers
+	area.collision_mask = 2
 	area.monitoring = true
 
 

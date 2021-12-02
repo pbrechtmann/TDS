@@ -22,7 +22,7 @@ func _on_Player_game_over():
 
 func _on_Generator_done() -> void:
 	yield(get_tree(), "idle_frame")
-	player.collision_layer = 1 #TODO: adjust to correct layers
+	player.collision_layer = 2 + 4
 	if generator.exit.connect("level_done", self, "_on_Exit_level_done") != OK:
 		printerr("Failed connecting signal \"done\" from Generator to World")
 
