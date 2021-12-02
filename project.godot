@@ -84,6 +84,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/World/Generation/RoomParts/LevelExit.gd"
 }, {
+"base": "Control",
+"class": "MainMenu",
+"language": "GDScript",
+"path": "res://Scenes/Menus/Main/MainMenu.gd"
+}, {
 "base": "Entity",
 "class": "NPC",
 "language": "GDScript",
@@ -150,6 +155,7 @@ _global_script_class_icons={
 "HealthDisplay": "",
 "InteractableObject": "",
 "LevelExit": "",
+"MainMenu": "",
 "NPC": "",
 "Player": "",
 "Projectile": "",
