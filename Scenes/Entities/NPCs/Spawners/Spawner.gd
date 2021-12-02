@@ -15,7 +15,7 @@ func _ready():
 
 func spawn() -> NPC:
 	var new_npc = npc.instance()
-	new_npc.init(nav, target)
+	new_npc.init(nav, target, drop_spawner)
 	
 	return new_npc
 

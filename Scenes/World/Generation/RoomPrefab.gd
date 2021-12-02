@@ -18,6 +18,7 @@ var exit : LevelExit
 
 var player : Player
 var nav : Navigation2D
+var drop_spawner : DropSpawner
 
 var global_map : TileMap
 
@@ -40,10 +41,11 @@ func _ready() -> void:
 	spawn_spawners()
 
 
-func init(player : Player, nav : Navigation2D, map : TileMap) -> void:
+func init(player : Player, nav : Navigation2D, map : TileMap, drop_spawner : DropSpawner) -> void:
 	self.player = player
 	self.nav = nav
 	self.global_map = map
+	self.drop_spawner = drop_spawner
 
 
 func attach_nav_poly() -> void:
@@ -89,7 +91,7 @@ func spawn_spawners() -> void:
 				spawner.position -= Vector2(0, spawn_map.cell_size.x)
 		spawners.append(spawner)
 		add_child(spawner)
-		spawner.init(nav, player)
+		spawner.init(nav, player, drop_spawner)
 
 
 func add_level_exit() -> LevelExit:

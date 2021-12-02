@@ -36,6 +36,7 @@ var door_points : Array = []
 var start_position : Vector2
 var player : Player
 var nav : Navigation2D
+var drop_spawner : DropSpawner
 
 var exit : LevelExit
 
@@ -45,7 +46,7 @@ onready var map : TileMap = $Maps/TerrainMap
 
 signal done
 
-func generate_level(player : Player, nav = Navigation2D):
+func generate_level(player : Player, nav : Navigation2D, drop_spawner : DropSpawner):
 	for child in room_container.get_children():
 		child.queue_free()
 	for i in range(map.get_children().size()):
@@ -54,6 +55,7 @@ func generate_level(player : Player, nav = Navigation2D):
 	
 	self.player = player
 	self.nav = nav
+	self.drop_spawner = drop_spawner
 	randomize()
 	make_rooms()
 	yield(get_tree().create_timer(0.1), "timeout")
@@ -244,7 +246,7 @@ func make_map():
 		new_room.index = room.astar_index
 		if rotate:
 			new_room.rotation_degrees = 90
-		new_room.init(player, nav, map)
+		new_room.init(player, nav, map, drop_spawner)
 		map.add_child(new_room)
 
 	for room in final_rooms:

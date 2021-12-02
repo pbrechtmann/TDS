@@ -26,3 +26,8 @@ func _physics_process(_delta):
 func _process(_delta):
 	if weapon.global_position.distance_to(target.global_position) <= threshold:
 		weapon.try_primary_attack(energy_supply)
+
+
+func _on_Health_death():
+	drop_spawner.spawn_drop(1, global_position, 1, 3, true)
+	._on_Health_death()

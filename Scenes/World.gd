@@ -12,7 +12,7 @@ func _ready():
 	yield(get_tree(), "idle_frame")
 	if generator.connect("done", self, "_on_Generator_done") != OK:
 		printerr("Failed connecting signal \"done\" from Generator to World")
-	generator.generate_level(player, nav)
+	generator.generate_level(player, nav, drop_spawner)
 
 
 func _on_Player_game_over():
@@ -30,4 +30,4 @@ func _on_Generator_done() -> void:
 func _on_Exit_level_done() -> void:
 	player.collision_layer = 0
 	yield(get_tree(), "idle_frame")
-	generator.generate_level(player, nav)
+	generator.generate_level(player, nav, drop_spawner)
