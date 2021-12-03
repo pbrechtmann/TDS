@@ -16,3 +16,8 @@ func spawn_drop(tier : int, pos : Vector2, min_amount : int, max_amount : int, r
 		
 		drop.global_position = pos
 		call_deferred("add_child", drop)
+
+
+func clear() -> void:
+	for c in get_children():
+		c.queue_free()

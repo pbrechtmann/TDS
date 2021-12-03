@@ -7,6 +7,7 @@ var current_energy : float = max_energy
 
 var charge_time : float = 10.0
 
+signal max_changed
 
 func _process(delta):
 	if current_energy < max_energy:

@@ -124,6 +124,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Entities/NPCs/Spawners/Spawner.gd"
 }, {
+"base": "CanvasLayer",
+"class": "UI",
+"language": "GDScript",
+"path": "res://Scenes/UI/UI.gd"
+}, {
 "base": "Node",
 "class": "Walker",
 "language": "GDScript",
@@ -168,6 +173,7 @@ _global_script_class_icons={
 "RoomBody": "",
 "RoomPrefab": "",
 "Spawner": "",
+"UI": "",
 "Walker": "",
 "Weapon": "",
 "WeaponMelee": "",
