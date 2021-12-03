@@ -8,17 +8,27 @@ onready var player : Player = $Player
 onready var nav : Navigation2D = $Navigation2D
 onready var drop_spawner : DropSpawner = $DropSpawner
 
+onready var ui : UI = $UI
+
 
 func _ready():
-	player.collision_layer = 0
 	if player.connect("game_over", self, "_on_Player_game_over") != OK:
 		printerr("Connecting game_over from Player to Level failed.")
 	if player.connect("pause", self, "_on_Player_pause") != OK:
 		printerr("Connecting pause from Player to Level failed.")
 	
-	yield(get_tree(), "idle_frame")
 	if generator.connect("done", self, "_on_Generator_done") != OK:
 		printerr("Failed connecting signal \"done\" from Generator to World")
+	
+	generate()
+	
+	ui.init(player)
+
+
+func generate() -> void:
+	player.collision_layer = 0
+	yield(get_tree(), "idle_frame")
+	drop_spawner.clear()
 	generator.generate_level(player, nav, drop_spawner)
 
 
@@ -40,6 +50,4 @@ func _on_Generator_done() -> void:
 
 
 func _on_Exit_level_done() -> void:
-	player.collision_layer = 0
-	yield(get_tree(), "idle_frame")
-	generator.generate_level(player, nav, drop_spawner)
+	generate()
