@@ -130,6 +130,11 @@ _global_script_classes=[ {
 "path": "res://Scenes/UI/UI.gd"
 }, {
 "base": "Node",
+"class": "UpgradeModule",
+"language": "GDScript",
+"path": "res://Scenes/Items/Upgrades/UpgradeModule.gd"
+}, {
+"base": "Node",
 "class": "Walker",
 "language": "GDScript",
 "path": "res://Scenes/World/Generation/Walker.gd"
@@ -174,6 +179,7 @@ _global_script_class_icons={
 "RoomPrefab": "",
 "Spawner": "",
 "UI": "",
+"UpgradeModule": "",
 "Walker": "",
 "Weapon": "",
 "WeaponMelee": "",
