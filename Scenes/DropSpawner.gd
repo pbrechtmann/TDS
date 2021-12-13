@@ -18,6 +18,10 @@ func spawn_drop(tier : int, pos : Vector2, min_amount : int, max_amount : int, r
 		call_deferred("add_child", drop)
 
 
+func spawn_set_drop(item : PackedScene):
+	pass
+
+
 func clear() -> void:
 	for c in get_children():
 		c.queue_free()

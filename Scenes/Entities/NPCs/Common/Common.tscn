@@ -9,6 +9,8 @@ script = ExtResource( 2 )
 
 [node name="WeaponMelee" parent="." index="4" instance=ExtResource( 3 )]
 position = Vector2( 50, 0 )
+attack_delay = 0.5
+attack_cost = 25.0
 modifiers = {
 "crit_chance": 0.1,
 "crit_multiplier": 2.0,

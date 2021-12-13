@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Items/Weapons/Ranged/WeaponRanged.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Weapons/AssaultRifle.png" type="Texture" id=2]
+
+[node name="AssaultRifle" instance=ExtResource( 1 )]
+icon = ExtResource( 2 )
+attack_delay = 0.1
+attack_cost = 4.0
+modifiers = {
+"crit_chance": 0.1,
+"crit_multiplier": 2.0,
+"damage": 10.0,
+"pierce": 1
+}

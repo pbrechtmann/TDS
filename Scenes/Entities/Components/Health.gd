@@ -20,3 +20,14 @@ func damage(a : float):
 
 func heal(a : float):
 	current_health = clamp(current_health + a, 0, max_health)
+
+
+func modify_value(mod : float):
+	max_health += mod
+	emit_signal("max_changed")
+
+
+func modify_percent(mod : float):
+	var change : float = max_health * (mod / 100)
+	max_health += change
+	emit_signal("max_changed")

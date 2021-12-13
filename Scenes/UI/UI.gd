@@ -11,6 +11,9 @@ onready var health_bar : TextureProgress = $Control/MarginContainer/HBoxContaine
 onready var ability_cooldown : TextureProgress = $Control/MarginContainer/HBoxContainer/Ability
 onready var dash_cooldown
 
+onready var melee_display : TextureRect = $Control/MarginContainer/HBoxContainer/WeaponMelee/Display
+onready var ranged_display : TextureRect = $Control/MarginContainer/HBoxContainer/WeaponRanged/Display
+
 
 func init(player : Player):
 	self.player = player
@@ -19,11 +22,18 @@ func init(player : Player):
 		printerr("Connecting max changed from Health to UI failed")
 	if player.energy_supply.connect("max_changed", self, "_on_Energy_max_changed") != OK:
 		printerr("Connecting max changed from EnergySupply to UI failed")
+	if player.connect("weapon_changed", self, "_on_Player_weapon_changed") != OK:
+		printerr("Connecting weapon changed from Player to UI failed")
+	if player.connect("weapon_switched", self, "_on_Player_weapon_switched") != OK:
+		printerr("Connecting weapon switched from Player to UI failed")
 	
 	health_bar.max_value = player.health.max_health
 	energy_bar.max_value = player.energy_supply.max_energy
 	
 	ability_cooldown.max_value = player.ability.ability_delay
+
+	melee_display.texture = player.weapon_melee.icon
+	ranged_display.texture = player.weapon_ranged.icon
 
 
 func _process(_delta):
@@ -45,3 +55,15 @@ func _on_Energy_max_changed(new_value : float) -> void:
 
 func _on_Ability_delay_changed(new_value : float) -> void:
 	ability_cooldown.max_value = new_value
+
+
+func _on_Player_weapon_changed() -> void:
+	melee_display.texture = player.weapon_melee.icon
+	ranged_display.texture = player.weapon_ranged.icon
+
+
+func _on_Player_weapon_switched(switched_to : String) -> void:
+	if switched_to == "melee":
+		pass
+	else:
+		pass

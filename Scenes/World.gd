@@ -17,6 +17,8 @@ func _ready():
 	if player.connect("pause", self, "_on_Player_pause") != OK:
 		printerr("Connecting pause from Player to Level failed.")
 	
+	player.init(drop_spawner)
+	
 	if generator.connect("done", self, "_on_Generator_done") != OK:
 		printerr("Failed connecting signal \"done\" from Generator to World")
 	
