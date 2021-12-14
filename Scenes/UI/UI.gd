@@ -17,7 +17,12 @@ onready var ranged_display : TextureRect = $Control/MarginContainer/HBoxContaine
 
 
 func _ready():
-	margin_container.margin_top = OS.get_window_size().y - 128 + margin_container.margin_bottom
+	var window_size : Vector2 = OS.get_window_size()
+	margin_container.margin_bottom = window_size.y / -108 # 10 pixel margin for FullHD
+	margin_container.margin_top = window_size.y - 128 + margin_container.margin_bottom
+	
+	margin_container.margin_left = (window_size.x / 192) * 2 # 20 pixel margin for FullHD
+	margin_container.margin_right = -margin_container.margin_left
 
 
 func init(player : Player):
