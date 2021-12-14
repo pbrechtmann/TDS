@@ -4,6 +4,7 @@ class_name UI
 
 var player : Player = null
 
+onready var margin_container : MarginContainer = $Control/MarginContainer
 
 onready var energy_bar : TextureProgress = $Control/MarginContainer/HBoxContainer/VBoxContainer/Energy
 onready var health_bar : TextureProgress = $Control/MarginContainer/HBoxContainer/VBoxContainer/Health
@@ -13,6 +14,10 @@ onready var dash_cooldown
 
 onready var melee_display : TextureRect = $Control/MarginContainer/HBoxContainer/WeaponMelee/Display
 onready var ranged_display : TextureRect = $Control/MarginContainer/HBoxContainer/WeaponRanged/Display
+
+
+func _ready():
+	margin_container.margin_top = OS.get_window_size().y - 128 + margin_container.margin_bottom
 
 
 func init(player : Player):
