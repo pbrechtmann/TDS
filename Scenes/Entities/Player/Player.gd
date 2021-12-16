@@ -127,8 +127,11 @@ func _on_Health_death() -> void:
 
 func _on_InteractionArea_area_entered(area) -> void:
 	if area is InteractableObject:
-		overlapping_interactables.append(area)
-		current_interactable = area
+		if area is AutoDrop:
+			area.start(self)
+		else:
+			overlapping_interactables.append(area)
+			current_interactable = area
 
 
 func _on_InteractionArea_area_exited(area) -> void:
