@@ -89,11 +89,11 @@ func switch_weapons() -> void:
 
 
 func pickup_weapon(weapon_scene : PackedScene) -> void:
-	var new_weapon : Weapon = weapon_scene.instance()
+	var new_weapon = weapon_scene.instance()
 	if new_weapon is WeaponMelee:
 		var packed : PackedScene = PackedScene.new()
 		packed.pack(weapon_melee)
-		drop_spawner.spawn_set_drop(packed)
+		drop_spawner.spawn_set_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, melee_container.global_position)
 		
 		var old_weapon : WeaponMelee = weapon_melee
 		weapon_melee = new_weapon
@@ -107,7 +107,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 	elif new_weapon is WeaponRanged:
 		var packed : PackedScene = PackedScene.new()
 		packed.pack(weapon_ranged)
-		drop_spawner.spawn_set_drop(packed)
+		drop_spawner.spawn_set_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, ranged_container.global_position)
 		
 		var old_weapon : WeaponRanged = weapon_ranged
 		weapon_ranged = new_weapon

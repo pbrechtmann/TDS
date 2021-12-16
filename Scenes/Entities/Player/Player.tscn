@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/Entities/Entity.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Entities/Player/Player.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/AssaultRifle.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/Pistol.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Items/Abilities/AbilityHeal/AbilityHeal.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=5]
 
@@ -32,11 +32,11 @@ shape = SubResource( 1 )
 [node name="Ranged" type="Node2D" parent="Weapons" index="0"]
 position = Vector2( 100, 0 )
 
-[node name="AssaultRifle" parent="Weapons/Ranged" index="0" instance=ExtResource( 3 )]
+[node name="Pistol" parent="Weapons/Ranged" index="0" instance=ExtResource( 3 )]
 modifiers = {
 "crit_chance": 0.1,
 "crit_multiplier": 2.0,
-"damage": 10.0,
+"damage": 25.0,
 "pierce": 1
 }
 
@@ -47,6 +47,11 @@ position = Vector2( 80, 0 )
 position = Vector2( 80, 0 )
 attack_delay = 0.5
 attack_cost = 25.0
+modifiers = {
+"crit_chance": 0.1,
+"crit_multiplier": 2.0,
+"damage": 50.0
+}
 
 [connection signal="area_entered" from="InteractionArea" to="." method="_on_InteractionArea_area_entered"]
 [connection signal="area_exited" from="InteractionArea" to="." method="_on_InteractionArea_area_exited"]

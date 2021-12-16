@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/InteractableObjects/InteractableObject.gd"
 }, {
+"base": "Drop",
+"class": "ItemDrop",
+"language": "GDScript",
+"path": "res://Scenes/InteractableObjects/Drops/ItemDrop.gd"
+}, {
 "base": "Area2D",
 "class": "LevelExit",
 "language": "GDScript",
@@ -169,6 +174,7 @@ _global_script_class_icons={
 "Health": "",
 "HealthDisplay": "",
 "InteractableObject": "",
+"ItemDrop": "",
 "LevelExit": "",
 "MainMenu": "",
 "NPC": "",
