@@ -27,6 +27,7 @@ signal pause
 
 
 func _ready() -> void:
+	set_active(false)
 	weapon = weapon_ranged
 	weapon_melee.init(self)
 
@@ -41,7 +42,7 @@ func move() -> void:
 	delta_vec.y = int(Input.is_action_pressed("down")) - int(Input.is_action_pressed("up"))
 	delta_vec = delta_vec.normalized()
 	var dash : float = dash_force if Input.is_action_just_pressed("dash") else 1.0
-	move_and_slide(delta_vec * speed * dash)
+	delta_vec = move_and_slide(delta_vec * speed * dash)
 
 
 func _physics_process(_delta) -> void:
@@ -92,7 +93,8 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 	var new_weapon = weapon_scene.instance()
 	if new_weapon is WeaponMelee:
 		var packed : PackedScene = PackedScene.new()
-		packed.pack(weapon_melee)
+		if packed.pack(weapon_melee) != OK:
+			printerr("Packing weapon failed")
 		drop_spawner.spawn_set_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, melee_container.global_position)
 		
 		var old_weapon : WeaponMelee = weapon_melee
@@ -106,7 +108,8 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 	
 	elif new_weapon is WeaponRanged:
 		var packed : PackedScene = PackedScene.new()
-		packed.pack(weapon_ranged)
+		if packed.pack(weapon_ranged) != OK:
+			printerr("Packing weapon failed")
 		drop_spawner.spawn_set_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, ranged_container.global_position)
 		
 		var old_weapon : WeaponRanged = weapon_ranged
@@ -118,6 +121,12 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		switch_to_ranged()
 	
 	emit_signal("weapon_changed")
+
+
+func set_active(b : bool):
+	set_physics_process(b)
+	set_process(b)
+	set_process_unhandled_input(b)
 
 
 func _on_Health_death() -> void:

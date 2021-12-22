@@ -9,7 +9,7 @@ func _ready():
 	set_process(false)
 
 
-func activate(user : Entity) -> void:
+func activate(_user : Entity) -> void:
 	queue_free()
 
 
@@ -18,7 +18,7 @@ func start(target : Entity) -> void:
 	set_process(true)
 
 
-func _process(delta):
+func _process(_delta):
 	if is_instance_valid(target):
 		global_position += global_position.direction_to(target.global_position) * speed
 

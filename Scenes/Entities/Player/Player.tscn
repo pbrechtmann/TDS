@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/Entities/Entity.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Entities/Player/Player.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/Pistol.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/Shotgun.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Items/Abilities/AbilityHeal/AbilityHeal.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=5]
 
@@ -20,9 +20,9 @@ smoothing_speed = 10.0
 [node name="AbilityHeal" parent="." index="5" instance=ExtResource( 4 )]
 
 [node name="InteractionArea" type="Area2D" parent="." index="9"]
+monitorable = false
 collision_layer = 0
 collision_mask = 8
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" index="0"]
 shape = SubResource( 1 )
@@ -32,12 +32,11 @@ shape = SubResource( 1 )
 [node name="Ranged" type="Node2D" parent="Weapons" index="0"]
 position = Vector2( 100, 0 )
 
-[node name="Pistol" parent="Weapons/Ranged" index="0" instance=ExtResource( 3 )]
+[node name="Shotgun" parent="Weapons/Ranged" index="0" instance=ExtResource( 3 )]
 modifiers = {
 "crit_chance": 0.1,
-"crit_multiplier": 2.0,
-"damage": 25.0,
-"pierce": 1
+"crit_multiplier": 1.5,
+"damage": 10.0
 }
 
 [node name="Melee" type="Node2D" parent="Weapons" index="1"]

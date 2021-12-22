@@ -1,6 +1,7 @@
 extends CanvasLayer
 class_name PauseMenu
 
+var game : Node2D
 
 onready var margin : MarginContainer = $Control/MarginContainer
 
@@ -17,8 +18,13 @@ func _ready():
 	margin.margin_right = -margin.margin_left
 
 
+func init(game : Node2D) -> void:
+	self.game = game
+
+
 func _on_ButtonContinue_button_down():
 	get_tree().paused = false
+	game.player.set_active(true)
 	queue_free()
 
 
@@ -29,7 +35,8 @@ func _on_ButtonSettings_button_down():
 
 func _on_ButtonMenu_button_down():
 	get_tree().paused = false
-	get_tree().change_scene("res://Scenes/Menus/Main/MainMenu.tscn")
+	if get_tree().change_scene("res://Scenes/Menus/Main/MainMenu.tscn") != OK:
+		printerr("Loading main menu scene failed")
 
 
 func _on_ButtonQuit_button_down():

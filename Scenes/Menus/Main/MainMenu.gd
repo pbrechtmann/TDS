@@ -15,7 +15,8 @@ func _ready():
 
 
 func _on_ButtonStart_button_down():
-	get_tree().change_scene("res://Scenes/World.tscn")
+	if get_tree().change_scene("res://Scenes/World.tscn") != OK:
+		printerr("Loading Game-scene failed")
 
 
 func _on_ButtonSettings_button_down():

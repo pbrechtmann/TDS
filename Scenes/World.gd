@@ -36,10 +36,12 @@ func generate() -> void:
 
 func _on_Player_game_over():
 	get_tree().call_group("Entity", "queue_free")
-	get_tree().reload_current_scene()
+	if get_tree().reload_current_scene() != OK:
+		printerr("Reloading Game-scene failed")
 
 
 func _on_Player_pause():
+	player.set_active(false)
 	var p_menu = pause_menu.instance()
 	add_child(p_menu)
 
@@ -47,9 +49,11 @@ func _on_Player_pause():
 func _on_Generator_done() -> void:
 	yield(get_tree(), "idle_frame")
 	player.collision_layer = 2 + 4
+	player.set_active(true)
 	if generator.exit.connect("level_done", self, "_on_Exit_level_done") != OK:
 		printerr("Failed connecting signal \"done\" from Generator to World")
 
 
 func _on_Exit_level_done() -> void:
+	player.set_active(false)
 	generate()

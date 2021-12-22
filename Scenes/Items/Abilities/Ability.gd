@@ -16,7 +16,7 @@ func try_activate_ability(user : Entity) -> void:
 		cooldown_timer.start(ability_delay)
 
 
-func activate_ability(user : Entity) -> void:
+func activate_ability(_user : Entity) -> void:
 	pass
 
 
