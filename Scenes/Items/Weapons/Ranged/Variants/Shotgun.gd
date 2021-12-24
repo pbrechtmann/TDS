@@ -1,6 +1,7 @@
 extends WeaponRanged
 class_name WeaponShotgun
 
+
 export(int) var bullet_num = 3
 export(float) var max_spread_deg = 10
 
