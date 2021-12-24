@@ -29,5 +29,7 @@ func _process(_delta):
 
 
 func _on_Health_death():
-	drop_spawner.spawn_drop(1, global_position, 1, 3, true)
-	._on_Health_death()
+	if not dead:
+		dead = true
+		drop_spawner.spawn_drop(1, global_position, 1, 3, true)
+		._on_Health_death()

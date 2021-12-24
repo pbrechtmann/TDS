@@ -5,6 +5,7 @@ var nav : Navigation2D = null
 var target : Entity = null
 var drop_spawner : DropSpawner = null
 
+var dead : bool = false
 
 func init(nav : Navigation2D, target : Entity, drop_spawner) -> void:
 	self.nav = nav
