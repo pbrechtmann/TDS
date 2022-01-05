@@ -22,7 +22,7 @@ _global_script_classes=[ {
 "base": "Drop",
 "class": "AutoDrop",
 "language": "GDScript",
-"path": "res://Scenes/InteractableObjects/Drops/AutoDrop.gd"
+"path": "res://Scenes/InteractableObjects/Drops/AutomaticPickup/AutoDrop.gd"
 }, {
 "base": "StaticBody2D",
 "class": "Barrier",
