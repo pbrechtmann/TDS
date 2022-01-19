@@ -6,13 +6,14 @@ var drop_scene = preload("res://Scenes/InteractableObjects/Drops/Drop.tscn")
 
 var item_drop_scene = preload("res://Scenes/InteractableObjects/Drops/ItemDrop.tscn")
 var health_drop_scene = preload("res://Scenes/InteractableObjects/Drops/AutomaticPickup/Variants/EnergyPercent.tscn")
+var upgrade_drop_scene = preload("res://Scenes/InteractableObjects/Drops/UpgradeDrop.tscn")
 
 
 func spawn_drop(tier : int, pos : Vector2, min_amount : int, max_amount : int, random_offset : bool = false) -> void:
 	#TODO: determine drop by tier
 	
 	for _i in range(rand_range(min_amount, max_amount)):
-		var drop = health_drop_scene.instance()
+		var drop = upgrade_drop_scene.instance()
 		
 		if random_offset:
 			pos += Vector2(randf(), randf()).normalized() * rand_range(64, 128)
