@@ -20,9 +20,9 @@ smoothing_speed = 10.0
 [node name="AbilityHeal" parent="." index="5" instance=ExtResource( 4 )]
 
 [node name="InteractionArea" type="Area2D" parent="." index="9"]
-monitorable = false
 collision_layer = 0
 collision_mask = 8
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" index="0"]
 shape = SubResource( 1 )
@@ -33,19 +33,12 @@ shape = SubResource( 1 )
 position = Vector2( 100, 0 )
 
 [node name="Shotgun" parent="Weapons/Ranged" index="0" instance=ExtResource( 3 )]
-modifiers = {
-"crit_chance": 0.1,
-"crit_multiplier": 1.5,
-"damage": 10.0
-}
 
 [node name="Melee" type="Node2D" parent="Weapons" index="1"]
 position = Vector2( 80, 0 )
 
 [node name="WeaponMelee" parent="Weapons/Melee" index="0" instance=ExtResource( 5 )]
 position = Vector2( 80, 0 )
-attack_delay = 0.5
-attack_cost = 25.0
 modifiers = {
 "crit_chance": 0.1,
 "crit_multiplier": 2.0,

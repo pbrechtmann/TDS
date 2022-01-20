@@ -8,8 +8,8 @@
 script = ExtResource( 1 )
 icon = ExtResource( 3 )
 attack_delay = 0.25
-attack_cost = 25.0
 modifiers = {
+"bounce": 1,
 "crit_chance": 0.1,
 "crit_multiplier": 1.5,
 "damage": 10.0
