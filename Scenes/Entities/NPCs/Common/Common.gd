@@ -1,7 +1,7 @@
 extends NPC
 class_name Common
 
-onready var weapon = $WeaponMelee
+onready var weapon = $Fists
 
 var speed = 300
 var threshold = 75

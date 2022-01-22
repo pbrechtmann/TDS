@@ -27,7 +27,7 @@ signal pause
 
 
 func _ready() -> void:
-	set_active(false)
+
 	weapon = weapon_ranged
 	weapon_melee.init(self)
 

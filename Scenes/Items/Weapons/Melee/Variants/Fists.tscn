@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Items/Weapons/Melee/Variants/Fists.gd" type="Script" id=2]
+
+[node name="Fists" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+icon = null
+modifiers = {
+"crit_chance": 0.1,
+"crit_multiplier": 2.0,
+"damage": 10.0
+}

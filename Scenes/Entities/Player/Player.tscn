@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/Entities/Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/Shotgun.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Items/Abilities/AbilityHeal/AbilityHeal.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Items/Weapons/Melee/Variants/Slash.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 128.0
@@ -33,12 +33,17 @@ shape = SubResource( 1 )
 position = Vector2( 100, 0 )
 
 [node name="Shotgun" parent="Weapons/Ranged" index="0" instance=ExtResource( 3 )]
+modifiers = {
+"bounce": 1,
+"crit_chance": 0.1,
+"crit_multiplier": 1.5,
+"damage": 10.0
+}
 
 [node name="Melee" type="Node2D" parent="Weapons" index="1"]
 position = Vector2( 80, 0 )
 
-[node name="WeaponMelee" parent="Weapons/Melee" index="0" instance=ExtResource( 5 )]
-position = Vector2( 80, 0 )
+[node name="Slash" parent="Weapons/Melee" index="0" instance=ExtResource( 5 )]
 modifiers = {
 "crit_chance": 0.1,
 "crit_multiplier": 2.0,
