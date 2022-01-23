@@ -1,14 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Items/Weapons/Melee/Variants/Pierce.gd" type="Script" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Weapons/Pierce.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 75, 5 )
 
 [node name="Pierce" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+icon = ExtResource( 4 )
 modifiers = {
 "crit_chance": 0.1,
 "crit_multiplier": 2.0,
