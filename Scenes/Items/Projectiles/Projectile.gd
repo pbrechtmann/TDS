@@ -43,7 +43,20 @@ func handle_pierce() -> bool:
 func handle_bounce() -> bool:
 	if bounce > 0:
 		bounce -= 1
-		direction = direction.bounce(collision_ray.get_collision_normal().normalized())
+		
+		var normal = Vector2.ZERO
+		
+		for i in range(1, 100):
+			if collision_ray.is_colliding():
+				normal = collision_ray.get_collision_normal()
+				break
+			else:
+				collision_ray.cast_to.y = lerp(-10, 10, i * 0.01)
+				collision_ray.force_raycast_update()
+		
+		normal.normalized()
+		
+		direction = direction.bounce(normal)
 		rotation = direction.angle()
 		return false
 	return true
