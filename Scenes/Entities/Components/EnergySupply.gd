@@ -29,12 +29,13 @@ func get_energy_percent() -> float:
 	return clamp(inverse_lerp(0, max_energy, current_energy), 0, 1)
 
 
-func modify_value(mod : float):
+func modify_value(mod : float) -> void:
 	max_energy += mod
-	emit_signal("max_changed")
+	emit_signal("max_changed", max_energy)
 
 
-func modify_percent(mod : float):
+func modify_percent(mod : float) -> float:
 	var change : float = max_energy * (mod / 100)
 	max_energy += change
-	emit_signal("max_changed")
+	emit_signal("max_changed", max_energy)
+	return change
