@@ -52,7 +52,10 @@ func _process(_delta) -> void:
 	health_bar.value = player.health.current_health
 	energy_bar.value = player.energy_supply.current_energy
 	
-	ability_cooldown.value = ability_cooldown.max_value - player.ability.cooldown_timer.get_time_left()
+	if not player.ability.duration_timer.is_stopped():
+		ability_cooldown.value = 0
+	else:
+		ability_cooldown.value = ability_cooldown.max_value - player.ability.cooldown_timer.get_time_left()
 
 
 func _on_Health_max_changed(new_value : float) -> void:

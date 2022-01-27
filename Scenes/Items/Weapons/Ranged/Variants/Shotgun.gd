@@ -6,7 +6,9 @@ export(int) var bullet_num = 3
 export(float) var max_spread_deg = 10
 
 
-func primary_attack() -> void:
+func primary_attack(damage_mod : float) -> void:
+	if modifiers.has("damage"):
+		modifiers["damage"] *= damage_mod
 	for i in range(bullet_num):
 		var new_projectile = projectile.instance()
 		var dir = global_position.direction_to(muzzle.global_position)

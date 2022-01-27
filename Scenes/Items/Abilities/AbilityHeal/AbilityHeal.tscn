@@ -5,3 +5,4 @@
 
 [node name="AbilityHeal" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+ability_duration = 0.0

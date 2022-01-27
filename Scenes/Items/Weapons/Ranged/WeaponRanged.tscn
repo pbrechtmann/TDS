@@ -7,6 +7,11 @@
 
 [node name="WeaponRanged" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+modifiers = {
+"crit_chance": 0.1,
+"crit_multiplier": 2.0,
+"damage": 50.0
+}
 projectile = ExtResource( 4 )
 
 [node name="Sprite" parent="." index="0"]

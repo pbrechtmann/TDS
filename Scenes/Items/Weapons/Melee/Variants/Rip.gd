@@ -4,13 +4,13 @@ export var attack_range : float = 350
 export var arc_radius : float = 150
 
 
-func primary_attack() -> void:
+func primary_attack(damage_mod : float) -> void:
 	tween.interpolate_property(self, "position:x", default_pos.x, default_pos.x + attack_range, (attack_duration / 3.0) * 2, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_method(self, "arc", 0, PI, (attack_duration / 3.0) * 2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.start()
 	yield(get_tree().create_timer((attack_duration / 3.0) * 2), "timeout")
 	
-	.primary_attack()
+	.primary_attack(damage_mod)
 	
 	tween.interpolate_property(self, "position:x", position.x, default_pos.x, attack_duration / 3.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	tween.start()

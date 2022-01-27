@@ -13,15 +13,15 @@ var ready : bool = true
 export var modifiers : Dictionary = {}
 
 
-func try_primary_attack(energy_supply) -> void:
+func try_primary_attack(energy_supply, damage_mod : float) -> void:
 	if ready and energy_supply.drain(attack_cost):
-		primary_attack()
+		primary_attack(damage_mod)
 		
 		ready = false
 		delay.start(attack_delay)
 
 
-func primary_attack() -> void:
+func primary_attack(_damage_mod : float) -> void:
 	pass
 
 

@@ -3,8 +3,8 @@ extends WeaponMelee
 export var attack_rotation : float = 90
 
 
-func primary_attack() -> void:
-	.primary_attack()
+func primary_attack(damage_mod : float) -> void:
+	.primary_attack(damage_mod)
 	tween.interpolate_property(self, "rotation_degrees", default_rotation, default_rotation - attack_rotation, attack_duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.start()
 	yield(get_tree().create_timer(attack_duration), "timeout")

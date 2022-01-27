@@ -21,7 +21,9 @@ func _ready() -> void:
 func init(u : Entity) -> void:
 	user = u
 
-func primary_attack() -> void:
+func primary_attack(damage_mod : float) -> void:
+	if modifiers.has("damage"):
+		modifiers["damage"] *= damage_mod
 	set_process(true)
 
 

@@ -6,6 +6,7 @@ onready var health_display : HealthDisplay = $HealthDisplay
 onready var energy_supply : EnergySupply = $EnergySupply
 onready var energy_display : EnergyDisplay = $EnergyDisplay
 onready var armor : Armor = $Armor
+onready var statmods : StatMods = $StatMods
 
 
 func _process(_delta) -> void:

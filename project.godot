@@ -134,6 +134,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Entities/NPCs/Spawners/Spawner.gd"
 }, {
+"base": "Node",
+"class": "StatMods",
+"language": "GDScript",
+"path": "res://Scenes/Entities/Components/StatMods.gd"
+}, {
 "base": "CanvasLayer",
 "class": "UI",
 "language": "GDScript",
@@ -205,6 +210,7 @@ _global_script_class_icons={
 "RoomBody": "",
 "RoomPrefab": "",
 "Spawner": "",
+"StatMods": "",
 "UI": "",
 "UpgradeDrop": "",
 "UpgradeModule": "",
