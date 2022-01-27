@@ -2,5 +2,5 @@ extends InteractableObject
 class_name Drop
 
 
-func activate(user : Entity) -> void:
+func activate(_user : Entity) -> void:
 	queue_free()

@@ -10,13 +10,13 @@ var step_history = []
 var steps_since_turn = 0
 var rooms = []
 
-func _init(starting_position, new_borders):
+func _init(starting_position, new_borders) -> void: 
 	assert(new_borders.has_point(starting_position))
 	position = starting_position
 	step_history.append(position)
 	borders = new_borders
 
-func walk(steps):
+func walk(steps) -> Array:
 	for step in steps:
 		if steps_since_turn >= 2:
 			change_direction()
@@ -27,7 +27,7 @@ func walk(steps):
 			change_direction()
 	return step_history
 
-func step():
+func step() -> bool:
 	var target_position = position + direction
 	if borders.has_point(target_position):
 		steps_since_turn += 1
@@ -36,7 +36,7 @@ func step():
 	else:
 		return false
 
-func change_direction():
+func change_direction() -> void:
 	steps_since_turn = 0
 	var directions = DIRECTIONS.duplicate()
 	directions.erase(direction)

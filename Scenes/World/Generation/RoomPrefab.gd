@@ -49,7 +49,7 @@ func init(player : Player, nav : Navigation2D, map : TileMap, drop_spawner : Dro
 
 
 func attach_nav_poly() -> void:
-	nav.navpoly_add(nav_poly.navpoly, nav_poly.global_transform)
+	var _poly = nav.navpoly_add(nav_poly.navpoly, nav_poly.global_transform)
 
 
 func spawn_barriers() -> void:

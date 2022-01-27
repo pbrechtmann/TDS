@@ -3,7 +3,7 @@ class_name Armor
 
 export var multipliers : Dictionary = {}
 
-func modify(modifiers : Dictionary):
+func modify(modifiers : Dictionary) -> Dictionary:
 	modifiers = modifiers.duplicate()
 	
 	for key in modifiers:

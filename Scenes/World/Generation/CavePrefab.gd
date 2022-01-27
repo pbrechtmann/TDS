@@ -4,7 +4,7 @@ class_name CavePrefab
 var floor_tiles : Array = []
 
 
-func generate_room(door_directions : Array, end_room : bool):
+func generate_room(door_directions : Array, end_room : bool) -> void:
 	if end_room:
 		door_directions.append(door_directions[0] * -1)
 	for d in door_directions:
@@ -48,7 +48,7 @@ func generate_room(door_directions : Array, end_room : bool):
 	generate_navpoly()
 
 
-func generate_navpoly():
+func generate_navpoly() -> void:
 	floor_tiles.sort()
 	var outline : PoolVector2Array = []
 	

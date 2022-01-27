@@ -3,6 +3,8 @@ class_name Weapon
 
 onready var delay : Timer = $Timer
 
+export(Texture) var icon
+
 export(float) var attack_delay = 0.5
 export(float, 0, 100) var attack_cost = 25
 
@@ -23,5 +25,5 @@ func primary_attack() -> void:
 	pass
 
 
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	ready = true

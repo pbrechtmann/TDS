@@ -2,15 +2,10 @@
 
 [ext_resource path="res://Scenes/Entities/NPCs/NPC.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Entities/NPCs/Common/Common.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Items/Weapons/Melee/Variants/Fists.tscn" type="PackedScene" id=3]
 
 [node name="Common" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
-[node name="WeaponMelee" parent="." index="4" instance=ExtResource( 3 )]
+[node name="Fists" parent="." index="7" instance=ExtResource( 3 )]
 position = Vector2( 50, 0 )
-modifiers = {
-"crit_chance": 0.1,
-"crit_multiplier": 2.0,
-"damage": 20.0
-}

@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/InteractableObjects/Drops/Drop.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/InteractableObjects/Drops/ItemDrop.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/AssaultRifle.tscn" type="PackedScene" id=3]
+
+[node name="ItemDrop" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+scene = ExtResource( 3 )

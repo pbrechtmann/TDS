@@ -4,7 +4,7 @@ class_name Barrier
 onready var sprite = $Sprite
 
 
-func set_active(a : bool):
+func set_active(a : bool) -> void:
 	if a:
 		collision_layer = 1
 	else:
