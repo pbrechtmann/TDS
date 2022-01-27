@@ -22,7 +22,7 @@ func spawn_drop(tier : int, pos : Vector2, min_amount : int, max_amount : int, r
 		call_deferred("add_child", drop)
 
 
-func spawn_set_drop(item : PackedScene, item_type : int, pos : Vector2):
+func spawn_set_drop(item : PackedScene, item_type : int, pos : Vector2) -> void:
 	var drop : ItemDrop = item_drop_scene.instance()
 	drop.global_position = pos
 	drop.init(item, item_type)

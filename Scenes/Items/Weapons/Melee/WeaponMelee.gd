@@ -13,12 +13,12 @@ var default_rotation : float = 0
 
 var hits : Array = []
 
-func _ready():
+func _ready() -> void:
 	default_pos += position
 	default_rotation += rotation_degrees
 	set_process(false)
 
-func init(u : Entity):
+func init(u : Entity) -> void:
 	user = u
 
 func primary_attack() -> void:
@@ -30,7 +30,7 @@ func attack_done() -> void:
 	hits.clear()
 
 
-func _process(_delta):
+func _process(_delta) -> void:
 	var targets = area.get_overlapping_bodies()
 	for target in targets:
 		if target is Entity and not target == user and not hits.has(target):

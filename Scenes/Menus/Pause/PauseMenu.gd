@@ -6,7 +6,7 @@ var game : Node2D
 onready var margin : MarginContainer = $Control/MarginContainer
 
 
-func _ready():
+func _ready() -> void:
 	pause_mode = Node.PAUSE_MODE_PROCESS
 	get_tree().paused = true
 	
@@ -22,22 +22,22 @@ func init(game : Node2D) -> void:
 	self.game = game
 
 
-func _on_ButtonContinue_button_down():
+func _on_ButtonContinue_button_down() -> void:
 	get_tree().paused = false
 	game.player.set_active(true)
 	queue_free()
 
 
-func _on_ButtonSettings_button_down():
+func _on_ButtonSettings_button_down() -> void:
 	# Settings Menu needs pause_mode = Node.PAUSE_MODE_PROCESS
 	pass # Replace with function body.
 
 
-func _on_ButtonMenu_button_down():
+func _on_ButtonMenu_button_down() -> void:
 	get_tree().paused = false
 	if get_tree().change_scene("res://Scenes/Menus/Main/MainMenu.tscn") != OK:
 		printerr("Loading main menu scene failed")
 
 
-func _on_ButtonQuit_button_down():
+func _on_ButtonQuit_button_down() -> void:
 	get_tree().quit()

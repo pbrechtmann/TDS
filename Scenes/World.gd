@@ -11,7 +11,7 @@ onready var drop_spawner : DropSpawner = $DropSpawner
 onready var ui : UI = $UI
 
 
-func _ready():
+func _ready() -> void:
 	if player.connect("game_over", self, "_on_Player_game_over") != OK:
 		printerr("Connecting game_over from Player to Level failed.")
 	if player.connect("pause", self, "_on_Player_pause") != OK:
@@ -34,13 +34,13 @@ func generate() -> void:
 	generator.generate_level(player, nav, drop_spawner)
 
 
-func _on_Player_game_over():
+func _on_Player_game_over() -> void:
 	get_tree().call_group("Entity", "queue_free")
 	if get_tree().reload_current_scene() != OK:
 		printerr("Reloading Game-scene failed")
 
 
-func _on_Player_pause():
+func _on_Player_pause() -> void:
 	player.set_active(false)
 	var p_menu = pause_menu.instance()
 	add_child(p_menu)

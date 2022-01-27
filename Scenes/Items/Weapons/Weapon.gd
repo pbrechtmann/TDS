@@ -25,5 +25,5 @@ func primary_attack() -> void:
 	pass
 
 
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	ready = true

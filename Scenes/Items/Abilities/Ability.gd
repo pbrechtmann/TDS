@@ -20,5 +20,5 @@ func activate_ability(_user : Entity) -> void:
 	pass
 
 
-func _on_Cooldown_timeout():
+func _on_Cooldown_timeout() -> void:
 	ready = true

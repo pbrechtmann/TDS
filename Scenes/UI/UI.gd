@@ -16,7 +16,7 @@ onready var melee_display : TextureRect = $Control/MarginContainer/HBoxContainer
 onready var ranged_display : TextureRect = $Control/MarginContainer/HBoxContainer/WeaponRanged/Display
 
 
-func _ready():
+func _ready() -> void:
 	var window_size : Vector2 = OS.get_window_size()
 	margin_container.margin_bottom = window_size.y / -108 # 10 pixel margin for FullHD
 	margin_container.margin_top = window_size.y - 128 + margin_container.margin_bottom
@@ -25,7 +25,7 @@ func _ready():
 	margin_container.margin_right = -margin_container.margin_left
 
 
-func init(player : Player):
+func init(player : Player) -> void:
 	self.player = player
 	
 	if player.health.connect("max_changed", self, "_on_Health_max_changed") != OK:
@@ -46,7 +46,7 @@ func init(player : Player):
 	ranged_display.texture = player.weapon_ranged.icon
 
 
-func _process(_delta):
+func _process(_delta) -> void:
 	if not is_instance_valid(player):
 		return
 	health_bar.value = player.health.current_health

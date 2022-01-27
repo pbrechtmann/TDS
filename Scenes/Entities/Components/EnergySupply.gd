@@ -9,7 +9,7 @@ var charge_time : float = 10.0
 
 signal max_changed
 
-func _process(delta):
+func _process(delta) -> void:
 	if current_energy < max_energy:
 		current_energy += (max_energy / charge_time) * delta
 

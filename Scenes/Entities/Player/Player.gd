@@ -32,7 +32,7 @@ func _ready() -> void:
 	weapon_melee.init(self)
 
 
-func init(drop_spawner : DropSpawner):
+func init(drop_spawner : DropSpawner) -> void:
 	self.drop_spawner = drop_spawner
 
 
@@ -123,7 +123,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 	emit_signal("weapon_changed")
 
 
-func set_active(b : bool):
+func set_active(b : bool) -> void:
 	set_physics_process(b)
 	set_process(b)
 	set_process_unhandled_input(b)

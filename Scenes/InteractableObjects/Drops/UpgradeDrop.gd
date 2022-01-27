@@ -26,6 +26,6 @@ func activate(user : Entity) -> void:
 	.activate(user)
 
 
-func init(scn : PackedScene, type : int):
+func init(scn : PackedScene, type : int) -> void:
 	scene = scn
 	self.type = type

@@ -5,7 +5,7 @@ onready var sprite = $Sprite
 
 signal level_done
 
-func set_active(a : bool):
+func set_active(a : bool) -> void:
 	if a:
 		collision_mask = 2
 	else:
@@ -13,6 +13,6 @@ func set_active(a : bool):
 	sprite.visible = a
 
 
-func _on_LevelExit_body_entered(body):
+func _on_LevelExit_body_entered(body) -> void:
 	if body is Player:
 		emit_signal("level_done")

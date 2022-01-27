@@ -8,7 +8,7 @@ var cave : bool = false
 
 onready var collision = $CollisionShape2D
 
-func init(s : Vector2, spacer : Vector2, tile_size : int, c : bool = false):
+func init(s : Vector2, spacer : Vector2, tile_size : int, c : bool = false) -> void:
 	size = s * tile_size / 2
 	cave = c
 	var shape = RectangleShape2D.new()

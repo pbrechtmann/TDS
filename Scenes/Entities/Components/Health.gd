@@ -8,17 +8,17 @@ signal death
 signal max_changed
 
 
-func _ready():
+func _ready() -> void:
 	current_health = max_health
 
 
-func damage(a : float):
+func damage(a : float) -> void:
 	current_health -= a
 	if current_health <= 0:
 		emit_signal("death")
 
 
-func heal(a : float):
+func heal(a : float) -> void:
 	current_health = clamp(current_health + a, 0, max_health)
 
 

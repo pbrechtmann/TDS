@@ -8,12 +8,12 @@ onready var energy_display : EnergyDisplay = $EnergyDisplay
 onready var armor : Armor = $Armor
 
 
-func _process(_delta):
+func _process(_delta) -> void:
 	health_display.show_health(health)
 	energy_display.show_energy(energy_supply)
 
 
-func get_damage(modifiers : Dictionary):
+func get_damage(modifiers : Dictionary) -> void:
 	modifiers = armor.modify(modifiers)
 	
 	var damage : float = 0
@@ -36,5 +36,5 @@ func get_damage(modifiers : Dictionary):
 	health.damage(damage)
 
 
-func _on_Health_death():
+func _on_Health_death() -> void:
 	queue_free()

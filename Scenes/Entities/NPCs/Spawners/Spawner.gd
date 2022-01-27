@@ -9,7 +9,7 @@ onready var collision : CollisionShape2D = $CollisionShape2D
 
 onready var npc_container : Node2D = $NPCContainer
 
-func _ready():
+func _ready() -> void:
 	set_process(false)
 
 
@@ -20,17 +20,17 @@ func spawn() -> NPC:
 	return new_npc
 
 
-func _process(_delta):
+func _process(_delta) -> void:
 	if npc_container.get_child_count() == 0:
 		set_process(false)
 		queue_free()
 
 
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	npc_container.add_child(spawn())
 
 
-func _on_Health_death():
+func _on_Health_death() -> void:
 	sprite.visible = false
 	collision.queue_free()
 	timer.stop()
