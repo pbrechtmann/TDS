@@ -10,7 +10,7 @@ onready var melee_container : Node2D = $Weapons/Melee
 onready var weapon_ranged : Weapon = ranged_container.get_child(0)
 onready var weapon_melee : Weapon = melee_container.get_child(0)
 
-onready var ability : Ability = $AbilityBerserk
+onready var ability : Ability = $AbilityLeech
 onready var interaction_area : Area2D = $InteractionArea
 
 var weapon : Weapon
@@ -27,9 +27,9 @@ signal pause
 
 
 func _ready() -> void:
-
-	weapon = weapon_ranged
+	weapon_ranged.init(self)
 	weapon_melee.init(self)
+	weapon = weapon_ranged
 
 
 func init(drop_spawner : DropSpawner) -> void:
@@ -52,7 +52,7 @@ func _physics_process(_delta) -> void:
 
 func _process(_delta) -> void:
 	if Input.is_action_pressed("attack_primary"):
-		weapon.try_primary_attack(energy_supply, statmods.damage)
+		weapon.try_primary_attack(energy_supply, statmods.attack_mods)
 
 
 func _unhandled_input(event) -> void:

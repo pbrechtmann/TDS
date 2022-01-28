@@ -2,8 +2,8 @@ extends WeaponMelee
 
 export var attack_range : float = 100
 
-func primary_attack(damage_mod : float) -> void:
-	.primary_attack(damage_mod)
+func primary_attack(attack_mods : Dictionary) -> void:
+	.primary_attack(attack_mods)
 	tween.interpolate_property(self, "position:x", default_pos.x, default_pos.x + attack_range, attack_duration, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.start()
 	yield(get_tree().create_timer(attack_duration), "timeout")

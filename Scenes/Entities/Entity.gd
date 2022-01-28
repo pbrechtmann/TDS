@@ -14,7 +14,7 @@ func _process(_delta) -> void:
 	energy_display.show_energy(energy_supply)
 
 
-func get_damage(modifiers : Dictionary) -> void:
+func get_damage(modifiers : Dictionary, source : Entity) -> void:
 	modifiers = armor.modify(modifiers)
 	
 	var damage : float = 0
@@ -33,6 +33,9 @@ func get_damage(modifiers : Dictionary) -> void:
 	
 	if rand_range(0, 1) < crit_chance:
 		damage = damage * crit_multiplier
+	
+	if modifiers.has("lifesteal"):
+		source.health.heal(damage * modifiers["lifesteal"])
 	
 	health.damage(damage)
 

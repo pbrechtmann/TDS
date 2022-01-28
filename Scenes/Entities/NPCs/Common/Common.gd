@@ -25,7 +25,7 @@ func _physics_process(_delta) -> void:
 
 func _process(_delta) -> void: 
 	if weapon.global_position.distance_to(target.global_position) <= threshold:
-		weapon.try_primary_attack(energy_supply, statmods.damage)
+		weapon.try_primary_attack(energy_supply, statmods.attack_mods)
 
 
 func _on_Health_death() -> void:
