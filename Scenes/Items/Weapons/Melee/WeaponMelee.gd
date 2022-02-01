@@ -12,6 +12,8 @@ var default_rotation : float = 0
 
 var hits : Array = []
 
+var final_modifiers : Dictionary = {}
+
 
 func _ready() -> void:
 	default_pos += position
