@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/SMG.png-5ce6c381ad3e553d11d0b19382c17e04.stex"
+path="res://.import/Smash.png-38556a950990faa2a3b49b899fab1c70.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/SMG.png"
-dest_files=[ "res://.import/SMG.png-5ce6c381ad3e553d11d0b19382c17e04.stex" ]
+source_file="res://Assets/Icons/Weapons/Smash.png"
+dest_files=[ "res://.import/Smash.png-38556a950990faa2a3b49b899fab1c70.stex" ]
 
 [params]
 

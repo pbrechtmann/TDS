@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Fist.png-2690e1228d03ef17494626c36a2e2a6e.stex"
+path="res://.import/Dash.png-72da7216521774cc52e7d50bc5347313.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/Fist.png"
-dest_files=[ "res://.import/Fist.png-2690e1228d03ef17494626c36a2e2a6e.stex" ]
+source_file="res://Assets/Icons/Abilities/Dash.png"
+dest_files=[ "res://.import/Dash.png-72da7216521774cc52e7d50bc5347313.stex" ]
 
 [params]
 

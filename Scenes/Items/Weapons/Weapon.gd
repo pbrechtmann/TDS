@@ -26,7 +26,7 @@ func try_primary_attack(energy_supply, attack_mods : Dictionary) -> void:
 		delay.start(attack_delay)
 
 
-func primary_attack(attack_mods : Dictionary) -> void:
+func primary_attack(_attack_mods : Dictionary) -> void:
 	pass
 
 

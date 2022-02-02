@@ -2,7 +2,8 @@
 
 [ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/Shotgun.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Items/Weapons/Ranged/WeaponRanged.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Assets/Weapons/Shotgun.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Icons/Weapons/Shotgun.png" type="Texture" id=3]
+
 
 [node name="Shotgun" instance=ExtResource( 2 )]
 script = ExtResource( 1 )

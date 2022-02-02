@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Melee.png-6f3f66fe7f1b8a8a9948f92997f5acd0.stex"
+path="res://.import/Melee.png-79a3064a2ebcf4212a903e14566f5b1f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/Melee.png"
-dest_files=[ "res://.import/Melee.png-6f3f66fe7f1b8a8a9948f92997f5acd0.stex" ]
+source_file="res://Assets/Icons/Weapons/Melee.png"
+dest_files=[ "res://.import/Melee.png-79a3064a2ebcf4212a903e14566f5b1f.stex" ]
 
 [params]
 

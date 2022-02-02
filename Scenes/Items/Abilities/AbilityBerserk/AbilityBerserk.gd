@@ -11,7 +11,7 @@ func activate_ability(user : Entity) -> void:
 	user.statmods.set_speed(speed_mult)
 
 
-func end_ability():
+func end_ability() -> void:
 	user.statmods.reset_damage()
 	user.statmods.reset_speed()
 

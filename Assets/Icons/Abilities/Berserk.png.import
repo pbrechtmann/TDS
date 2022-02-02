@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/AssaultRifle.png-cffbfc7fc2196ee70aca7d80e3c5eb81.stex"
+path="res://.import/Berserk.png-900441d669eeb55f1439f074dab7eda4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/AssaultRifle.png"
-dest_files=[ "res://.import/AssaultRifle.png-cffbfc7fc2196ee70aca7d80e3c5eb81.stex" ]
+source_file="res://Assets/Icons/Abilities/Berserk.png"
+dest_files=[ "res://.import/Berserk.png-900441d669eeb55f1439f074dab7eda4.stex" ]
 
 [params]
 
