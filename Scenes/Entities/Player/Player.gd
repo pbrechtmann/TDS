@@ -2,7 +2,6 @@ extends Entity
 class_name Player
 
 export(float) var speed = 1000
-export(float) var dash_force = 4
 
 onready var ranged_container : Node2D = $Weapons/Ranged
 onready var melee_container : Node2D = $Weapons/Melee
@@ -10,7 +9,14 @@ onready var melee_container : Node2D = $Weapons/Melee
 onready var weapon_ranged : Weapon = ranged_container.get_child(0)
 onready var weapon_melee : Weapon = melee_container.get_child(0)
 
-onready var ability : Ability = $AbilityHeal
+
+onready var ability_container : Node2D = $Abilities/Ability
+onready var ability_character_container : Node2D = $Abilities/CharacterAbility
+
+onready var ability : Ability = ability_container.get_child(0)
+onready var ability_character : Ability = ability_character_container.get_child(0)
+
+
 onready var interaction_area : Area2D = $InteractionArea
 
 var weapon : Weapon
@@ -27,9 +33,9 @@ signal pause
 
 
 func _ready() -> void:
-
-	weapon = weapon_ranged
+	weapon_ranged.init(self)
 	weapon_melee.init(self)
+	weapon = weapon_ranged
 
 
 func init(drop_spawner : DropSpawner) -> void:
@@ -41,8 +47,7 @@ func move() -> void:
 	delta_vec.x = int(Input.is_action_pressed("right")) - int(Input.is_action_pressed("left"))
 	delta_vec.y = int(Input.is_action_pressed("down")) - int(Input.is_action_pressed("up"))
 	delta_vec = delta_vec.normalized()
-	var dash : float = dash_force if Input.is_action_just_pressed("dash") else 1.0
-	delta_vec = move_and_slide(delta_vec * speed * dash)
+	delta_vec = move_and_slide(delta_vec * speed * statmods.speed)
 
 
 func _physics_process(_delta) -> void:
@@ -52,12 +57,14 @@ func _physics_process(_delta) -> void:
 
 func _process(_delta) -> void:
 	if Input.is_action_pressed("attack_primary"):
-		weapon.try_primary_attack(energy_supply)
+		weapon.try_primary_attack(energy_supply, statmods.attack_mods)
 
 
 func _unhandled_input(event) -> void:
 	if event.is_action_pressed("ability"):
 		ability.try_activate_ability(self)
+	if event.is_action_pressed("ability_character"):
+		ability_character.try_activate_ability(self)
 	if not event.is_echo() and event.is_action_pressed("interact") and current_interactable:
 		if is_instance_valid(current_interactable):
 			current_interactable.activate(self)

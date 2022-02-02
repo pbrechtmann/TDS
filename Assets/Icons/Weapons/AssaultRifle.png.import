@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Smash.png-e2b1335caffc37bec023e8fb5e52d128.stex"
+path="res://.import/AssaultRifle.png-8c86d99465737d296c7dffb25993bd87.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/Smash.png"
-dest_files=[ "res://.import/Smash.png-e2b1335caffc37bec023e8fb5e52d128.stex" ]
+source_file="res://Assets/Icons/Weapons/AssaultRifle.png"
+dest_files=[ "res://.import/AssaultRifle.png-8c86d99465737d296c7dffb25993bd87.stex" ]
 
 [params]
 

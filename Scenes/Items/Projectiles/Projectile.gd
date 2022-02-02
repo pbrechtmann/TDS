@@ -9,15 +9,17 @@ var pierce : int = 0
 var bounce : int = 0
 
 var modifiers : Dictionary = {}
+var source : Node2D
 
 onready var collision_ray : RayCast2D = $RayCast2D
 
 
-func init(muzzle_transform : Transform2D, dir : Vector2, modifiers : Dictionary) -> void:
+func init(muzzle_transform : Transform2D, dir : Vector2, modifiers : Dictionary, source : Node2D) -> void:
 	set_as_toplevel(true)
 	direction = dir
 	global_transform = muzzle_transform
 	
+	self.source = source
 	self.modifiers = modifiers
 	for key in modifiers:
 		match key:
@@ -66,7 +68,7 @@ func _on_Area2D_body_entered(body : PhysicsBody2D) -> void:
 	var done = true
 	
 	if body is Entity:
-		body.get_damage(modifiers)
+		body.get_damage(modifiers, source)
 		done = handle_pierce()
 	else:
 		done = handle_bounce()

@@ -10,7 +10,7 @@ onready var energy_bar : TextureProgress = $Control/MarginContainer/HBoxContaine
 onready var health_bar : TextureProgress = $Control/MarginContainer/HBoxContainer/VBoxContainer/Health
 
 onready var ability_cooldown : TextureProgress = $Control/MarginContainer/HBoxContainer/Ability
-onready var dash_cooldown
+onready var ability_character_cooldown : TextureProgress = $Control/MarginContainer/HBoxContainer/AbilityCharacter
 
 onready var melee_display : TextureRect = $Control/MarginContainer/HBoxContainer/WeaponMelee/Display
 onready var ranged_display : TextureRect = $Control/MarginContainer/HBoxContainer/WeaponRanged/Display
@@ -41,6 +41,10 @@ func init(player : Player) -> void:
 	energy_bar.max_value = player.energy_supply.max_energy
 	
 	ability_cooldown.max_value = player.ability.ability_delay
+	ability_character_cooldown.max_value = player.ability_character.ability_delay
+	
+	ability_cooldown.texture_progress = player.ability.icon
+	ability_character_cooldown.texture_progress = player.ability_character.icon
 
 	melee_display.texture = player.weapon_melee.icon
 	ranged_display.texture = player.weapon_ranged.icon
@@ -52,7 +56,15 @@ func _process(_delta) -> void:
 	health_bar.value = player.health.current_health
 	energy_bar.value = player.energy_supply.current_energy
 	
-	ability_cooldown.value = ability_cooldown.max_value - player.ability.cooldown_timer.get_time_left()
+	if not player.ability.duration_timer.is_stopped():
+		ability_cooldown.value = 0
+	else:
+		ability_cooldown.value = ability_cooldown.max_value - player.ability.cooldown_timer.get_time_left()
+	
+	if not player.ability_character.duration_timer.is_stopped():
+		ability_character_cooldown.value = 0
+	else:
+		ability_character_cooldown.value = ability_character_cooldown.max_value - player.ability_character.cooldown_timer.get_time_left()
 
 
 func _on_Health_max_changed(new_value : float) -> void:
@@ -65,6 +77,10 @@ func _on_Energy_max_changed(new_value : float) -> void:
 
 func _on_Ability_delay_changed(new_value : float) -> void:
 	ability_cooldown.max_value = new_value
+
+
+func _on_Ability_character_delay_changed(new_value : float) -> void:
+	ability_character_cooldown.max_value = new_value
 
 
 func _on_Player_weapon_changed() -> void:
