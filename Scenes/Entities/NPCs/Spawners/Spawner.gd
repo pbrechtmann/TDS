@@ -32,6 +32,7 @@ func _on_Timer_timeout() -> void:
 
 func _on_Health_death() -> void:
 	sprite.visible = false
-	collision.queue_free()
+	if is_instance_valid(collision):
+		collision.queue_free()
 	timer.stop()
 	set_process(true)

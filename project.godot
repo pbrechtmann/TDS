@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Entities/NPCs/Common/Common.gd"
 }, {
+"base": "Node2D",
+"class": "DamageEffect",
+"language": "GDScript",
+"path": "res://Scenes/Entities/StatusEffects/DamageEffect.gd"
+}, {
 "base": "InteractableObject",
 "class": "Drop",
 "language": "GDScript",
@@ -191,6 +196,7 @@ _global_script_class_icons={
 "Barrier": "",
 "CavePrefab": "",
 "Common": "",
+"DamageEffect": "",
 "Drop": "",
 "DropSpawner": "",
 "EnergyDisplay": "",

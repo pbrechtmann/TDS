@@ -1,6 +1,10 @@
 extends KinematicBody2D
 class_name Entity
 
+var effect_damage_fire : PackedScene = preload("res://Scenes/Entities/StatusEffects/Variants/DamageEffectFire.tscn")
+
+
+
 onready var health : Health = $Health
 onready var health_display : HealthDisplay = $HealthDisplay
 onready var energy_supply : EnergySupply = $EnergySupply
@@ -30,6 +34,10 @@ func get_damage(modifiers : Dictionary, source : Entity) -> void:
 				crit_chance = modifiers[key]
 			"crit_multiplier":
 				crit_multiplier = modifiers[key]
+			"fire":
+				var fire_effect = effect_damage_fire.instance()
+				add_child(fire_effect)
+				fire_effect.init(self, modifiers["fire"])
 	
 	if rand_range(0, 1) < crit_chance:
 		damage = damage * crit_multiplier

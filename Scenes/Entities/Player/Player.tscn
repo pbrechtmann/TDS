@@ -36,7 +36,12 @@ modifiers = {
 "bounce": 1,
 "crit_chance": 0.1,
 "crit_multiplier": 1.5,
-"damage": 10.0
+"damage": 10.0,
+"fire": {
+"dps": 3.0,
+"duration": 10.0,
+"initial_damage": 10.0
+}
 }
 
 [node name="Melee" type="Node2D" parent="Weapons" index="1"]
