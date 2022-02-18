@@ -4,12 +4,17 @@ class_name Health
 export var max_health : float = 100
 var current_health : float 
 
+
 signal death
 signal max_changed
 
 
 func _ready() -> void:
 	current_health = max_health
+
+
+func regenerate(change_per_second : float, delta : float) -> void:
+	current_health = clamp(current_health + change_per_second * delta, 0, max_health)
 
 
 func damage(a : float) -> void:

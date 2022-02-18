@@ -5,13 +5,12 @@ export var max_energy : float = 100
 
 var current_energy : float = max_energy
 
-var charge_time : float = 10.0
-
 signal max_changed
 
-func _process(delta) -> void:
-	if current_energy < max_energy:
-		current_energy += (max_energy / charge_time) * delta
+
+func regenerate(change_per_second : float, delta : float) -> void:
+	current_energy = clamp(current_energy + change_per_second * delta, 0, max_energy)
+
 
 func drain(a : float) -> bool:
 	if a > current_energy:

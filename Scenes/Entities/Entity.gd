@@ -9,7 +9,10 @@ onready var armor : Armor = $Armor
 onready var statmods : StatMods = $StatMods
 
 
-func _process(_delta) -> void:
+func _process(delta) -> void:
+	health.regenerate(statmods.health_change_per_second, delta)
+	energy_supply.regenerate(statmods.energy_change_per_second, delta)
+	
 	health_display.show_health(health)
 	energy_display.show_energy(energy_supply)
 
