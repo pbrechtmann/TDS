@@ -14,6 +14,7 @@ func init(target, effect_info : Dictionary) -> void:
 	
 	target.health.damage(effect_info["initial_damage"])
 	duration_timer.start(effect_info["duration"])
+	start_effects()
 
 
 func _process(delta):
@@ -21,6 +22,10 @@ func _process(delta):
 
 
 func custom_process(_delta : float) -> void:
+	pass
+
+
+func start_effects() -> void:
 	pass
 
 

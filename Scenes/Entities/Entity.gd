@@ -1,8 +1,10 @@
 extends KinematicBody2D
 class_name Entity
 
+var effect_damage_bleeding : PackedScene = preload("res://Scenes/Entities/StatusEffects/Variants/DamageEffectBleeding.tscn")
+var effect_damage_cold : PackedScene = preload("res://Scenes/Entities/StatusEffects/Variants/DamageEffectCold.tscn")
 var effect_damage_fire : PackedScene = preload("res://Scenes/Entities/StatusEffects/Variants/DamageEffectFire.tscn")
-
+var effect_damage_poison : PackedScene = preload("res://Scenes/Entities/StatusEffects/Variants/DamageEffectPoison.tscn")
 
 
 onready var health : Health = $Health
@@ -37,10 +39,14 @@ func get_damage(modifiers : Dictionary, source : Entity) -> void:
 				crit_chance = modifiers[key]
 			"crit_multiplier":
 				crit_multiplier = modifiers[key]
+			"bleeding":
+				add_effect(modifiers["bleeding"], effect_damage_bleeding)
+			"cold":
+				add_effect(modifiers["cold"], effect_damage_bleeding)
 			"fire":
-				var fire_effect = effect_damage_fire.instance()
-				add_child(fire_effect)
-				fire_effect.init(self, modifiers["fire"])
+				add_effect(modifiers["fire"], effect_damage_bleeding)
+			"poison":
+				add_effect(modifiers["poison"], effect_damage_poison)
 	
 	if rand_range(0, 1) < crit_chance:
 		damage = damage * crit_multiplier
@@ -49,6 +55,12 @@ func get_damage(modifiers : Dictionary, source : Entity) -> void:
 		source.health.heal(damage * modifiers["lifesteal"])
 	
 	health.damage(damage)
+
+
+func add_effect(modifiers : Dictionary, scene : PackedScene) -> void:
+	var effect : DamageEffect = scene.instance()
+	add_child(effect)
+	effect.init(self, modifiers)
 
 
 func _on_Health_death() -> void:
