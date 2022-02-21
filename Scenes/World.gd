@@ -44,6 +44,7 @@ func _on_Player_pause() -> void:
 	player.set_active(false)
 	var p_menu = pause_menu.instance()
 	add_child(p_menu)
+	p_menu.init(self)
 
 
 func _on_Generator_done() -> void:
