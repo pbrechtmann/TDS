@@ -1,8 +1,8 @@
 extends Drop
 class_name AutoDrop
 
-enum ATTRIBUTE { HEALTH, ENERGY }
-enum TYPE { VALUE, PERCENTAGE }
+enum ATTRIBUTE { ENERGY, HEALTH }
+enum TYPE { PERCENTAGE, VALUE }
 
 
 var target : Entity
@@ -26,20 +26,18 @@ func init(attribute : int, type : int, value : float) -> void:
 
 func activate(user : Entity) -> void:
 	match attribute:
-		ATTRIBUTE.HEALTH:
-			match type:
-				TYPE.PERCENTAGE:
-					var heal_amount = user.health.max_health * stat_restore
-					user.health.heal(heal_amount)
-				TYPE.VALUE:
-					user.health.heal(stat_restore)
 		ATTRIBUTE.ENERGY:
 			match type:
 				TYPE.PERCENTAGE:
-					var restore_amount = user.energy_supply.max_energy * stat_restore
-					user.energy_supply.charge(restore_amount)
+					user.energy_supply.charge(user.energy_supply.max_energy * stat_restore)
 				TYPE.VALUE:
 					user.energy_supply.charge(stat_restore)
+		ATTRIBUTE.HEALTH:
+			match type:
+				TYPE.PERCENTAGE:
+					user.health.heal(user.health.max_health * stat_restore)
+				TYPE.VALUE:
+					user.health.heal(stat_restore)
 	queue_free()
 
 

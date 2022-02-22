@@ -10,19 +10,30 @@ var upgrade_drop_scene = preload("res://Scenes/InteractableObjects/Drops/Upgrade
 
 
 func spawn_drop(tier : int, pos : Vector2, min_amount : int, max_amount : int, random_offset : bool = false) -> void:
-	#TODO: determine drop by tier
 	
 	for _i in range(rand_range(min_amount, max_amount)):
-		var drop = upgrade_drop_scene.instance()
-		
+		var drop_dict : Dictionary
+		match tier:
+			1:
+				drop_dict = LootData.tier_1[randi() % LootData.tier_1.size()]
+			2:
+				drop_dict = LootData.tier_2[randi() % LootData.tier_2.size()]
+			3:
+				drop_dict = LootData.tier_3[randi() % LootData.tier_3.size()]
+			4:
+				drop_dict = LootData.tier_4[randi() % LootData.tier_4.size()]
 		
 		if random_offset:
 			pos += Vector2(randf(), randf()).normalized() * rand_range(64, 128)
 		
-		spawn_auto_drop(AutoDrop.ATTRIBUTE.HEALTH, AutoDrop.TYPE.PERCENTAGE, 0.5, pos)
 		
-		drop.global_position = pos
-		call_deferred("add_child", drop)
+		match drop_dict["drop_type"]:
+			"auto":
+				spawn_auto_drop(drop_dict["attribute"], drop_dict["type"], drop_dict["value"], pos)
+			"item":
+				spawn_item_drop(drop_dict["scene"], drop_dict["type"], pos)
+			"upgrade":
+				spawn_upgrade_drop(drop_dict["scene"], drop_dict["type"], pos)
 
 
 func spawn_item_drop(item : PackedScene, item_type : int, pos : Vector2) -> void:

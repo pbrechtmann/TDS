@@ -26,6 +26,7 @@ var drop_spawner : DropSpawner
 var current_interactable : InteractableObject = null
 var overlapping_interactables : Array = []
 
+signal ability_changed
 signal weapon_changed
 signal weapon_switched
 signal game_over
@@ -102,7 +103,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		var packed : PackedScene = PackedScene.new()
 		if packed.pack(weapon_melee) != OK:
 			printerr("Packing weapon failed")
-		drop_spawner.spawn_set_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, melee_container.global_position)
+		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, melee_container.global_position)
 		
 		var old_weapon : WeaponMelee = weapon_melee
 		weapon_melee = new_weapon
@@ -117,7 +118,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		var packed : PackedScene = PackedScene.new()
 		if packed.pack(weapon_ranged) != OK:
 			printerr("Packing weapon failed")
-		drop_spawner.spawn_set_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, ranged_container.global_position)
+		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, ranged_container.global_position)
 		
 		var old_weapon : WeaponRanged = weapon_ranged
 		weapon_ranged = new_weapon
@@ -128,6 +129,26 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		switch_to_ranged()
 	
 	emit_signal("weapon_changed")
+
+
+func pickup_ability(ability_scene : PackedScene) -> void:
+	var new_ability = ability_scene.instance()
+	var old_ability : Ability
+	
+	if ability:
+		var packed : PackedScene = PackedScene.new()
+		if packed.pack(ability) != OK:
+			printerr("Packing ability failed")
+		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.ABILITY, global_position)
+		old_ability = ability
+	
+	ability_container.add_child(new_ability)
+	ability = new_ability
+	
+	if old_ability:
+		old_ability.queue_free()
+
+	emit_signal("ability_changed")
 
 
 func set_active(b : bool) -> void:

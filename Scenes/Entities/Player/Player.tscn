@@ -33,7 +33,6 @@ position = Vector2( 100, 0 )
 
 [node name="Shotgun" parent="Weapons/Ranged" index="0" instance=ExtResource( 3 )]
 modifiers = {
-"bounce": 1,
 "crit_chance": 0.1,
 "crit_multiplier": 1.5,
 "damage": 10.0

@@ -4,13 +4,11 @@
 [ext_resource path="res://Scenes/Items/Weapons/Ranged/WeaponRanged.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Icons/Weapons/Shotgun.png" type="Texture" id=3]
 
-
 [node name="Shotgun" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 icon = ExtResource( 3 )
 attack_delay = 0.25
 modifiers = {
-"bounce": 1,
 "crit_chance": 0.1,
 "crit_multiplier": 1.5,
 "damage": 10.0

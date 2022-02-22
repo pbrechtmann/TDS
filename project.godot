@@ -234,6 +234,10 @@ config/name="TDS"
 run/main_scene="res://Scenes/Menus/Main/MainMenu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+LootData="*res://Autoload/LootData.gd"
+
 [debug]
 
 gdscript/warnings/shadowed_variable=false

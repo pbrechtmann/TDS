@@ -32,6 +32,8 @@ func init(player : Player) -> void:
 		printerr("Connecting max changed from Health to UI failed")
 	if player.energy_supply.connect("max_changed", self, "_on_Energy_max_changed") != OK:
 		printerr("Connecting max changed from EnergySupply to UI failed")
+	if player.connect("ability_changed", self, "_on_Player_ability_changed") != OK:
+		printerr("Connecting ability changed from Player to UI failed")
 	if player.connect("weapon_changed", self, "_on_Player_weapon_changed") != OK:
 		printerr("Connecting weapon changed from Player to UI failed")
 	if player.connect("weapon_switched", self, "_on_Player_weapon_switched") != OK:
@@ -81,6 +83,11 @@ func _on_Ability_delay_changed(new_value : float) -> void:
 
 func _on_Ability_character_delay_changed(new_value : float) -> void:
 	ability_character_cooldown.max_value = new_value
+
+
+func _on_Player_ability_changed() -> void:
+	ability_cooldown.texture_progress = player.ability.icon
+	_on_Ability_delay_changed(player.ability.ability_delay)
 
 
 func _on_Player_weapon_changed() -> void:
