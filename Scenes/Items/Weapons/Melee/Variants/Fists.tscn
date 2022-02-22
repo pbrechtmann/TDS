@@ -1,13 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Items/Weapons/Melee/WeaponMelee.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Items/Weapons/Melee/Variants/Fists.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Icons/Weapons/Fist.png" type="Texture" id=3]
-
+[ext_resource path="res://Assets/Icons/DropIcons/fist.png" type="Texture" id=4]
 
 [node name="Fists" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 icon = ExtResource( 3 )
+drop_icon = ExtResource( 4 )
 modifiers = {
 "crit_chance": 0.1,
 "crit_multiplier": 2.0,

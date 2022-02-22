@@ -19,6 +19,8 @@ func _init():
 					pass # ignored, no parse needed
 				"scene":
 					loot_data[item][key] = load(loot_data[item][key])
+				"texture":
+					loot_data[item][key] = load(loot_data[item][key])
 				"tier":
 					loot_data[item][key] = int(loot_data[item][key])
 				"type":

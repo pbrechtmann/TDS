@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Items/Weapons/Ranged/Variants/Shotgun.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Items/Weapons/Ranged/WeaponRanged.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Icons/Weapons/Shotgun.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Icons/DropIcons/Shotgun.png" type="Texture" id=4]
 
 [node name="Shotgun" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 icon = ExtResource( 3 )
+drop_icon = ExtResource( 4 )
 attack_delay = 0.25
 modifiers = {
 "crit_chance": 0.1,

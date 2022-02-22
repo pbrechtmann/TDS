@@ -103,7 +103,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		var packed : PackedScene = PackedScene.new()
 		if packed.pack(weapon_melee) != OK:
 			printerr("Packing weapon failed")
-		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, melee_container.global_position)
+		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, weapon_melee.drop_icon, melee_container.global_position)
 		
 		var old_weapon : WeaponMelee = weapon_melee
 		weapon_melee = new_weapon
@@ -118,7 +118,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		var packed : PackedScene = PackedScene.new()
 		if packed.pack(weapon_ranged) != OK:
 			printerr("Packing weapon failed")
-		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, ranged_container.global_position)
+		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, weapon_ranged.drop_icon, ranged_container.global_position)
 		
 		var old_weapon : WeaponRanged = weapon_ranged
 		weapon_ranged = new_weapon
@@ -139,7 +139,7 @@ func pickup_ability(ability_scene : PackedScene) -> void:
 		var packed : PackedScene = PackedScene.new()
 		if packed.pack(ability) != OK:
 			printerr("Packing ability failed")
-		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.ABILITY, global_position)
+		drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.ABILITY, ability.drop_icon, global_position)
 		old_ability = ability
 	
 	ability_container.add_child(new_ability)

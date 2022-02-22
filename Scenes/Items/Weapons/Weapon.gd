@@ -4,6 +4,7 @@ class_name Weapon
 onready var delay : Timer = $Timer
 
 export(Texture) var icon
+export(Texture) var drop_icon
 
 export(float) var attack_delay = 0.5
 export(float, 0, 100) var attack_cost = 25

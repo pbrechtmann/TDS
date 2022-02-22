@@ -2,6 +2,7 @@ extends Node2D
 class_name Ability
 
 export(Texture) var icon
+export(Texture) var drop_icon
 
 export(float) var ability_cost = 25
 export(float) var ability_delay = 2
