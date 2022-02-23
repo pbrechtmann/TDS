@@ -102,119 +102,120 @@
         "scene": "res://Scenes/Items/Upgrades/Modules/Abilities/UpgradeActivationCost.tscn",
         "drop_type": "upgrade",
         "type": 0,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_ability_cost.png"
     },
 
     "upgrade_ability_cooldown": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Abilities/UpgradeCooldown.tscn",
         "drop_type": "upgrade",
         "type": 0,
-        "tier": 1
-    },
-
-    "upgrade_character_energy_percentage": {
-        "scene": "res://Scenes/Items/Upgrades/Modules/Character/UpgradeEnergyPercent.tscn",
-        "drop_type": "upgrade",
-        "type": 2,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_ability_cooldown.png"
     },
 
     "upgrade_character_energy_regen": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Character/UpgradeEnergyRegen.tscn",
         "drop_type": "upgrade",
         "type": 2,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_energy_regeneration.png"
     },
 
     "upgrade_character_energy_value": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Character/UpgradeEnergyValue.tscn",
         "drop_type": "upgrade",
         "type": 2,
-        "tier": 1
-    },
-
-    "upgrade_character_health_percentage": {
-        "scene": "res://Scenes/Items/Upgrades/Modules/Character/UpgradeHealthPercent.tscn",
-        "drop_type": "upgrade",
-        "type": 2,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_energy.png"
     },
 
     "upgrade_character_health_regen": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Character/UpgradeHealthRegen.tscn",
         "drop_type": "upgrade",
         "type": 2,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_health_regeneration.png"
     },
 
     "upgrade_character_health_value": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Character/UpgradeHealthValue.tscn",
         "drop_type": "upgrade",
         "type": 2,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_health.png"
     },
 
     "upgrade_weapon_cost": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Weapon/UpgradeAttackCost.tscn",
         "drop_type": "upgrade",
         "type": 3,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_weapon_cost.png"
     },
 
     "upgrade_weapon_damage": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Weapon/UpgradeDamage.tscn",
         "drop_type": "upgrade",
         "type": 3,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_damage.png"
     },
 
     "upgrade_weapon_bleeding": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Weapon/UpgradeeffectBleeding.tscn",
         "drop_type": "upgrade",
         "type": 3,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_bleeding.png"
     },
 
     "upgrade_weapon_cold": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Weapon/UpgradeEffectCold.tscn",
         "drop_type": "upgrade",
         "type": 3,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_cold.png"
     },
 
     "upgrade_weapon_fire": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Weapon/UpgradeEffectFire.tscn",
         "drop_type": "upgrade",
         "type": 3,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_fire.png"
     },
 
     "upgrade_weapon_poison": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Weapon/UpgradeEffectPoison.tscn",
         "drop_type": "upgrade",
         "type": 3,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_poison.png"
     },
 
     "upgrade_weapon_attack_rate": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Weapon/UpgradeFireRate.tscn",
         "drop_type": "upgrade",
         "type": 3,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_weapon_attack_rate.png"
     },
 
     "upgrade_weapon_ranged_bounce": {
         "scene": "res://Scenes/Items/Upgrades/Modules/WeaponRanged/UpgradeBounce.tscn",
         "drop_type": "upgrade",
         "type": 5,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_weapon_ranged_bounce.png"
     },
 
     "upgrade_weapon_ranged_pierce": {
         "scene": "res://Scenes/Items/Upgrades/Modules/WeaponRanged/UpgradePierce.tscn",
         "drop_type": "upgrade",
         "type": 5,
-        "tier": 1
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_pierce.png"
     },
 
 

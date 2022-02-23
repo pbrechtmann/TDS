@@ -21,7 +21,7 @@ onready var interaction_area : Area2D = $InteractionArea
 
 var weapon : Weapon
 
-var drop_spawner : DropSpawner
+var drop_spawner #: DropSpawner
 
 var current_interactable : InteractableObject = null
 var overlapping_interactables : Array = []
@@ -39,7 +39,7 @@ func _ready() -> void:
 	weapon = weapon_ranged
 
 
-func init(drop_spawner : DropSpawner) -> void:
+func init(drop_spawner) -> void:
 	self.drop_spawner = drop_spawner
 
 
@@ -167,12 +167,17 @@ func _on_InteractionArea_area_entered(area) -> void:
 		if area is AutoDrop:
 			area.start(self)
 		else:
+			for i in overlapping_interactables:
+				if is_instance_valid(i):
+					i.clear_highlight()
 			overlapping_interactables.append(area)
 			current_interactable = area
+			current_interactable.highlight()
 
 
 func _on_InteractionArea_area_exited(area) -> void:
 	if area == current_interactable:
+		current_interactable.clear_highlight()
 		current_interactable = null
 		overlapping_interactables.erase(area)
 		yield(get_tree(), "idle_frame")

@@ -3,7 +3,6 @@ class_name Drop
 
 
 var texture : Texture
-onready var sprite = $Sprite
 
 
 func _ready() -> void:

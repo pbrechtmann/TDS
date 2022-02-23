@@ -33,7 +33,7 @@ func spawn_drop(tier : int, pos : Vector2, min_amount : int, max_amount : int, r
 			"item":
 				spawn_item_drop(drop_dict["scene"], drop_dict["type"], drop_dict["texture"], pos)
 			"upgrade":
-				spawn_upgrade_drop(drop_dict["scene"], drop_dict["type"], pos)
+				spawn_upgrade_drop(drop_dict["scene"], drop_dict["type"], drop_dict["texture"], pos)
 
 
 func spawn_item_drop(item : PackedScene, item_type : int, tex : Texture, pos : Vector2) -> void:
@@ -43,10 +43,10 @@ func spawn_item_drop(item : PackedScene, item_type : int, tex : Texture, pos : V
 	call_deferred("add_child", drop)
 
 
-func spawn_upgrade_drop(upgrade : PackedScene, upgrade_type : int, pos : Vector2) -> void:
+func spawn_upgrade_drop(upgrade : PackedScene, upgrade_type : int, tex : Texture, pos : Vector2) -> void:
 	var drop : UpgradeDrop = upgrade_drop_scene.instance()
 	drop.global_position = pos
-	drop.init(upgrade, upgrade_type)
+	drop.init(upgrade, upgrade_type, tex)
 	call_deferred("add_child", drop)
 
 
