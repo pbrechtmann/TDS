@@ -114,6 +114,38 @@
         "texture": "res://Assets/Icons/DropIcons/upgrade_ability_cooldown.png"
     },
 
+    "upgrade_armor": {
+        "scene": "res://Scenes/Items/Upgrades/Modules/Armor/UpgradeArmor.tscn",
+        "drop_type": "upgrade",
+        "type": 1,
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_armor.png"
+    },
+
+    "upgrade_armor_cold": {
+        "scene": "res://Scenes/Items/Upgrades/Modules/Armor/UpgradeArmorCold.tscn",
+        "drop_type": "upgrade",
+        "type": 1,
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_armor_cold.png"
+    },
+    
+    "upgrade_armor_fire": {
+        "scene": "res://Scenes/Items/Upgrades/Modules/Armor/UpgradeArmorFire.tscn",
+        "drop_type": "upgrade",
+        "type": 1,
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_armor_fire.png"
+    },
+
+    "upgrade_armor_poison": {
+        "scene": "res://Scenes/Items/Upgrades/Modules/Armor/UpgradeArmorPoison.tscn",
+        "drop_type": "upgrade",
+        "type": 1,
+        "tier": 1,
+        "texture": "res://Assets/Icons/DropIcons/upgrade_armor_poison.png"
+    },
+
     "upgrade_character_energy_regen": {
         "scene": "res://Scenes/Items/Upgrades/Modules/Character/UpgradeEnergyRegen.tscn",
         "drop_type": "upgrade",
