@@ -123,6 +123,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		var old_weapon : WeaponRanged = weapon_ranged
 		weapon_ranged = new_weapon
 		ranged_container.add_child(weapon_ranged)
+		weapon_ranged.init(self)
 		
 		old_weapon.queue_free()
 		
