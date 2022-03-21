@@ -42,9 +42,9 @@ func get_damage(modifiers : Dictionary, source : Entity) -> void:
 			"bleeding":
 				add_effect(modifiers["bleeding"], effect_damage_bleeding)
 			"cold":
-				add_effect(modifiers["cold"], effect_damage_bleeding)
+				add_effect(modifiers["cold"], effect_damage_cold)
 			"fire":
-				add_effect(modifiers["fire"], effect_damage_bleeding)
+				add_effect(modifiers["fire"], effect_damage_fire)
 			"poison":
 				add_effect(modifiers["poison"], effect_damage_poison)
 	
