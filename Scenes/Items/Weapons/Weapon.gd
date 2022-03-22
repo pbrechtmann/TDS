@@ -14,6 +14,7 @@ export var modifiers : Dictionary = {}
 var ready : bool = true
 var user : Entity
 
+var attachment : Weapon = null # Type: WeaponAttachment
 
 func init(user : Entity) -> void:
 	self.user = user
@@ -29,6 +30,15 @@ func try_primary_attack(energy_supply, attack_mods : Dictionary) -> void:
 
 func primary_attack(_attack_mods : Dictionary) -> void:
 	pass
+
+
+func try_secondary_attack(energy_supply, attack_mods : Dictionary) -> void:
+	if attachment:
+		if attachment.ready and energy_supply.drain(attachment.attack_cost):
+			attachment.primary_attack(attack_mods)
+			
+			attachment.ready = false
+			attachment.delay.start(attachment.attack_delay)
 
 
 func create_final_mods(attack_mods : Dictionary) -> Dictionary:

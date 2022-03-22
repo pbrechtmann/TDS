@@ -170,6 +170,11 @@ _global_script_classes=[ {
 "path": "res://Scenes/Items/Weapons/Weapon.gd"
 }, {
 "base": "Weapon",
+"class": "WeaponAttachment",
+"language": "GDScript",
+"path": "res://Scenes/Items/Weapons/Attachment/WeaponAttachment.gd"
+}, {
+"base": "Weapon",
 "class": "WeaponMelee",
 "language": "GDScript",
 "path": "res://Scenes/Items/Weapons/Melee/WeaponMelee.gd"
@@ -222,6 +227,7 @@ _global_script_class_icons={
 "UpgradeModule": "",
 "Walker": "",
 "Weapon": "",
+"WeaponAttachment": "",
 "WeaponMelee": "",
 "WeaponRanged": "",
 "WeaponSMG": "",
