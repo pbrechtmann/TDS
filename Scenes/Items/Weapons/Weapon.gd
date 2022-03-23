@@ -41,6 +41,12 @@ func try_secondary_attack(energy_supply, attack_mods : Dictionary) -> void:
 			attachment.delay.start(attachment.attack_delay)
 
 
+func attach(attachment_scene : PackedScene) -> void:
+	attachment = attachment_scene.instance()
+	add_child(attachment)
+	attachment.init(user)
+
+
 func create_final_mods(attack_mods : Dictionary) -> Dictionary:
 	var final_mods = modifiers.duplicate()
 	if final_mods.has("damage"):

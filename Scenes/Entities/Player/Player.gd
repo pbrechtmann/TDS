@@ -1,6 +1,8 @@
 extends Entity
 class_name Player
 
+var flamer = preload("res://Scenes/Items/Weapons/Attachment/Flamethrower/AttachmentFlamethrower.tscn")
+
 export(float) var speed = 1000
 
 onready var ranged_container : Node2D = $Weapons/Ranged
@@ -37,6 +39,7 @@ func _ready() -> void:
 	weapon_ranged.init(self)
 	weapon_melee.init(self)
 	weapon = weapon_ranged
+	weapon_ranged.attach(flamer)
 
 
 func init(drop_spawner) -> void:
@@ -61,7 +64,9 @@ func _process(_delta) -> void:
 		weapon.try_primary_attack(energy_supply, statmods.attack_mods)
 
 
-func _unhandled_input(event) -> void:
+func _input(event) -> void:
+	if event.is_action_pressed("attack_secondary"):
+		weapon.try_secondary_attack(energy_supply, statmods.attack_mods)
 	if event.is_action_pressed("ability"):
 		ability.try_activate_ability(self)
 	if event.is_action_pressed("ability_character"):
