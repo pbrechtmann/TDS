@@ -1,7 +1,7 @@
 extends Entity
 class_name Player
 
-var flamer = preload("res://Scenes/Items/Weapons/Attachment/Flamethrower/AttachmentFlamethrower.tscn")
+var attachment = preload("res://Scenes/Items/Weapons/Attachment/PoisonGrenade/AttachmentPoisonGrenade.tscn")
 
 export(float) var speed = 1000
 
@@ -39,7 +39,7 @@ func _ready() -> void:
 	weapon_ranged.init(self)
 	weapon_melee.init(self)
 	weapon = weapon_ranged
-	weapon_ranged.attach(flamer)
+	weapon_ranged.attach(attachment)
 
 
 func init(drop_spawner) -> void:
