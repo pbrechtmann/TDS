@@ -3,6 +3,7 @@ extends Projectile
 export var fuse_time : float = 1.5
 export var hit_range : float = 250
 
+export var ignore_user : bool = false
 
 onready var fuse : Timer = $Fuse
 
@@ -32,6 +33,8 @@ func impact(body : PhysicsBody2D) -> void:
 func explode() -> void:
 	for body in hit_area.get_overlapping_bodies():
 		if body is Entity:
+			if ignore_user and body == source:
+				continue
 			var distance = global_position.distance_to(body.global_position)
 			var falloff_intensity = max(inverse_lerp(0, hit_range, distance), min_intensity)
 			body.get_damage(damage_falloff(modifiers, falloff_intensity), source)
