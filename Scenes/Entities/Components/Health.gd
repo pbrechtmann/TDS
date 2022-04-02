@@ -4,6 +4,8 @@ class_name Health
 export var max_health : float = 100
 var current_health : float 
 
+var invincible : bool = false
+
 
 signal death
 signal max_changed
@@ -18,6 +20,8 @@ func regenerate(change_per_second : float, delta : float) -> void:
 
 
 func damage(a : float) -> void:
+	if invincible: 
+		return
 	current_health -= a
 	if current_health <= 0:
 		emit_signal("death")

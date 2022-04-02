@@ -92,6 +92,7 @@ func spawn_spawners() -> void:
 		spawners.append(spawner)
 		add_child(spawner)
 		spawner.init(nav, player, drop_spawner)
+		spawner.health.invincible = true
 
 
 func add_level_exit() -> LevelExit:
@@ -113,8 +114,7 @@ func activate_level_exit() -> void:
 		to_clear.append_array([exit_tile + Vector2.UP, exit_tile + Vector2.DOWN])
 	else:
 		to_clear.append_array([exit_tile + Vector2.LEFT, exit_tile + Vector2.RIGHT])
-			
-		
+	
 	for v in to_clear:
 		if rotation_degrees == 90:
 			v -= Vector2.UP
@@ -153,6 +153,7 @@ func _on_Area2D_body_entered(body) -> void:
 	if body is Player:
 		for s in spawners:
 			if is_instance_valid(s):
+				s.health.invincible = false
 				s.timer.start()
 		for b in barriers:
 			b.set_active(true)
