@@ -13,6 +13,7 @@ onready var energy_supply : EnergySupply = $EnergySupply
 onready var energy_display : EnergyDisplay = $EnergyDisplay
 onready var armor : Armor = $Armor
 onready var statmods : StatMods = $StatMods
+onready var action_lock : ActionLock = $ActionLock
 
 
 func _process(delta) -> void:
@@ -42,9 +43,9 @@ func get_damage(modifiers : Dictionary, source : Entity) -> void:
 			"bleeding":
 				add_effect(modifiers["bleeding"], effect_damage_bleeding)
 			"cold":
-				add_effect(modifiers["cold"], effect_damage_bleeding)
+				add_effect(modifiers["cold"], effect_damage_cold)
 			"fire":
-				add_effect(modifiers["fire"], effect_damage_bleeding)
+				add_effect(modifiers["fire"], effect_damage_fire)
 			"poison":
 				add_effect(modifiers["poison"], effect_damage_poison)
 	

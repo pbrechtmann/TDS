@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Entities/Components/Health.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/Components/HealthDisplay.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Scenes/Entities/Components/EnergyDisplay.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Items/Armors/Armor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Entities/Components/StatMods.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Entities/Components/ActionLock.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CapsuleShape2D" id=1]
 
@@ -39,5 +40,7 @@ position = Vector2( -100, 0 )
 [node name="Armor" parent="." instance=ExtResource( 7 )]
 
 [node name="StatMods" parent="." instance=ExtResource( 8 )]
+
+[node name="ActionLock" parent="." instance=ExtResource( 9 )]
 
 [connection signal="death" from="Health" to="." method="_on_Health_death"]

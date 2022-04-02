@@ -28,6 +28,8 @@ func _ready() -> void:
 
 
 func generate() -> void:
+	player.action_lock.add_action_lock()
+	player.action_lock.add_move_lock()
 	player.collision_layer = 0
 	yield(get_tree(), "idle_frame")
 	drop_spawner.clear()
@@ -51,6 +53,8 @@ func _on_Generator_done() -> void:
 	yield(get_tree(), "idle_frame")
 	player.collision_layer = 2 + 4
 	player.set_active(true)
+	player.action_lock.remove_action_lock()
+	player.action_lock.remove_move_lock()
 	if generator.exit.connect("level_done", self, "_on_Exit_level_done") != OK:
 		printerr("Failed connecting signal \"done\" from Generator to World")
 

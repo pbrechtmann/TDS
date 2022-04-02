@@ -64,7 +64,7 @@ func handle_bounce() -> bool:
 	return true
 
 
-func _on_Area2D_body_entered(body : PhysicsBody2D) -> void:
+func impact(body : PhysicsBody2D) -> void:
 	var done = true
 	
 	if body is Entity:
@@ -75,3 +75,7 @@ func _on_Area2D_body_entered(body : PhysicsBody2D) -> void:
 		
 	if done:
 		queue_free()
+
+
+func _on_Area2D_body_entered(body : PhysicsBody2D) -> void:
+	impact(body)

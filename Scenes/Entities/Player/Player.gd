@@ -1,6 +1,8 @@
 extends Entity
 class_name Player
 
+var attachment = preload("res://Scenes/Items/Weapons/Attachment/Ranged/Charge/AttachmentChargeRanged.tscn")
+
 export(float) var speed = 1000
 
 onready var ranged_container : Node2D = $Weapons/Ranged
@@ -37,6 +39,7 @@ func _ready() -> void:
 	weapon_ranged.init(self)
 	weapon_melee.init(self)
 	weapon = weapon_ranged
+	weapon_ranged.attach(attachment)
 
 
 func init(drop_spawner) -> void:
@@ -52,16 +55,28 @@ func move() -> void:
 
 
 func _physics_process(_delta) -> void:
+	if action_lock.is_move_locked():
+		return
 	move()
 	look_at(get_global_mouse_position())
 
 
 func _process(_delta) -> void:
+	if action_lock.is_action_locked():
+		return
 	if Input.is_action_pressed("attack_primary"):
 		weapon.try_primary_attack(energy_supply, statmods.attack_mods)
 
 
-func _unhandled_input(event) -> void:
+func _input(event) -> void:
+	if event.is_action_pressed("pause"):
+		emit_signal("pause")
+
+
+	if action_lock.is_action_locked():
+		return
+	if event.is_action_pressed("attack_secondary"):
+		weapon.try_secondary_attack(energy_supply, statmods.attack_mods)
 	if event.is_action_pressed("ability"):
 		ability.try_activate_ability(self)
 	if event.is_action_pressed("ability_character"):
@@ -75,9 +90,6 @@ func _unhandled_input(event) -> void:
 	
 	if event.is_action_pressed("weapon_hotkey_2"):
 		switch_to_melee()
-	
-	if event.is_action_pressed("pause"):
-		emit_signal("pause")
 
 
 func switch_to_ranged() -> void:
