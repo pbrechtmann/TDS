@@ -13,6 +13,7 @@ onready var energy_supply : EnergySupply = $EnergySupply
 onready var energy_display : EnergyDisplay = $EnergyDisplay
 onready var armor : Armor = $Armor
 onready var statmods : StatMods = $StatMods
+onready var action_lock : ActionLock = $ActionLock
 
 
 func _process(delta) -> void:

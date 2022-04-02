@@ -45,6 +45,7 @@ func attach(attachment_scene : PackedScene) -> void:
 	attachment = attachment_scene.instance()
 	add_child(attachment)
 	attachment.init(user)
+	attachment.weapon = self
 
 
 func create_final_mods(attack_mods : Dictionary) -> Dictionary:

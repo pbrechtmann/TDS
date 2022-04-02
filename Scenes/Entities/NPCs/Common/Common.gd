@@ -20,10 +20,14 @@ func move() -> void:
 
 
 func _physics_process(_delta) -> void:
+	if action_lock.is_move_locked():
+		return
 	move()
 
 
-func _process(_delta) -> void: 
+func _process(_delta) -> void:
+	if action_lock.is_action_locked():
+		return 
 	if weapon.global_position.distance_to(target.global_position) <= threshold:
 		weapon.try_primary_attack(energy_supply, statmods.attack_mods)
 
