@@ -29,7 +29,6 @@ func _init():
 					loot_data[item][key] = float(loot_data[item][key])
 		
 		
-		
 		match loot_data[item]["tier"]:
 			1:
 				loot_data[item].erase("tier")
@@ -51,7 +50,6 @@ func load_file_data(file_path : String) -> Dictionary:
 	var data_JSON = JSON.parse(data_file.get_as_text())
 	data_file.close()
 	return data_JSON.result
-
 
 
 var item : Dictionary = {

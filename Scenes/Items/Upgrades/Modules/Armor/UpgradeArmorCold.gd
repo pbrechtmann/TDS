@@ -1,9 +1,11 @@
-extends UpgradeModule
+extends UpgradeArmor
 
 func apply_upgrade(to : Node2D) -> void:
-	if not to is Armor:
+	.apply_upgrade(to)
+
+	if not valid:
 		return
-		
+
 	to.cold_resistance_amount += 1
 	to.multipliers["cold"]["damage"] = pow(0.95, to.cold_resistance_amount)
 	#multipliers["cold"]["damage"] *= 0.95

@@ -1,6 +1,8 @@
 extends Node
 class_name UpgradeModule
 
+var valid : bool = true
+
 
 func init(target : Node2D) -> void:
 	target.add_child(self)

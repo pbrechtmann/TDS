@@ -154,6 +154,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/UI/UI.gd"
 }, {
+"base": "UpgradeModule",
+"class": "UpgradeArmor",
+"language": "GDScript",
+"path": "res://Scenes/Items/Upgrades/Modules/Armor/UpgradeArmor.gd"
+}, {
 "base": "Drop",
 "class": "UpgradeDrop",
 "language": "GDScript",
@@ -229,6 +234,7 @@ _global_script_class_icons={
 "Spawner": "",
 "StatMods": "",
 "UI": "",
+"UpgradeArmor": "",
 "UpgradeDrop": "",
 "UpgradeModule": "",
 "Walker": "",
