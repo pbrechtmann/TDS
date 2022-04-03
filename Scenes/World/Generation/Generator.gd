@@ -9,7 +9,7 @@ export var spacer : Vector2 = Vector2(6, 6) # Making sure rooms don't overlap
 export var num_rooms_small : int = 5
 export var num_rooms_medium : int = 3
 export var num_rooms_large : int = 1
-export var num_rooms_cave : int = 1
+export var num_rooms_cave : int = 0
 
 export var room_sizes_small = [Vector2(5, 7), Vector2(7, 5)]
 export var room_sizes_medium = [Vector2(7, 9), Vector2(9, 7)]

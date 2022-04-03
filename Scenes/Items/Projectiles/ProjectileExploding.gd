@@ -7,14 +7,13 @@ export var ignore_user : bool = false
 
 onready var fuse : Timer = $Fuse
 
-onready var hit_area : Area2D = $HitArea
-onready var hit_shape : CollisionShape2D = $HitArea/CollisionShape2D
-
+var hit_shape : CircleShape2D
 var min_intensity : float = 0.25
 
 
 func _ready():
-	hit_shape.shape.radius = hit_range
+	hit_shape = CircleShape2D.new()
+	hit_shape.set_radius(hit_range)
 	fuse.start(fuse_time)
 
 
@@ -22,16 +21,24 @@ func impact(body : PhysicsBody2D) -> void:
 	var done = true
 	
 	if body is Entity:
-		body.get_damage(modifiers, source)
+		explode()
 	else:
 		done = handle_bounce()
-
+	
 	if done:
 		explode()
 
 
 func explode() -> void:
-	for body in hit_area.get_overlapping_bodies():
+	var query : Physics2DShapeQueryParameters = Physics2DShapeQueryParameters.new()
+	query.set_shape(hit_shape)
+	query.set_collision_layer(6)
+	query.set_transform(global_transform)
+	var space_state : Physics2DDirectSpaceState = get_world_2d().direct_space_state
+	var hits : Array = space_state.intersect_shape(query)
+	
+	for hit in hits:
+		var body : PhysicsBody2D = hit.collider
 		if body is Entity:
 			if ignore_user and body == source:
 				continue
