@@ -49,7 +49,7 @@ func attach(attachment_scene : PackedScene) -> void:
 
 
 func create_final_mods(attack_mods : Dictionary) -> Dictionary:
-	var final_mods = modifiers.duplicate()
+	var final_mods = modifiers.duplicate(true)
 	if final_mods.has("damage"):
 		final_mods["damage"] *= attack_mods["damage"]
 	if final_mods.has("lifesteal"):

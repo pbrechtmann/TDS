@@ -30,6 +30,9 @@ func _process(_delta) -> void:
 		return 
 	if weapon.global_position.distance_to(target.global_position) <= threshold:
 		weapon.try_primary_attack(energy_supply, statmods.attack_mods)
+	
+	
+	$Label.text = "Armor: " + str(armor.multipliers["damage"]) + "\nCold: " + str(armor.multipliers["cold"]["damage"]) + "\nFire: " + str(armor.multipliers["fire"]["dps"]) + "\nPoison: " + str(armor.multipliers["poison"]["dps"])
 
 
 func _on_Health_death() -> void:

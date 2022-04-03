@@ -7,10 +7,20 @@
 [node name="Common" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
+[node name="HealthDisplay" parent="." index="4"]
+visible = false
+
 [node name="Fists" parent="." index="7" instance=ExtResource( 3 )]
 position = Vector2( 50, 0 )
 modifiers = {
 "crit_chance": 0.1,
 "crit_multiplier": 2.0,
 "damage": 10.0
+}
+
+[node name="Label" type="Label" parent="." index="10"]
+margin_right = 138.0
+margin_bottom = 89.0
+__meta__ = {
+"_edit_use_anchors_": false
 }

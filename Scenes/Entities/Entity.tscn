@@ -37,10 +37,10 @@ position = Vector2( -50, 50 )
 [node name="EnergyDisplay" parent="." instance=ExtResource( 6 )]
 position = Vector2( -100, 0 )
 
-[node name="Armor" parent="." instance=ExtResource( 7 )]
-
 [node name="StatMods" parent="." instance=ExtResource( 8 )]
 
 [node name="ActionLock" parent="." instance=ExtResource( 9 )]
+
+[node name="Armor" parent="." instance=ExtResource( 7 )]
 
 [connection signal="death" from="Health" to="." method="_on_Health_death"]

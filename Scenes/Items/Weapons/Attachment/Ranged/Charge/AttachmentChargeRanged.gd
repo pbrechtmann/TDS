@@ -7,7 +7,7 @@ onready var charge_timer : Timer = $ChargeTimer
 var attack_mods : Dictionary = {}
 
 func primary_attack(attack_mods : Dictionary) -> void:
-	self.attack_mods = attack_mods.duplicate()
+	self.attack_mods = attack_mods.duplicate(true)
 	user.action_lock.add_action_lock()
 	charge_timer.start(charge_time)
 

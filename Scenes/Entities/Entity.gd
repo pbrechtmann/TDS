@@ -7,11 +7,11 @@ var effect_damage_fire : PackedScene = preload("res://Scenes/Entities/StatusEffe
 var effect_damage_poison : PackedScene = preload("res://Scenes/Entities/StatusEffects/Variants/DamageEffectPoison.tscn")
 
 
+onready var armor : Armor = $Armor
 onready var health : Health = $Health
 onready var health_display : HealthDisplay = $HealthDisplay
 onready var energy_supply : EnergySupply = $EnergySupply
 onready var energy_display : EnergyDisplay = $EnergyDisplay
-onready var armor : Armor = $Armor
 onready var statmods : StatMods = $StatMods
 onready var action_lock : ActionLock = $ActionLock
 

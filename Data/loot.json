@@ -114,8 +114,8 @@
         "texture": "res://Assets/Icons/DropIcons/upgrade_ability_cooldown.png"
     },
 
-    "upgrade_armor": {
-        "scene": "res://Scenes/Items/Upgrades/Modules/Armor/UpgradeArmor.tscn",
+    "upgrade_armor_base": {
+        "scene": "res://Scenes/Items/Upgrades/Modules/Armor/UpgradeArmorBase.tscn",
         "drop_type": "upgrade",
         "type": 1,
         "tier": 1,
