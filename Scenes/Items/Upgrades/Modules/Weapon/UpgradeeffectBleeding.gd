@@ -1,4 +1,4 @@
-extends UpgradeModule
+extends UpgradeWeapon
 
 
 var bleeding : Dictionary = {
@@ -9,9 +9,13 @@ var bleeding : Dictionary = {
 
 
 func apply_upgrade(to : Node2D) -> void:
-	if to is Weapon:
-		if to.modifiers.has("bleeding"):
-			to.modifiers["bleeding"]["dps"] += bleeding["dps"] / 2
-			to.modifiers["bleeding"]["duration"] += bleeding["duration"] / 2
-		else:
-			to.modifiers["bleeding"] = bleeding
+	.apply_upgrade(to)
+	
+	if not valid:
+		return
+	
+	if to.modifiers.has("bleeding"):
+		to.modifiers["bleeding"]["dps"] += bleeding["dps"] / 2
+		to.modifiers["bleeding"]["duration"] += bleeding["duration"] / 2
+	else:
+		to.modifiers["bleeding"] = bleeding

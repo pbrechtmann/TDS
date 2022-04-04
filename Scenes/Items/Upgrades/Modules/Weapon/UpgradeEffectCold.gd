@@ -1,4 +1,4 @@
-extends UpgradeModule
+extends UpgradeWeapon
 
 
 var cold : Dictionary = {
@@ -9,9 +9,13 @@ var cold : Dictionary = {
 
 
 func apply_upgrade(to : Node2D) -> void:
-	if to is Weapon:
-		if to.modifiers.has("cold"):
-			to.modifiers["cold"]["initial_damage"] += cold["initial_damage"]
-			to.modifiers["cold"]["duration"] += cold["duration"] / 2
-		else:
-			to.modifiers["cold"] = cold
+	.apply_upgrade(to)
+	
+	if not valid:
+		return
+	
+	if to.modifiers.has("cold"):
+		to.modifiers["cold"]["initial_damage"] += cold["initial_damage"]
+		to.modifiers["cold"]["duration"] += cold["duration"] / 2
+	else:
+		to.modifiers["cold"] = cold
