@@ -81,6 +81,7 @@ modifiers = {
 }
 
 [node name="Duration" type="Timer" parent="." index="2"]
+one_shot = true
 
 [node name="Tick" type="Timer" parent="." index="3"]
 one_shot = true
