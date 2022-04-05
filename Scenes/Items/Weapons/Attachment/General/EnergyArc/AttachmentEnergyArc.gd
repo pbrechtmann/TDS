@@ -9,12 +9,6 @@ export(Dictionary) var poison
 
 onready var muzzle : Position2D = $Muzzle
 
-var base_modifiers : Dictionary
-
-
-func _ready() -> void:
-	base_modifiers = modifiers.duplicate(true)
-
 
 func primary_attack(attack_mods : Dictionary) -> void:
 	randomize()
@@ -33,4 +27,4 @@ func primary_attack(attack_mods : Dictionary) -> void:
 	new_projectile.init(muzzle.global_transform, global_position.direction_to(muzzle.global_position), create_final_mods(attack_mods), user)
 	
 	add_child(new_projectile)
-	modifiers = base_modifiers.duplicate(true)
+	modifiers.clear()

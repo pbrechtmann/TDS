@@ -11,23 +11,23 @@ modifiers = {
 projectile = ExtResource( 3 )
 bleeding = {
 "dps": 2.0,
-"duration": 5.0,
-"initial_damage": 2.0
+"duration": 40.0,
+"initial_damage": 0.0
 }
 cold = {
 "dps": 0.0,
 "duration": 2.5,
-"initial_damage": 15.0
+"initial_damage": 50.0
 }
 fire = {
-"dps": 4.0,
-"duration": 3.0,
+"dps": 8.0,
+"duration": 5.0,
 "initial_damage": 0.0
 }
 poison = {
-"dps": 1.0,
+"dps": 2.0,
 "duration": 10.0,
-"initial_damage": 10.0
+"initial_damage": 20.0
 }
 
 [node name="Muzzle" type="Position2D" parent="." index="2"]
