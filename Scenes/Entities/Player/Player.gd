@@ -2,7 +2,7 @@ extends Entity
 class_name Player
 
 var attachment = preload("res://Scenes/Items/Weapons/Attachment/General/GravityHole/AttachmentGravityHole.tscn")
-var attachment_melee = preload("res://Scenes/Items/Weapons/Attachment/Melee/ExplodingStrike/AttachmentExplodingStrike.tscn")
+var attachment_melee = preload("res://Scenes/Items/Weapons/Attachment/Melee/StunField/AttachmentStunField.tscn")
 
 export(float) var speed = 1000
 
