@@ -4,8 +4,8 @@
 [ext_resource path="res://Assets/Bullet.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 2.63268
-height = 10.4795
+radius = 16.0
+height = 24.0
 
 [node name="Projectile" type="Node2D"]
 script = ExtResource( 1 )
