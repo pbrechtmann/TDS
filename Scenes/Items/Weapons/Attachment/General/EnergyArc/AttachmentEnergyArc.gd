@@ -12,7 +12,7 @@ onready var muzzle : Position2D = $Muzzle
 
 func primary_attack(attack_mods : Dictionary) -> void:
 	randomize()
-	match randi() % 3:
+	match randi() % 4:
 		0:
 			modifiers["bleeding"] = bleeding
 		1:
