@@ -8,7 +8,7 @@ var threshold = 75
 
 
 func _ready() -> void:
-	weapon.init(self)
+	weapon.init(self, false, 0)
 
 
 func move() -> void:

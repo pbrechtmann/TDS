@@ -37,8 +37,8 @@ signal pause
 
 
 func _ready() -> void:
-	weapon_ranged.init(self)
-	weapon_melee.init(self)
+	weapon_ranged.init(self, false, 0)
+	weapon_melee.init(self, false, 0)
 	weapon = weapon_ranged
 	weapon_ranged.attach(attachment)
 	weapon_melee.attach(attachment_melee)
@@ -122,7 +122,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		var old_weapon : WeaponMelee = weapon_melee
 		weapon_melee = new_weapon
 		melee_container.add_child(weapon_melee)
-		weapon_melee.init(self)
+		weapon_melee.init(self, max(old_weapon.get_dps(), weapon_ranged.get_dps()), new_weapon.new_weapon)
 		
 		old_weapon.queue_free()
 		
@@ -137,7 +137,7 @@ func pickup_weapon(weapon_scene : PackedScene) -> void:
 		var old_weapon : WeaponRanged = weapon_ranged
 		weapon_ranged = new_weapon
 		ranged_container.add_child(weapon_ranged)
-		weapon_ranged.init(self)
+		weapon_ranged.init(self, max(old_weapon.get_dps(), weapon_melee.get_dps()), new_weapon.new_weapon)
 		
 		old_weapon.queue_free()
 		
