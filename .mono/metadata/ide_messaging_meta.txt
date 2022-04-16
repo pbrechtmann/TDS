@@ -1,0 +1,2 @@
+﻿50792
+/Users/phili/Applications/Godot.app/Contents/MacOS/Godot
