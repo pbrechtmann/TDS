@@ -35,7 +35,7 @@ public class Player : Entity
     [Signal]
     public delegate void Pause();
 
-    // Called when the node enters the scene tree for the first time.
+
     public override void _Ready()
     {
         _rangedContainer = GetNode<Node2D>("Weapons/Ranged");
@@ -44,8 +44,8 @@ public class Player : Entity
         _abilityContainer = GetNode<Node2D>("Abilities/Ability");
         _abilityCharacterContainer = GetNode<Node2D>("Abilities/CharacterAbility");
 
-        ability = _abilityContainer.GetChild(0);
-        abilityCharacter = _abilityCharacterContainer.GetChild(0);
+        ability = _abilityContainer.GetChild<Ability>(0);
+        abilityCharacter = _abilityCharacterContainer.GetChild<Ability>(0);
 
         weaponRanged = _rangedContainer.GetChild(0);
         weaponMelee = _meleeContainer.GetChild(0);
@@ -207,7 +207,7 @@ public class Player : Entity
         Ability newAbility = scene.Instance() as Ability;
         Ability oldAbility;
 
-        if (ability)
+        if (ability != null)
         {
             PackedScene packed = new PackedScene();
             if (packed.Pack(ability) != Error.Ok)
