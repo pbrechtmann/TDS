@@ -3,7 +3,7 @@ using Godot.Collections;
 
 public class WeaponMelee : Weapon
 {
-    [Export] float duration = 0.1f;
+    [Export] public float Duration = 0.1f;
 
     private Area2D _area;
     private Tween _tween;
@@ -47,10 +47,10 @@ public class WeaponMelee : Weapon
             {
                 target = (Entity)targets[i];
             }
-            if (target != null && target != user && !_hits.Contains(target))
+            if (target != null && target != User && !_hits.Contains(target))
             {
                 _hits.Add(target);
-                target.GetDamage(, user); // TODO
+                target.GetDamage(, User); // TODO
             }
         }
     }

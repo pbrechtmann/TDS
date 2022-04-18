@@ -4,17 +4,17 @@ using System;
 
 public class WeaponRanged : Weapon
 {
-    [Export] PackedScene projectileScene;
-    public Position2D muzzle;
+    [Export] public PackedScene ProjectileScene;
+    public Position2D Muzzle;
     public override void _Ready()
     {
-        muzzle = GetNode<Position2D>("Muzzle");
+        Muzzle = GetNode<Position2D>("Muzzle");
     }
 
     private void PrimaryAttack()
     {
-        Projectile projectile = projectileScene.Instance() as Projectile;
-        projectile.Init(muzzle.GlobalTransform, GlobalPosition.DirectionTo(muzzle.GlobalPosition), user); // TODO: Pass damage
+        Projectile projectile = ProjectileScene.Instance() as Projectile;
+        projectile.Init(Muzzle.GlobalTransform, GlobalPosition.DirectionTo(Muzzle.GlobalPosition), User); // TODO: Pass damage
 
         AddChild(projectile);
     }

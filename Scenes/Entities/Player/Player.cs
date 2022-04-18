@@ -6,14 +6,14 @@ public class Player : Entity
     private Node2D _rangedContainer;
     private Node2D _meleeContainer;
 
-    public WeaponRanged weaponRanged;
-    public WeaponMelee weaponMelee;
+    public WeaponRanged WeaponRanged;
+    public WeaponMelee WeaponMelee;
 
     private Node2D _abilityContainer;
     private Node2D _abilityCharacterContainer;
 
-    public Ability ability;
-    public Ability abilityCharacter;
+    public Ability Ability;
+    public Ability AbilityCharacter;
 
     public Weapon weapon;
 
@@ -44,16 +44,16 @@ public class Player : Entity
         _abilityContainer = GetNode<Node2D>("Abilities/Ability");
         _abilityCharacterContainer = GetNode<Node2D>("Abilities/CharacterAbility");
 
-        ability = _abilityContainer.GetChild<Ability>(0);
-        abilityCharacter = _abilityCharacterContainer.GetChild<Ability>(0);
+        Ability = _abilityContainer.GetChild<Ability>(0);
+        AbilityCharacter = _abilityCharacterContainer.GetChild<Ability>(0);
 
-        weaponRanged = _rangedContainer.GetChild(0);
-        weaponMelee = _meleeContainer.GetChild(0);
+        WeaponRanged = _rangedContainer.GetChild<WeaponRanged>(0);
+        WeaponMelee = _meleeContainer.GetChild<WeaponMelee>(0);
 
-        weaponRanged.Init(this, false, 0);
-        weaponMelee.Init(this, false, 0);
+        WeaponRanged.Init(this, 0, false);
+        WeaponMelee.Init(this, 0, false);
 
-        weapon = weaponRanged;
+        weapon = WeaponRanged;
 
         // TODO: Attachments
     }
@@ -73,13 +73,13 @@ public class Player : Entity
         if (Input.IsActionPressed("down")) move.y++;
         if (Input.IsActionPressed("up")) move.y--;
 
-        move = MoveAndSlide(move.Normalized() * speed * statMods.Speed);
+        move = MoveAndSlide(move.Normalized() * Speed * StatMods.Speed);
     }
 
 
     public override void _PhysicsProcess(float delta)
     {
-        if (actionLock.IsMoveLocked()) return;
+        if (ActionLock.IsMoveLocked()) return;
         Move();
         LookAt(GetGlobalMousePosition());
     }
@@ -87,11 +87,11 @@ public class Player : Entity
 
     public override void _Process(float delta)
     {
-        if (actionLock.IsActionLocked()) return;
+        if (ActionLock.IsActionLocked()) return;
 
         if (Input.IsActionPressed("attack_primary"))
         {
-            weapon.TryPrimaryAttack(energySupply, statMods.AttackMods);
+            weapon.TryPrimaryAttack(EnergySupply);
         }
     }
 
@@ -103,19 +103,19 @@ public class Player : Entity
             EmitSignal("pause");
         }
 
-        if (actionLock.IsActionLocked()) return;
+        if (ActionLock.IsActionLocked()) return;
 
         if (@event.IsActionPressed("attack_secondary"))
         {
-            weapon.TrySecondaryAttack(energySupply, statMods.AttackMods);
+            weapon.TrySecondaryAttack(EnergySupply);
         }
         if (@event.IsActionPressed("ability"))
         {
-            ability.TryActivateAbility(this);
+            Ability.TryActivateAbility(this);
         }
         if (@event.IsActionPressed("ability_character"))
         {
-            abilityCharacter.TryActivateAbility(this);
+            AbilityCharacter.TryActivateAbility(this);
         }
         if (@event.IsActionPressed("interact"))
         {
@@ -135,27 +135,27 @@ public class Player : Entity
 
     private void SwitchToMelee()
     {
-        weapon = weaponMelee;
+        weapon = WeaponMelee;
         EmitSignal("WeaponSwitched", "melee");
     }
 
 
     private void SwitchToRanged()
     {
-        weapon = weaponRanged;
+        weapon = WeaponRanged;
         EmitSignal("WeaponSwitched", "ranged");
     }
 
 
     private void SwitchWeapon()
     {
-        if (weapon == weaponRanged)
+        if (weapon == WeaponRanged)
         {
-            weapon = weaponMelee;
+            weapon = WeaponMelee;
         }
         else
         {
-            weapon = weaponRanged;
+            weapon = WeaponRanged;
         }
     }
 
@@ -175,7 +175,7 @@ public class Player : Entity
         PackedScene packed = new PackedScene();
         if (newWeapon is WeaponMelee)
         {
-            if (packed.Pack(weaponMelee) != Error.Ok)
+            if (packed.Pack(WeaponMelee) != Error.Ok)
             {
                 GD.PrintErr("Packing melee weapon failed.");
                 return;
@@ -188,7 +188,7 @@ public class Player : Entity
         }
         else if (newWeapon is WeaponRanged)
         {
-            if (packed.Pack(weaponRanged) != Error.Ok)
+            if (packed.Pack(WeaponRanged) != Error.Ok)
             {
                 GD.PrintErr("Packing ranged weapon failed.");
                 return;
@@ -205,26 +205,26 @@ public class Player : Entity
     public void PickupAbility(PackedScene scene)
     {
         Ability newAbility = scene.Instance() as Ability;
-        Ability oldAbility;
+        Ability oldAbility = null;
 
-        if (ability != null)
+        if (Ability != null)
         {
             PackedScene packed = new PackedScene();
-            if (packed.Pack(ability) != Error.Ok)
+            if (packed.Pack(Ability) != Error.Ok)
             {
                 GD.PrintErr("Packing ability failed.");
                 return;
             }
 
-            dropSpawner.SpawnItemDrop();
+            dropSpawner.SpawnItemDrop(packed, );
 
-            oldAbility = ability;
+            oldAbility = Ability;
         }
 
         _abilityContainer.AddChild(newAbility);
-        ability = newAbility;
+        Ability = newAbility;
 
-        if (oldAbility)
+        if (oldAbility != null)
         {
             oldAbility.QueueFree();
         }
@@ -233,10 +233,89 @@ public class Player : Entity
     }
 
 
-    public void OnHealthDeath()
+    public new void OnHealthDeath()
     {
         EmitSignal("GameOver");
         base.OnHealthDeath();
     }
 }
+
+unc pickup_weapon(weapon_scene : PackedScene) -> void:
+	var new_weapon = weapon_scene.instance()
+	if new_weapon is WeaponMelee:
+		var packed : PackedScene = PackedScene.new()
+
+        if packed.pack(weapon_melee) != OK:
+			printerr("Packing weapon failed")
+
+        drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, weapon_melee.drop_icon, melee_container.global_position)
+
+
+        var old_weapon : WeaponMelee = weapon_melee
+
+        weapon_melee = new_weapon
+
+        melee_container.add_child(weapon_melee)
+
+        weapon_melee.init(self, max(old_weapon.get_dps(), weapon_ranged.get_dps()), new_weapon.new_weapon)
+
+
+        old_weapon.queue_free()
+
+
+        switch_to_melee()
+
+
+    elif new_weapon is WeaponRanged:
+		var packed : PackedScene = PackedScene.new()
+
+        if packed.pack(weapon_ranged) != OK:
+			printerr("Packing weapon failed")
+
+        drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, weapon_ranged.drop_icon, ranged_container.global_position)
+
+
+        var old_weapon : WeaponRanged = weapon_ranged
+
+        weapon_ranged = new_weapon
+
+        ranged_container.add_child(weapon_ranged)
+
+        weapon_ranged.init(self, max(old_weapon.get_dps(), weapon_melee.get_dps()), new_weapon.new_weapon)
+
+
+        old_weapon.queue_free()
+
+
+        switch_to_ranged()
+
+
+    emit_signal("weapon_changed")
+
+
+func pickup_ability(ability_scene : PackedScene) -> void:
+	var new_ability = ability_scene.instance()
+	var old_ability : Ability
+
+    if ability:
+		var packed : PackedScene = PackedScene.new()
+
+        if packed.pack(ability) != OK:
+			printerr("Packing ability failed")
+
+        drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.ABILITY, ability.drop_icon, global_position)
+
+        old_ability = ability
+
+
+    ability_container.add_child(new_ability)
+
+    ability = new_ability
+
+
+    if old_ability:
+		old_ability.queue_free()
+
+
+    emit_signal("ability_changed")
 

@@ -3,12 +3,12 @@ using System;
 
 public class Ability : Node2D
 {
-    [Export] public Texture icon;
-    [Export] public Texture dropIcon;
+    [Export] public Texture Icon;
+    [Export] public Texture DropIcon;
 
-    [Export] public float cost;
-    [Export] public float cooldown;
-    [Export] public float duration;
+    [Export] public float Cost;
+    [Export] public float Cooldown;
+    [Export] public float Duration;
 
     private bool _ready = true;
     private Entity _user;
@@ -27,13 +27,13 @@ public class Ability : Node2D
     public void TryActivateAbility(Entity user)
     {
         _user = user;
-        if (_ready && _user.energySupply.Drain(cost))
+        if (_ready && _user.EnergySupply.Drain(Cost))
         {
             TryActivateAbility(user);
             _ready = false;
-            if (duration > 0)
+            if (Duration > 0)
             {
-                _durationTimer.Start(duration);
+                _durationTimer.Start(Duration);
             }
             else
             {
@@ -45,7 +45,7 @@ public class Ability : Node2D
 
     private void ActivateAbility(Entity user)
     {
-        if (duration > 0)
+        if (Duration > 0)
         {
             SetProcess(true);
         }
@@ -67,7 +67,7 @@ public class Ability : Node2D
     {
         SetProcess(false);
         EndAbility();
-        _cooldownTimer.Start(cooldown);
+        _cooldownTimer.Start(Cooldown);
     }
 
 
