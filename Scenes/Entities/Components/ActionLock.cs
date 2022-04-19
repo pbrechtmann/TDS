@@ -7,32 +7,38 @@ public class ActionLock : Node
     private int _actionLocks = 0;
 
 
-    public void AddActionLock() {
+    public void AddActionLock()
+    {
         _actionLocks++;
     }
 
 
-    public void RemoveActionLock() {
+    public void RemoveActionLock()
+    {
         _actionLocks--;
     }
 
 
-    public bool IsActionLocked() {
+    public bool IsActionLocked()
+    {
         return _actionLocks != 0;
     }
 
 
-    public void AddMoveLock() {
+    public void AddMoveLock()
+    {
         _moveLocks++;
     }
 
 
-    public void RemoveMoveLock() {
+    public void RemoveMoveLock()
+    {
         _moveLocks--;
     }
 
 
-    public bool IsMoveLocked() {
+    public bool IsMoveLocked()
+    {
         return _moveLocks != 0;
     }
 }

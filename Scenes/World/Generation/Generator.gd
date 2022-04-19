@@ -1,7 +1,7 @@
 extends Node2D
 class_name Generator
 
-var room_scene = preload("res://Scenes/World/Generation/Room.tscn")
+var room_scene = preload("res://Scenes/World/Generation/RoomBody.tscn")
 
 var tile_size = 128
 export var spacer : Vector2 = Vector2(6, 6) # Making sure rooms don't overlap
@@ -71,6 +71,7 @@ func make_rooms() -> void:
 	final_rooms = rooms_small + rooms_medium + rooms_large + rooms_cave
 	
 	final_rooms.shuffle()
+	
 	
 	for room in final_rooms:
 		room.set_collision_mask(512)

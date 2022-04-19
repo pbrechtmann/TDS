@@ -1,0 +1,5 @@
+D:\Godot\TDS\.mono\temp\obj\Debug\TDS.csproj.AssemblyReference.cache
+D:\Godot\TDS\.mono\temp\obj\Debug\TDS.GeneratedMSBuildEditorConfig.editorconfig
+D:\Godot\TDS\.mono\temp\obj\Debug\TDS.AssemblyInfoInputs.cache
+D:\Godot\TDS\.mono\temp\obj\Debug\TDS.AssemblyInfo.cs
+D:\Godot\TDS\.mono\temp\obj\Debug\TDS.csproj.CoreCompileInputs.cache

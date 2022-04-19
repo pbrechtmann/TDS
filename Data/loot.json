@@ -71,14 +71,6 @@
         "tier": 1,
         "texture": "res://Assets/Icons/DropIcons/AR.png"
     },
-    
-    "weapon_ranged_pistol": {
-        "scene": "res://Scenes/Items/Weapons/Ranged/Variants/Pistol.tscn",
-        "drop_type": "item",
-        "type": 2,
-        "tier": 1,
-        "texture": "res://Assets/Icons/DropIcons/Pistol.png"
-    },
 
     "weapon_ranged_shotgun": {
         "scene": "res://Scenes/Items/Weapons/Ranged/Variants/Shotgun.tscn",
@@ -86,14 +78,6 @@
         "type": 2,
         "tier": 1,
         "texture": "res://Assets/Icons/DropIcons/Shotgun.png"
-    },
-
-    "weapon_ranged_smg": {
-        "scene": "res://Scenes/Items/Weapons/Ranged/Variants/SMG.tscn",
-        "drop_type": "item",
-        "type": 2,
-        "tier": 1,
-        "texture": "res://Assets/Icons/DropIcons/SMG.png"
     },
 
 

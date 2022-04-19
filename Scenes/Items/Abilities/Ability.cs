@@ -13,12 +13,12 @@ public class Ability : Node2D
     private bool _ready = true;
     private Entity _user;
 
-    private Timer _cooldownTimer;
+    public Timer CooldownTimer;
     private Timer _durationTimer;
 
     public override void _Ready()
     {
-        _cooldownTimer = GetNode<Timer>("Cooldown");
+        CooldownTimer = GetNode<Timer>("Cooldown");
         _durationTimer = GetNode<Timer>("Duration");
         SetProcess(false);
     }
@@ -67,7 +67,7 @@ public class Ability : Node2D
     {
         SetProcess(false);
         EndAbility();
-        _cooldownTimer.Start(Cooldown);
+        CooldownTimer.Start(Cooldown);
     }
 
 

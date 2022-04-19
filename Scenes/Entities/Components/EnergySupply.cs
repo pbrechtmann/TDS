@@ -9,43 +9,51 @@ public class EnergySupply : Node
     [Signal]
     public delegate void MaxChanged(float newMax);
 
-    private float _currentEnergy;
+    public float CurrentEnergy;
 
-    public override void _Ready() {
-        _currentEnergy = MaxEnergy;
+    public override void _Ready()
+    {
+        CurrentEnergy = MaxEnergy;
     }
 
-    public void Regenerate(float changePerFrame) {
-        _currentEnergy = Mathf.Clamp(_currentEnergy + changePerFrame, 0, MaxEnergy);
+    public void Regenerate(float changePerFrame)
+    {
+        CurrentEnergy = Mathf.Clamp(CurrentEnergy + changePerFrame, 0, MaxEnergy);
     }
 
 
-    public bool Drain(float amount) {
-        if (amount > _currentEnergy) {
+    public bool Drain(float amount)
+    {
+        if (amount > CurrentEnergy)
+        {
             return false;
         }
-        _currentEnergy -= amount;
+        CurrentEnergy -= amount;
         return true;
     }
 
 
-    public void Charge(float amount) {
-        _currentEnergy = Mathf.Clamp(_currentEnergy + amount, 0, MaxEnergy);
+    public void Charge(float amount)
+    {
+        CurrentEnergy = Mathf.Clamp(CurrentEnergy + amount, 0, MaxEnergy);
     }
 
 
-    public float GetEnergyPercent() {
-        return Mathf.Clamp(Mathf.InverseLerp(0, MaxEnergy, _currentEnergy), 0, 1);
+    public float GetEnergyPercent()
+    {
+        return Mathf.Clamp(Mathf.InverseLerp(0, MaxEnergy, CurrentEnergy), 0, 1);
     }
 
 
-    public void ModifyValue(float modifier) {
+    public void ModifyValue(float modifier)
+    {
         MaxEnergy += modifier;
         EmitSignal("MaxChanged", MaxEnergy);
     }
 
 
-    public void ModifyPercent(float modifier) {
+    public void ModifyPercent(float modifier)
+    {
         float change = MaxEnergy * (modifier / 100);
         MaxEnergy += change;
         EmitSignal("MaxChanged", MaxEnergy);
