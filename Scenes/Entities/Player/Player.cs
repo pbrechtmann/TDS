@@ -181,7 +181,15 @@ public class Player : Entity
                 return;
             }
 
+            dropSpawner.SpawnItemDrop(packed, ItemDrop.ITEM_TYPE.WEAPON, WeaponMelee.Icon, _meleeContainer.GlobalPosition);
 
+            WeaponMelee oldWeapon = WeaponMelee;
+            WeaponMelee = (WeaponMelee)newWeapon;
+            _meleeContainer.AddChild(WeaponMelee);
+
+            WeaponMelee.Init(this, Mathf.Max(oldWeapon.GetDPS(), WeaponRanged.GetDPS()), newWeapon.NewWeapon);
+
+            oldWeapon.QueueFree();
 
             SwitchToMelee();
             EmitSignal("WeaponChanged");
@@ -194,8 +202,15 @@ public class Player : Entity
                 return;
             }
 
+            dropSpawner.SpawnItemDrop(packed, ItemDrop.ITEM_TYPE.WEAPON, WeaponRanged.Icon, _rangedContainer.GlobalPosition);
 
+            WeaponRanged oldWeapon = WeaponRanged;
+            WeaponRanged = (WeaponRanged)newWeapon;
+            _rangedContainer.AddChild(WeaponRanged);
 
+            WeaponRanged.Init(this, Mathf.Max(oldWeapon.GetDPS(), WeaponMelee.GetDPS()), newWeapon.NewWeapon);
+
+            oldWeapon.QueueFree();
 
             SwitchToRanged();
             EmitSignal("WeaponChanged");
@@ -216,7 +231,7 @@ public class Player : Entity
                 return;
             }
 
-            dropSpawner.SpawnItemDrop(packed, );
+            dropSpawner.SpawnItemDrop(packed, ItemDrop.ITEM_TYPE.ABILITY, oldAbility.Icon, GlobalPosition);
 
             oldAbility = Ability;
         }
@@ -240,82 +255,4 @@ public class Player : Entity
     }
 }
 
-unc pickup_weapon(weapon_scene : PackedScene) -> void:
-	var new_weapon = weapon_scene.instance()
-	if new_weapon is WeaponMelee:
-		var packed : PackedScene = PackedScene.new()
-
-        if packed.pack(weapon_melee) != OK:
-			printerr("Packing weapon failed")
-
-        drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, weapon_melee.drop_icon, melee_container.global_position)
-
-
-        var old_weapon : WeaponMelee = weapon_melee
-
-        weapon_melee = new_weapon
-
-        melee_container.add_child(weapon_melee)
-
-        weapon_melee.init(self, max(old_weapon.get_dps(), weapon_ranged.get_dps()), new_weapon.new_weapon)
-
-
-        old_weapon.queue_free()
-
-
-        switch_to_melee()
-
-
-    elif new_weapon is WeaponRanged:
-		var packed : PackedScene = PackedScene.new()
-
-        if packed.pack(weapon_ranged) != OK:
-			printerr("Packing weapon failed")
-
-        drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.WEAPON, weapon_ranged.drop_icon, ranged_container.global_position)
-
-
-        var old_weapon : WeaponRanged = weapon_ranged
-
-        weapon_ranged = new_weapon
-
-        ranged_container.add_child(weapon_ranged)
-
-        weapon_ranged.init(self, max(old_weapon.get_dps(), weapon_melee.get_dps()), new_weapon.new_weapon)
-
-
-        old_weapon.queue_free()
-
-
-        switch_to_ranged()
-
-
-    emit_signal("weapon_changed")
-
-
-func pickup_ability(ability_scene : PackedScene) -> void:
-	var new_ability = ability_scene.instance()
-	var old_ability : Ability
-
-    if ability:
-		var packed : PackedScene = PackedScene.new()
-
-        if packed.pack(ability) != OK:
-			printerr("Packing ability failed")
-
-        drop_spawner.spawn_item_drop(packed, ItemDrop.ITEM_TYPE.ABILITY, ability.drop_icon, global_position)
-
-        old_ability = ability
-
-
-    ability_container.add_child(new_ability)
-
-    ability = new_ability
-
-
-    if old_ability:
-		old_ability.queue_free()
-
-
-    emit_signal("ability_changed")
 

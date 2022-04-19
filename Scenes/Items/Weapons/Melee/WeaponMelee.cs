@@ -50,7 +50,7 @@ public class WeaponMelee : Weapon
             if (target != null && target != User && !_hits.Contains(target))
             {
                 _hits.Add(target);
-                target.GetDamage(, User); // TODO
+                //target.GetDamage(, User); // TODO
             }
         }
     }

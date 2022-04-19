@@ -6,10 +6,10 @@ public class LootData : Node
 {
     private const String _lootFilePath = "res://Data/loot.json";
 
-    public Godot.Collections.Array Tier1;
-    public Godot.Collections.Array Tier2;
-    public Godot.Collections.Array Tier3;
-    public Godot.Collections.Array Tier4;
+    public static Godot.Collections.Array Tier1;
+    public static Godot.Collections.Array Tier2;
+    public static Godot.Collections.Array Tier3;
+    public static Godot.Collections.Array Tier4;
 
 
 

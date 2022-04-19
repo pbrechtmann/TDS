@@ -18,16 +18,16 @@ public class DropSpawner : Node2D
             switch (tier)
             {
                 case 1:
-                    dropDict = LootData.Tier1[GD.Randi() % LootData.Tier1.size()];
+                    dropDict = (Dictionary)LootData.Tier1[(int)GD.Randi() % LootData.Tier1.Count];
                     break;
                 case 2:
-                    dropDict = LootData.Tier2[GD.Randi() % LootData.Tier2.size()];
+                    dropDict = (Dictionary)LootData.Tier2[(int)GD.Randi() % LootData.Tier2.Count];
                     break;
                 case 3:
-                    dropDict = LootData.Tier3[GD.Randi() % LootData.Tier3.size()];
+                    dropDict = (Dictionary)LootData.Tier3[(int)GD.Randi() % LootData.Tier3.Count];
                     break;
                 case 4:
-                    dropDict = LootData.Tier4[GD.Randi() % LootData.Tier4.size()];
+                    dropDict = (Dictionary)LootData.Tier4[(int)GD.Randi() % LootData.Tier4.Count];
                     break;
             }
 
@@ -39,20 +39,20 @@ public class DropSpawner : Node2D
             switch (dropDict["drop_type"])
             {
                 case "auto":
-                    SpawnAutoDrop((int)dropDict["attribute"], (int)dropDict["type"], (float)dropDict["value"], position);
+                    SpawnAutoDrop((AutoDrop.ATTRIBUTE)dropDict["attribute"], (AutoDrop.TYPE)dropDict["type"], (float)dropDict["value"], position);
                     break;
                 case "item":
-                    SpawnItemDrop((PackedScene)dropDict["scene"], (int)dropDict["type"], (Texture)dropDict["texture"], position);
+                    SpawnItemDrop((PackedScene)dropDict["scene"], (ItemDrop.ITEM_TYPE)dropDict["type"], (Texture)dropDict["texture"], position);
                     break;
                 case "upgrade":
-                    SpawnUpgradeDrop((PackedScene)dropDict["scene"], (int)dropDict["type"], (Texture)dropDict["texture"], position);
+                    SpawnUpgradeDrop((PackedScene)dropDict["scene"], (UpgradeDrop.UPGRADE_TYPE)dropDict["type"], (Texture)dropDict["texture"], position);
                     break;
             }
         }
     }
 
 
-    public void SpawnItemDrop(PackedScene item, int itemType, Texture texture, Vector2 position)
+    public void SpawnItemDrop(PackedScene item, ItemDrop.ITEM_TYPE itemType, Texture texture, Vector2 position)
     {
         ItemDrop drop = _itemDropScene.Instance() as ItemDrop;
 
@@ -61,7 +61,7 @@ public class DropSpawner : Node2D
         CallDeferred("AddChild", drop);
     }
 
-    public void SpawnUpgradeDrop(PackedScene upgrade, int upgradeType, Texture texture, Vector2 position)
+    public void SpawnUpgradeDrop(PackedScene upgrade, UpgradeDrop.UPGRADE_TYPE upgradeType, Texture texture, Vector2 position)
     {
         UpgradeDrop drop = _upgradeDropScene.Instance() as UpgradeDrop;
 
@@ -71,7 +71,7 @@ public class DropSpawner : Node2D
     }
 
 
-    public void SpawnAutoDrop(int attribute, int variant, float value, Vector2 position)
+    public void SpawnAutoDrop(AutoDrop.ATTRIBUTE attribute, AutoDrop.TYPE variant, float value, Vector2 position)
     {
         AutoDrop drop = _autoDropScene.Instance() as AutoDrop;
 

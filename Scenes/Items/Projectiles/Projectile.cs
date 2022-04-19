@@ -48,7 +48,7 @@ public class Projectile : Node2D
         {
             Entity target = (Entity)body;
 
-            target.GetDamage();
+            //target.GetDamage(); TODO: Deal damage
             done = HandlePierce();
         }
 

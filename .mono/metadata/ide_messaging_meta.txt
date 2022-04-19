@@ -1,2 +1,2 @@
-﻿53306
-/Users/phili/Applications/Godot.app/Contents/MacOS/Godot
+﻿53658
+C:/Users/phili/Desktop/Godot/Godot_v3.4.4-stable_mono_win64.exe
