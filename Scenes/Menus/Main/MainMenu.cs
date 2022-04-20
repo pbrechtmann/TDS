@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class MainMenu : CanvasLayer
+public class MainMenu : Control
 {
     private MarginContainer _margin;
 
@@ -21,7 +21,7 @@ public class MainMenu : CanvasLayer
 
     public void OnButtonStartButtonDown()
     {
-        if (GetTree().ChangeScene("res://Scenes/World.tscn") != Error.Ok)
+        if (GetTree().ChangeScene("res://Scenes/Game.tscn") != Error.Ok)
         {
             GD.PrintErr("Loading game scene failed.");
         }

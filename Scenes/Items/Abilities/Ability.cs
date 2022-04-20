@@ -11,7 +11,7 @@ public class Ability : Node2D
     [Export] public float Duration;
 
     private bool _ready = true;
-    private Entity _user;
+    protected Entity User;
 
     public Timer CooldownTimer;
     private Timer _durationTimer;
@@ -26,8 +26,8 @@ public class Ability : Node2D
 
     public void TryActivateAbility(Entity user)
     {
-        _user = user;
-        if (_ready && _user.EnergySupply.Drain(Cost))
+        User = user;
+        if (_ready && User.EnergySupply.Drain(Cost))
         {
             TryActivateAbility(user);
             _ready = false;
@@ -43,7 +43,7 @@ public class Ability : Node2D
     }
 
 
-    private void ActivateAbility(Entity user)
+    protected void ActivateAbility(Entity user)
     {
         if (Duration > 0)
         {

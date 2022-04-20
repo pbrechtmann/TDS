@@ -17,7 +17,9 @@ public class LootData : Node
     {
         Dictionary lootData = LoadFileData(_lootFilePath);
 
-        foreach (String item in lootData)
+        GD.Print(lootData.GetType());
+
+        foreach (Dictionary item in lootData)
         {
             Dictionary itemData = (Dictionary)lootData[item];
             foreach (String key in itemData)

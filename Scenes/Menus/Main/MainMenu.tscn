@@ -61,6 +61,6 @@ size_flags_vertical = 3
 theme = SubResource( 1 )
 text = "Quit"
 
-[connection signal="button_down" from="MarginContainer/VBoxContainer/ButtonStart" to="." method="_on_ButtonStart_button_down"]
-[connection signal="button_down" from="MarginContainer/VBoxContainer/ButtonSettings" to="." method="_on_ButtonSettings_button_down"]
-[connection signal="button_down" from="MarginContainer/VBoxContainer/ButtonQuit" to="." method="_on_ButtonQuit_button_down"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonStart" to="." method="OnButtonStartButtonDown"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonSettings" to="." method="OnButtonSettingsButtonDown"]
+[connection signal="button_down" from="MarginContainer/VBoxContainer/ButtonQuit" to="." method="OnButtonQuitButtonDown"]

@@ -9,36 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "StaticBody2D",
-"class": "Barrier",
-"language": "GDScript",
-"path": "res://Scenes/World/Generation/RoomParts/Barrier.gd"
-}, {
-"base": "Node2D",
-"class": "DamageEffect",
-"language": "GDScript",
-"path": "res://Scenes/Entities/StatusEffects/DamageEffect.gd"
-}, {
-"base": "Node2D",
-"class": "Generator",
-"language": "GDScript",
-"path": "res://Scenes/World/Generation/Generator.gd"
-}, {
-"base": "Area2D",
-"class": "LevelExit",
-"language": "GDScript",
-"path": "res://Scenes/World/Generation/RoomParts/LevelExit.gd"
-}, {
-"base": "RigidBody2D",
-"class": "RoomBody",
-"language": "GDScript",
-"path": "res://Scenes/World/Generation/Room.gd"
-}, {
-"base": "Node2D",
-"class": "RoomPrefab",
-"language": "GDScript",
-"path": "res://Scenes/World/Generation/RoomPrefab.gd"
-}, {
 "base": "UpgradeModule",
 "class": "UpgradeAbility",
 "language": "GDScript",
@@ -75,12 +45,6 @@ _global_script_classes=[ {
 "path": "res://Scenes/Items/Weapons/Ranged/Variants/Shotgun.gd"
 } ]
 _global_script_class_icons={
-"Barrier": "",
-"DamageEffect": "",
-"Generator": "",
-"LevelExit": "",
-"RoomBody": "",
-"RoomPrefab": "",
 "UpgradeAbility": "",
 "UpgradeArmor": "",
 "UpgradeCharacter": "",
@@ -98,7 +62,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-LootData="*res://Autoload/LootData.gd"
+LootData="*res://Autoload/LootData.cs"
 
 [debug]
 

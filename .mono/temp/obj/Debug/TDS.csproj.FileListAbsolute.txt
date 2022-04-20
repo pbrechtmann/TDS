@@ -3,3 +3,7 @@ D:\Godot\TDS\.mono\temp\obj\Debug\TDS.GeneratedMSBuildEditorConfig.editorconfig
 D:\Godot\TDS\.mono\temp\obj\Debug\TDS.AssemblyInfoInputs.cache
 D:\Godot\TDS\.mono\temp\obj\Debug\TDS.AssemblyInfo.cs
 D:\Godot\TDS\.mono\temp\obj\Debug\TDS.csproj.CoreCompileInputs.cache
+D:\Godot\TDS\.mono\temp\bin\Debug\TDS.dll
+D:\Godot\TDS\.mono\temp\bin\Debug\TDS.pdb
+D:\Godot\TDS\.mono\temp\obj\Debug\TDS.dll
+D:\Godot\TDS\.mono\temp\obj\Debug\TDS.pdb

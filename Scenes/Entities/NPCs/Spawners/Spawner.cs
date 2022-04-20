@@ -5,14 +5,14 @@ public class Spawner : NPC
 {
     [Export] private PackedScene _toSpawn;
 
-    private Timer _spawnDelay;
+    public Timer SpawnDelay;
     private Sprite _sprite;
     private CollisionShape2D _collision;
 
     private Node2D _NPCContainer;
     public override void _Ready()
     {
-        _spawnDelay = GetNode<Timer>("Timer");
+        SpawnDelay = GetNode<Timer>("Timer");
         _sprite = GetNode<Sprite>("Sprite");
         _collision = GetNode<CollisionShape2D>("CollisionShape2D");
         SetProcess(false);
@@ -51,7 +51,7 @@ public class Spawner : NPC
             _collision.QueueFree();
         }
 
-        _spawnDelay.Stop();
+        SpawnDelay.Stop();
         SetProcess(true);
     }
 }

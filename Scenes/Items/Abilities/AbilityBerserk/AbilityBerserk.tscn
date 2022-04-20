@@ -1,14 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scenes/Items/Abilities/Ability.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/Items/Abilities/AbilityBerserk/AbilityBerserk.gd" type="Script" id=2]
-[ext_resource path="res://Assets/Icons/Abilities/Berserk.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Icons/DropIcons/Berserk.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Items/Abilities/AbilityBerserk/AbilityBerserk.cs" type="Script" id=2]
 
 [node name="AbilityBerserk" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-icon = ExtResource( 3 )
-drop_icon = ExtResource( 4 )
-ability_cost = 50.0
-ability_delay = 5.0
-ability_duration = 10.0
